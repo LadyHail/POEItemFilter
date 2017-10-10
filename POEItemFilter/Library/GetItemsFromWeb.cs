@@ -19,8 +19,6 @@ namespace POEItemFilter.Library
 
         private ApplicationDbContext _context;
 
-        int counter = 0;
-
         public GetItemsFromWeb()
         {
             _context = new ApplicationDbContext();
@@ -50,24 +48,17 @@ namespace POEItemFilter.Library
                     if (itemBaseType == BaseTypes.Armour)
                     {
                         GetArmoursItems((Types)link.Key, queries[0], queries[1]);
-                        break;
                     }
-
-                    MatchCollection items = RegexRequest(queries[0], RawWebData);
-
-                    foreach (Match item in items)
+                    else
                     {
-                        SaveNewItem(item, (Types)link.Key, itemBaseType);
+                        MatchCollection items = RegexRequest(queries[0], RawWebData);
 
-                        Console.WriteLine($"New item: " +
-                            $"{_context.ItemsDB.Local[counter].Id}, " +
-                            $"{_context.ItemsDB.Local[counter].Name}, " +
-                            $"{_context.ItemsDB.Local[counter].Level}, " +
-                            $"{_context.ItemsDB.Local[counter].BaseType}, " +
-                            $"{_context.ItemsDB.Local[counter].Type}");
-                        counter++;
-                        //_context.SaveChanges();
+                        foreach (Match item in items)
+                        {
+                            SaveNewItem(item, (Types)link.Key, itemBaseType);
+                        }
                     }
+                    _context.SaveChanges();
                 }
             }
         }
@@ -130,17 +121,11 @@ namespace POEItemFilter.Library
             newItem.BaseType = itemBaseType;
             newItem.Type = itemType;
 
-            if (newItem.Id == 0)
+            bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
+
+            if (!isItemInDb)
             {
                 _context.ItemsDB.Add(newItem);
-            }
-            else
-            {
-                var itemInDb = _context.ItemsDB.Single(i => i.Id == newItem.Id);
-                itemInDb.Name = newItem.Name;
-                itemInDb.Level = newItem.Level;
-                itemInDb.Type = newItem.Type;
-                itemInDb.BaseType = newItem.BaseType;
             }
         }
 
@@ -163,18 +148,8 @@ namespace POEItemFilter.Library
                     }
 
                     SaveArmourItem(item, itemType, attribute1Value, attribute2Value);
-
-                    Console.WriteLine($"New item: " +
-                                $"{_context.ItemsDB.Local[counter].Id}, " +
-                                $"{_context.ItemsDB.Local[counter].Name}, " +
-                                $"{_context.ItemsDB.Local[counter].Level}, " +
-                                $"{_context.ItemsDB.Local[counter].BaseType}, " +
-                                $"{_context.ItemsDB.Local[counter].Type}, " +
-                                $"{_context.ItemsDB.Local[counter].Attribute1}, " +
-                                $"{_context.ItemsDB.Local[counter].Attribute2}");
-                    counter++;
                 }
-                Console.WriteLine("****************************************************************************");
+                _context.SaveChanges();
             }
         }
 
@@ -196,17 +171,11 @@ namespace POEItemFilter.Library
                 newItem.Attribute2 = (Attributes)Enum.Parse(typeof(Attributes), attribute2Value, true);
             }
 
-            if (newItem.Id == 0)
+            bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
+
+            if (!isItemInDb)
             {
                 _context.ItemsDB.Add(newItem);
-            }
-            else
-            {
-                var itemInDb = _context.ItemsDB.Single(i => i.Id == newItem.Id);
-                itemInDb.Name = newItem.Name;
-                itemInDb.Level = newItem.Level;
-                itemInDb.Type = newItem.Type;
-                itemInDb.BaseType = newItem.BaseType;
             }
         }
 
@@ -306,66 +275,66 @@ namespace POEItemFilter.Library
                 case BaseTypes.Armour: // armours_list
                     links.Add(Types.BodyArmour, "https://pathofexile.gamepedia.com/List_of_body_armours");
                     links.Add(Types.Boot, "https://pathofexile.gamepedia.com/List_of_boots");
-                    //links.Add(Types.Glove, "https://pathofexile.gamepedia.com/List_of_gloves");
-                    //links.Add(Types.Helmet, "https://pathofexile.gamepedia.com/List_of_helmets");
-                    //links.Add(Types.Shield, "https://pathofexile.gamepedia.com/List_of_shields");
+                    links.Add(Types.Glove, "https://pathofexile.gamepedia.com/List_of_gloves");
+                    links.Add(Types.Helmet, "https://pathofexile.gamepedia.com/List_of_helmets");
+                    links.Add(Types.Shield, "https://pathofexile.gamepedia.com/List_of_shields");
                     break;
 
                 case BaseTypes.Weapon: // weapons_list
                     links.Add(Types.Bow, "https://pathofexile.gamepedia.com/List_of_bows");
                     links.Add(Types.Claw, "https://pathofexile.gamepedia.com/List_of_claws");
-                    //links.Add(Types.Dagger, "https://pathofexile.gamepedia.com/List_of_daggers");
-                    //links.Add(Types.OneHandAxe, "https://pathofexile.gamepedia.com/List_of_one_hand_axes");
-                    //links.Add(Types.OneHandMace, "https://pathofexile.gamepedia.com/List_of_one_hand_maces");
-                    //links.Add(Types.OneHandSword, "https://pathofexile.gamepedia.com/List_of_one_hand_swords");
-                    //links.Add(Types.Sceptre, "https://pathofexile.gamepedia.com/List_of_sceptres");
-                    //links.Add(Types.Stave, "https://pathofexile.gamepedia.com/List_of_staves");
-                    //links.Add(Types.TwoHandAxe, "https://pathofexile.gamepedia.com/List_of_two_hand_axes");
-                    //links.Add(Types.TwoHandMace, "https://pathofexile.gamepedia.com/List_of_two_hand_maces");
-                    //links.Add(Types.TwoHandSword, "https://pathofexile.gamepedia.com/List_of_two_hand_swords");
-                    //links.Add(Types.Wand, "https://pathofexile.gamepedia.com/List_of_wands");
-                    //links.Add(Types.ThrustingOneHandSword, "https://pathofexile.gamepedia.com/List_of_thrusting_one_hand_swords");
+                    links.Add(Types.Dagger, "https://pathofexile.gamepedia.com/List_of_daggers");
+                    links.Add(Types.OneHandAxe, "https://pathofexile.gamepedia.com/List_of_one_hand_axes");
+                    links.Add(Types.OneHandMace, "https://pathofexile.gamepedia.com/List_of_one_hand_maces");
+                    links.Add(Types.OneHandSword, "https://pathofexile.gamepedia.com/List_of_one_hand_swords");
+                    links.Add(Types.Sceptre, "https://pathofexile.gamepedia.com/List_of_sceptres");
+                    links.Add(Types.Stave, "https://pathofexile.gamepedia.com/List_of_staves");
+                    links.Add(Types.TwoHandAxe, "https://pathofexile.gamepedia.com/List_of_two_hand_axes");
+                    links.Add(Types.TwoHandMace, "https://pathofexile.gamepedia.com/List_of_two_hand_maces");
+                    links.Add(Types.TwoHandSword, "https://pathofexile.gamepedia.com/List_of_two_hand_swords");
+                    links.Add(Types.Wand, "https://pathofexile.gamepedia.com/List_of_wands");
+                    links.Add(Types.ThrustingOneHandSword, "https://pathofexile.gamepedia.com/List_of_thrusting_one_hand_swords");
                     break;
 
-                //case 3: // accessories_list
-                //    links.Add(Types.Amulet, "https://pathofexile.gamepedia.com/List_of_amulets");
-                //    links.Add(Types.Belt, "https://pathofexile.gamepedia.com/List_of_belts");
-                //    links.Add(Types.Ring, "https://pathofexile.gamepedia.com/List_of_rings");
-                //    links.Add(Types.Quiver, "https://pathofexile.gamepedia.com/List_of_quivers");
-                //    break;
+                case BaseTypes.Accessory: // accessories_list
+                    links.Add(Types.Amulet, "https://pathofexile.gamepedia.com/List_of_amulets");
+                    links.Add(Types.Belt, "https://pathofexile.gamepedia.com/List_of_belts");
+                    links.Add(Types.Ring, "https://pathofexile.gamepedia.com/List_of_rings");
+                    links.Add(Types.Quiver, "https://pathofexile.gamepedia.com/List_of_quivers");
+                    break;
 
-                //case 4: // currencies_list
-                //    links.Add(Types.Currency, "https://pathofexile.gamepedia.com/Currency#Discontinued_currency_items");
-                //    break;
+                case BaseTypes.Currency: // currencies_list
+                    links.Add(Types.Currency, "https://pathofexile.gamepedia.com/Currency#Discontinued_currency_items");
+                    break;
 
                 case BaseTypes.SkillGem: // skill_gems_list
                     links.Add(Types.SupportSkillGem, "https://pathofexile.gamepedia.com/List_of_support_skill_gems");
                     links.Add(Types.ActiveSkillGem, "https://pathofexile.gamepedia.com/Active_skill_gem");
                     break;
 
-                //case 6: // maps_list
-                //    links.Add(Types.Map, "https://pathofexile.gamepedia.com/List_of_base_maps");
-                //    break;
+                case BaseTypes.Map: // maps_list
+                    links.Add(Types.Map, "https://pathofexile.gamepedia.com/List_of_base_maps");
+                    break;
 
-                //case 7: // flasks_list
-                //    links.Add(Types.UtilityFlask, "https://pathofexile.gamepedia.com/List_of_all_utility_flasks");
-                //    links.Add(Types.LifeFlask, "https://pathofexile.gamepedia.com/List_of_life_flasks");
-                //    links.Add(Types.ManaFlask, "https://pathofexile.gamepedia.com/List_of_mana_flasks");
-                //    links.Add(Types.HybridFlask, "https://pathofexile.gamepedia.com/List_of_hybrid_flasks");
-                //    break;
+                case BaseTypes.Flask: // flasks_list
+                    links.Add(Types.UtilityFlask, "https://pathofexile.gamepedia.com/List_of_all_utility_flasks");
+                    links.Add(Types.LifeFlask, "https://pathofexile.gamepedia.com/List_of_life_flasks");
+                    links.Add(Types.ManaFlask, "https://pathofexile.gamepedia.com/List_of_mana_flasks");
+                    links.Add(Types.HybridFlask, "https://pathofexile.gamepedia.com/List_of_hybrid_flasks");
+                    break;
 
-                //case 8: // essences_list
-                //    links.Add(Types.Essence, "https://pathofexile.gamepedia.com/List_of_essences");
-                //    break;
+                case BaseTypes.Essence: // essences_list
+                    links.Add(Types.Essence, "https://pathofexile.gamepedia.com/List_of_essences");
+                    break;
 
                 case BaseTypes.LabyrinthItem: // labyrinth_items_list
                     links.Add(Types.LabyrinthTrinket, "https://pathofexile.gamepedia.com/List_of_labyrinth_trinkets");
                     links.Add(Types.LabyrinthItem, "https://pathofexile.gamepedia.com/Labyrinth_Item");
                     break;
 
-                //case 10: // fishing_rods_list
-                //    links.Add(Types.FishingRod, "https://pathofexile.gamepedia.com/Fishing_rod");
-                //    break;
+                case BaseTypes.FishingRod: // fishing_rods_list
+                    links.Add(Types.FishingRod, "https://pathofexile.gamepedia.com/Fishing_rod");
+                    break;
 
                 case BaseTypes.Piece: // pieces_list
                     links.Add(Types.Piece, "https://pathofexile.gamepedia.com/Piece");
