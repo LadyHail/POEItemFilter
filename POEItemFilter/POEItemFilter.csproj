@@ -198,21 +198,26 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="EntityConfiguration\ItemDBConfiguration.cs" />
+    <Compile Include="Library\EntityConfiguration\ItemDBConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\GetItemsFromWeb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710101119295_ChangeNameOfItemDbTable.cs" />
+    <Compile Include="Migrations\201710101119295_ChangeNameOfItemDbTable.Designer.cs">
+      <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ItemsDB\Enum\Attribute.cs" />
-    <Compile Include="Models\ItemsDB\Enum\BaseType.cs" />
-    <Compile Include="Models\ItemsDB\Enum\Type.cs" />
+    <Compile Include="Models\Enum\Attributes.cs" />
+    <Compile Include="Models\Enum\BaseTypes.cs" />
+    <Compile Include="Models\Enum\Types.cs" />
     <Compile Include="Models\ItemsDB\ItemDB.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -297,6 +302,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201710091536569_InitialModelForItemDb.resx">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710101119295_ChangeNameOfItemDbTable.resx">
+      <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

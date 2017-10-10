@@ -16,6 +16,6 @@ namespace POEItemFilter.Models.ItemsDB
 
         public Attributes? Attribute2 { get; set; }
 
-        public BaseType BaseType { get; set; }
+        public BaseTypes BaseType { get; set; }
     }
 }

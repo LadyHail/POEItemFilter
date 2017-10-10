@@ -7,6 +7,8 @@ namespace POEItemFilter.EntityConfiguration
     {
         public ItemDBConfiguration()
         {
+            ToTable("ItemsDB");
+
             Property(i => i.Name)
                 .IsRequired()
                 .HasMaxLength(100);
