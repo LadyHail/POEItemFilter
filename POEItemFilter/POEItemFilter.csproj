@@ -215,37 +215,9 @@
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710101119295_ChangeNameOfItemDbTable.cs" />
-    <Compile Include="Migrations\201710101119295_ChangeNameOfItemDbTable.Designer.cs">
-      <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111254315_AddBaseTypesModel.cs" />
-    <Compile Include="Migrations\201710111254315_AddBaseTypesModel.Designer.cs">
-      <DependentUpon>201710111254315_AddBaseTypesModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111315411_AddTypesModel.cs" />
-    <Compile Include="Migrations\201710111315411_AddTypesModel.Designer.cs">
-      <DependentUpon>201710111315411_AddTypesModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.cs" />
-    <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.Designer.cs">
-      <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.cs" />
-    <Compile Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.Designer.cs">
-      <DependentUpon>201710111352470_RemoveBaseTypePropFromItemTypeTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.cs" />
-    <Compile Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.Designer.cs">
-      <DependentUpon>201710111357031_ChangeEnumInBaseTypeTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.cs" />
-    <Compile Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.Designer.cs">
-      <DependentUpon>201710111747363_AddFluentApiToBaseTypeAndType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.cs" />
-    <Compile Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.Designer.cs">
-      <DependentUpon>201710111803049_AddEntityTypeConfigToItemTypeTable.cs</DependentUpon>
+    <Compile Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.cs" />
+    <Compile Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.Designer.cs">
+      <DependentUpon>201710111846547_AddBaseTypeAndTypeModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -374,29 +346,8 @@
     <EmbeddedResource Include="Migrations\201710091536569_InitialModelForItemDb.resx">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710101119295_ChangeNameOfItemDbTable.resx">
-      <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111254315_AddBaseTypesModel.resx">
-      <DependentUpon>201710111254315_AddBaseTypesModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111315411_AddTypesModel.resx">
-      <DependentUpon>201710111315411_AddTypesModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111338173_ChangeNamesOfModels.resx">
-      <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.resx">
-      <DependentUpon>201710111352470_RemoveBaseTypePropFromItemTypeTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.resx">
-      <DependentUpon>201710111357031_ChangeEnumInBaseTypeTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.resx">
-      <DependentUpon>201710111747363_AddFluentApiToBaseTypeAndType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.resx">
-      <DependentUpon>201710111803049_AddEntityTypeConfigToItemTypeTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.resx">
+      <DependentUpon>201710111846547_AddBaseTypeAndTypeModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

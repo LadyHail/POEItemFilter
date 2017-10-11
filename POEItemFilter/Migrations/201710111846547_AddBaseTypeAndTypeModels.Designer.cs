@@ -7,13 +7,13 @@ namespace POEItemFilter.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddTypesModel : IMigrationMetadata
+    public sealed partial class AddBaseTypeAndTypeModels : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTypesModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddBaseTypeAndTypeModels));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710111315411_AddTypesModel"; }
+            get { return "201710111846547_AddBaseTypeAndTypeModels"; }
         }
         
         string IMigrationMetadata.Source

@@ -9,9 +9,6 @@ namespace POEItemFilter.Library.EntityConfiguration
         {
             HasKey(i => i.Id);
 
-            Property(i => i.Id)
-                .IsRequired();
-
             Property(i => i.Name)
                 .IsRequired()
                 .HasMaxLength(50);

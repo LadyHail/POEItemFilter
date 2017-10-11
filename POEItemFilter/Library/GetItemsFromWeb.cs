@@ -42,27 +42,24 @@ namespace POEItemFilter.Library
                     {
                         newBaseType = new ItemBaseType();
                         newBaseType.Name = itemBaseType.ToString();
-                        newBaseType.Types.Add(new ItemType()
-                        {
-                            Name = link.Key.ToString()
-                        });
+                        //newBaseType.Types.Add(new ItemType()
+                        //{
+                        //    Name = link.Key.ToString()
+                        //});
                         _context.BaseTypes.Add(newBaseType);
                         _context.SaveChanges();
                     }
-                    else
-                    {
-                        bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(link.Key.ToString());
-                        if (!isTypeInDb)
-                        {
-                            ItemType newType = new ItemType();
-                            newType.Name = link.Key.ToString();
-                            _context.Types.Add(newType);
-                            //dodac do istniejącego BT
 
-                            var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
-                            existingBaseType.Types.Add(newType);
-                            _context.SaveChanges();
-                        }
+                    bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(link.Key.ToString());
+                    if (!isTypeInDb)
+                    {
+                        ItemType newType = new ItemType();
+                        newType.Name = link.Key.ToString();
+                        _context.Types.Add(newType);
+
+                        var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
+                        existingBaseType.Types.Add(newType);
+                        _context.SaveChanges();
                     }
 
                     RawWebData = GetWebsiteText(link.Value.ToString());
