@@ -8,6 +8,11 @@ namespace POEItemFilter.Models.ItemsDB
 
         public string Name { get; set; }
 
-        public IList<ItemType> Types { get; set; }
+        public ICollection<ItemType> Types { get; set; }
+
+        public ItemBaseType()
+        {
+            Types = new HashSet<ItemType>();
+        }
     }
 }

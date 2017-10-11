@@ -204,10 +204,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemUserController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Library\EntityConfiguration\ItemBaseTypeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemDBConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\EntityConfiguration\ItemTypeConfiguration.cs" />
     <Compile Include="Library\GetItemsFromWeb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
@@ -228,6 +230,22 @@
     <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.cs" />
     <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.Designer.cs">
       <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.cs" />
+    <Compile Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.Designer.cs">
+      <DependentUpon>201710111352470_RemoveBaseTypePropFromItemTypeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.cs" />
+    <Compile Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.Designer.cs">
+      <DependentUpon>201710111357031_ChangeEnumInBaseTypeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.cs" />
+    <Compile Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.Designer.cs">
+      <DependentUpon>201710111747363_AddFluentApiToBaseTypeAndType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.cs" />
+    <Compile Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.Designer.cs">
+      <DependentUpon>201710111803049_AddEntityTypeConfigToItemTypeTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -367,6 +385,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710111338173_ChangeNamesOfModels.resx">
       <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111352470_RemoveBaseTypePropFromItemTypeTable.resx">
+      <DependentUpon>201710111352470_RemoveBaseTypePropFromItemTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111357031_ChangeEnumInBaseTypeTable.resx">
+      <DependentUpon>201710111357031_ChangeEnumInBaseTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111747363_AddFluentApiToBaseTypeAndType.resx">
+      <DependentUpon>201710111747363_AddFluentApiToBaseTypeAndType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111803049_AddEntityTypeConfigToItemTypeTable.resx">
+      <DependentUpon>201710111803049_AddEntityTypeConfigToItemTypeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

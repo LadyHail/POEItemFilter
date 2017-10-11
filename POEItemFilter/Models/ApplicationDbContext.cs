@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using POEItemFilter.EntityConfiguration;
+using POEItemFilter.Library.EntityConfiguration;
 using POEItemFilter.Models.ItemsDB;
 
 namespace POEItemFilter.Models
@@ -25,6 +26,8 @@ namespace POEItemFilter.Models
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new ItemDBConfiguration());
+            modelBuilder.Configurations.Add(new ItemBaseTypeConfiguration());
+            modelBuilder.Configurations.Add(new ItemTypeConfiguration());
         }
     }
 }
