@@ -1,4 +1,5 @@
-﻿using POEItemFilter.Models.ItemsDB.Enum;
+﻿using System.ComponentModel.DataAnnotations;
+using POEItemFilter.Models.ItemsDB.Enum;
 
 namespace POEItemFilter.Models.ItemsDB
 {
@@ -12,10 +13,13 @@ namespace POEItemFilter.Models.ItemsDB
 
         public Types Type { get; set; }
 
+        [Display(Name = "Attribute")]
         public Attributes? Attribute1 { get; set; }
 
+        [Display(Name = "Attribute")]
         public Attributes? Attribute2 { get; set; }
 
+        [Display(Name = "Base Type")]
         public BaseTypes BaseType { get; set; }
     }
 }

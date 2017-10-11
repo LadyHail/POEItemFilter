@@ -26,11 +26,6 @@ namespace POEItemFilter.Library
             GetNewItems();
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    _context.Dispose();
-        //}
-
         private void GetNewItems()
         {
             Hashtable downloadingLinks = new Hashtable();
@@ -204,7 +199,7 @@ namespace POEItemFilter.Library
             string rawWebData = "";
             string cacheFileName = ComputeHash(url);
             string cachePath = @".\App_Data\Cache\" + cacheFileName + ".cache";
-            if (File.Exists(cachePath) && (DateTime.Now - File.GetLastWriteTime(cachePath)).TotalMinutes < 3600)
+            if (File.Exists(cachePath) && (DateTime.Now - File.GetLastWriteTime(cachePath)).TotalMinutes < 1440)
             {
                 rawWebData = File.ReadAllText(cachePath);
                 return rawWebData;
