@@ -82,6 +82,9 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -214,14 +217,28 @@
     <Compile Include="Migrations\201710101119295_ChangeNameOfItemDbTable.Designer.cs">
       <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710111254315_AddBaseTypesModel.cs" />
+    <Compile Include="Migrations\201710111254315_AddBaseTypesModel.Designer.cs">
+      <DependentUpon>201710111254315_AddBaseTypesModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111315411_AddTypesModel.cs" />
+    <Compile Include="Migrations\201710111315411_AddTypesModel.Designer.cs">
+      <DependentUpon>201710111315411_AddTypesModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.cs" />
+    <Compile Include="Migrations\201710111338173_ChangeNamesOfModels.Designer.cs">
+      <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\Enum\Attributes.cs" />
-    <Compile Include="Models\Enum\BaseTypes.cs" />
-    <Compile Include="Models\Enum\Types.cs" />
+    <Compile Include="Library\Enum\Attributes.cs" />
+    <Compile Include="Library\Enum\BaseTypes.cs" />
+    <Compile Include="Library\Enum\Types.cs" />
+    <Compile Include="Models\ItemsDB\ItemBaseType.cs" />
     <Compile Include="Models\ItemsDB\ItemDB.cs" />
+    <Compile Include="Models\ItemsDB\ItemType.cs" />
     <Compile Include="Models\UsersItems\ItemUser.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UsersItems\Visual.cs" />
@@ -318,7 +335,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ItemUser\Index.cshtml" />
+    <Content Include="Views\ItemUser\SelectCategory.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -341,6 +358,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710101119295_ChangeNameOfItemDbTable.resx">
       <DependentUpon>201710101119295_ChangeNameOfItemDbTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111254315_AddBaseTypesModel.resx">
+      <DependentUpon>201710111254315_AddBaseTypesModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111315411_AddTypesModel.resx">
+      <DependentUpon>201710111315411_AddTypesModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111338173_ChangeNamesOfModels.resx">
+      <DependentUpon>201710111338173_ChangeNamesOfModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

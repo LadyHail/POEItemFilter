@@ -16,13 +16,13 @@
         <li><a href="">All</a></li>
         @foreach (var item in Model.GroupBy(i => i.BaseType).Select(i => i.First()))
         {
-            <li><a href="">@item.BaseType.ToString()</a></li>
+            <li><a href="@item.BaseType.ToString()">@item.BaseType.ToString()</a></li>
         }
         <li role="separator" class="divider"></li>
     </ul>
 </div>
 
-<div class="dropdown">
+@*<div class="dropdown">
     <button class="btn btn-default dropdown-toggle" type="button" id="classDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         Select item's class
         <span class="caret"></span>
@@ -34,7 +34,7 @@
         }
         <li role="separator" class="divider"></li>
     </ul>
-</div>
+</div>*@
 
     @section scripts
 {

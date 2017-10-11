@@ -36,6 +36,28 @@ namespace POEItemFilter.Library
 
                 foreach (DictionaryEntry link in downloadingLinks)
                 {
+                    ItemBaseType newBaseType = null;
+                    bool isBaseTypeInDb = _context.BaseTypes.Select(i => i.Name).Contains(itemBaseType.ToString());
+                    if (!isBaseTypeInDb)
+                    {
+                        newBaseType = new ItemBaseType();
+                        newBaseType.Name = itemBaseType.ToString();
+                        newBaseType.Types.Add(new ItemType()
+                        {
+                            Name = link.Key.ToString(),
+                            BaseType = newBaseType
+                        });
+                        _context.BaseTypes.Add(newBaseType);
+                    }
+
+                    bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(link.Key.ToString());
+                    if (!isTypeInDb)
+                    {
+                        ItemType newType = new ItemType();
+                        newType.Name = link.Key.ToString();
+                        _context.Types.Add(newType);
+                    }
+
                     RawWebData = GetWebsiteText(link.Value.ToString());
 
                     Regex[] queries = SelectQuery(itemBaseType, link.Key.ToString());

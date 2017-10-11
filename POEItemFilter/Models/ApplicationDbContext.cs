@@ -8,6 +8,8 @@ namespace POEItemFilter.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ItemDB> ItemsDB { get; set; }
+        public DbSet<ItemBaseType> BaseTypes { get; set; }
+        public DbSet<ItemType> Types { get; set; }
 
         public ApplicationDbContext()
             : base("POEItemFilterContext", throwIfV1Schema: false)

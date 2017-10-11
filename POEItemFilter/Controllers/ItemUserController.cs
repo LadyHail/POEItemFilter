@@ -19,10 +19,16 @@ namespace POEItemFilter.Controllers
         }
 
         // GET: ItemUser
-        public ActionResult Index()
+        public ActionResult SelectCategory()
         {
             var items = _context.ItemsDB.ToList();
             return View(items);
         }
+
+        //public ActionResult SelectClass(string type)
+        //{
+        //    var items = _context.ItemsDB.Select(i => i.Type).ToList();
+        //    return ("SelectCategory", items);
+        //}
     }
 }
