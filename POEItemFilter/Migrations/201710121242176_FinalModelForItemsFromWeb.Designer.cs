@@ -7,13 +7,13 @@ namespace POEItemFilter.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ChangeNameOfItemDbTable : IMigrationMetadata
+    public sealed partial class FinalModelForItemsFromWeb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangeNameOfItemDbTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(FinalModelForItemsFromWeb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710101119295_ChangeNameOfItemDbTable"; }
+            get { return "201710121242176_FinalModelForItemsFromWeb"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace POEItemFilter.Models.ItemsDB.Enum
+namespace POEItemFilter.Library.Enumerables
 {
     public enum Types
     {

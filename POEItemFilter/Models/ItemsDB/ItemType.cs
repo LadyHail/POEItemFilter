@@ -2,27 +2,22 @@
 
 namespace POEItemFilter.Models.ItemsDB
 {
-    public class ItemDB
+    public class ItemType
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public byte? Level { get; set; }
-
-        public ItemBaseType BaseType { get; set; }
-
         public byte BaseTypeId { get; set; }
 
-        public ItemType Type { get; set; }
+        public virtual ICollection<ItemAttribute> Attributes { get; set; }
 
-        public int TypeId { get; set; }
+        public virtual ICollection<ItemDB> Items { get; set; }
 
-        public ICollection<ItemAttribute> Attributes { get; set; }
-
-        public ItemDB()
+        public ItemType()
         {
             Attributes = new HashSet<ItemAttribute>();
+            Items = new HashSet<ItemDB>();
         }
     }
 }
