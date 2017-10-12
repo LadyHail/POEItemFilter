@@ -36,7 +36,7 @@ namespace POEItemFilter.Library
 
                 foreach (DictionaryEntry link in downloadingLinks)
                 {
-                    SaveNewBaseType(itemBaseType.ToString(), link.Key.ToString());
+                    SaveNewBaseType(itemBaseType.ToString());
                     SaveNewType(itemBaseType.ToString(), link.Key.ToString());
 
                     RawWebData = GetWebsiteText(link.Value.ToString());
@@ -112,12 +112,15 @@ namespace POEItemFilter.Library
         {
             ItemDB newItem = new ItemDB();
             newItem.Name = item.Groups["name"].Value;
+
             if (item.Groups["level"].Value != "")
             {
                 newItem.Level = byte.Parse(item.Groups["level"].Value);
             }
-            newItem.BaseType = itemBaseType;
-            newItem.Type = itemType;
+
+            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
+
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.ToString());
 
             bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
 
@@ -153,6 +156,14 @@ namespace POEItemFilter.Library
 
         private void SaveArmourItem(Match item, Types itemType, string attribute1Value, string attribute2Value)
         {
+            SaveNewAttribute(attribute1Value);
+            ConnectAttributeAndType(attribute1Value, itemType.ToString());
+            ConnectAttributeAndBaseType(attribute1Value);
+
+            SaveNewAttribute(attribute2Value);
+            ConnectAttributeAndType(attribute2Value, itemType.ToString());
+            ConnectAttributeAndBaseType(attribute2Value);
+
             ItemDB newItem = new ItemDB();
             newItem.Name = item.Groups["name"].Value;
 
@@ -161,16 +172,20 @@ namespace POEItemFilter.Library
                 newItem.Level = byte.Parse(item.Groups["level"].Value);
             }
 
-            newItem.BaseType = BaseTypes.Armour;
-            newItem.Type = itemType;
-            newItem.Attribute1 = (Attributes)Enum.Parse(typeof(Attributes), attribute1Value, true);
+            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == BaseTypes.Armour.ToString());
+
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.ToString());
+
+            var attribute1 = _context.Attributes.SingleOrDefault(i => i.Name == attribute1Value);
+            newItem.Attributes.Add(attribute1);
+
             if (attribute2Value != null)
             {
-                newItem.Attribute2 = (Attributes)Enum.Parse(typeof(Attributes), attribute2Value, true);
+                var attribute2 = _context.Attributes.SingleOrDefault(i => i.Name == attribute2Value);
+                newItem.Attributes.Add(attribute2);
             }
 
             bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
-
             if (!isItemInDb)
             {
                 _context.ItemsDB.Add(newItem);
@@ -264,32 +279,67 @@ namespace POEItemFilter.Library
             return output;
         }
 
-        private void SaveNewBaseType(string itemBaseType, string linkKey)
+        private void SaveNewBaseType(string itemBaseType)
         {
             bool isBaseTypeInDb = _context.BaseTypes.Select(i => i.Name).Contains(itemBaseType);
             if (!isBaseTypeInDb)
             {
                 ItemBaseType newBaseType = new ItemBaseType();
                 newBaseType.Name = itemBaseType.ToString();
-                newBaseType.Types.Add(new ItemType()
-                {
-                    Name = linkKey
-                });
                 _context.BaseTypes.Add(newBaseType);
                 _context.SaveChanges();
             }
         }
 
-        private void SaveNewType(string itemBaseType, string linkKey)
+        private void SaveNewType(string itemBaseType, string itemType)
         {
-            bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(linkKey);
+            bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(itemType);
             if (!isTypeInDb)
             {
                 ItemType newType = new ItemType();
-                newType.Name = linkKey;
+                newType.Name = itemType;
                 var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
-                newType.ItemBaseTypeId = existingBaseType.Id;
+                newType.BaseTypeId = existingBaseType.Id;
                 _context.Types.Add(newType);
+                _context.SaveChanges();
+            }
+        }
+
+        private void SaveNewAttribute(string attribute)
+        {
+            if (attribute != null)
+            {
+                bool isAttribueInDb = _context.Attributes.Select(i => i.Name).Contains(attribute);
+                if (!isAttribueInDb)
+                {
+                    ItemAttribute newAttribute = new ItemAttribute();
+                    newAttribute.Name = attribute;
+                    _context.Attributes.Add(newAttribute);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        private void ConnectAttributeAndType(string attribute, string itemType)
+        {
+            if (attribute != null)
+            {
+                var attributeInDb = _context.Attributes.SingleOrDefault(a => a.Name == attribute);
+                var typeInDb = _context.Types.SingleOrDefault(t => t.Name == itemType);
+
+                typeInDb.Attributes.Add(attributeInDb);
+                _context.SaveChanges();
+            }
+        }
+
+        private void ConnectAttributeAndBaseType(string attribute)
+        {
+            if (attribute != null)
+            {
+                var attributeInDb = _context.Attributes.SingleOrDefault(a => a.Name == attribute);
+                var baseTypeInDb = _context.BaseTypes.SingleOrDefault(b => b.Name == BaseTypes.Armour.ToString());
+
+                attributeInDb.BaseTypeId = baseTypeInDb.Id;
                 _context.SaveChanges();
             }
         }

@@ -18,19 +18,17 @@ namespace POEItemFilter.Library.EntityConfiguration
 
             HasMany(i => i.Types)
                 .WithRequired()
+                .HasForeignKey(i => i.BaseTypeId)
                 .WillCascadeOnDelete(false);
 
-            //HasOptional(i => i.Attribute1)
-            //    .WithMany(i => i.ItemBaseTypes)
-            //    .HasForeignKey(i => i.Attribute1Id)
-            //    .WillCascadeOnDelete(false);
+            HasMany(i => i.Items)
+                .WithRequired(i => i.BaseType)
+                .HasForeignKey(i => i.BaseTypeId)
+                .WillCascadeOnDelete(false);
 
-            //HasOptional(i => i.Attribute2)
-            //    .WithMany(i => i.ItemBaseTypes)
-            //    .HasForeignKey(i => i.Attribute2Id)
-            //    .WillCascadeOnDelete(false);
-
-
+            HasMany(i => i.Attributes)
+                .WithOptional()
+                .HasForeignKey(i => i.BaseTypeId);
         }
     }
 }

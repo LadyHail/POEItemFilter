@@ -13,18 +13,22 @@ namespace POEItemFilter.Library.EntityConfiguration
                 .IsRequired()
                 .HasMaxLength(50);
 
-            Property(i => i.ItemBaseTypeId)
+            Property(i => i.BaseTypeId)
                 .IsRequired();
 
-            //HasOptional(i => i.Attribute1)
-            //    .WithMany(i => i.ItemTypes)
-            //    .HasForeignKey(i => i.Attribute1Id)
-            //    .WillCascadeOnDelete(false);
+            HasMany(i => i.Attributes)
+                .WithMany(i => i.Types)
+                .Map(m =>
+                {
+                    m.ToTable("AttributesPerTypes");
+                    m.MapLeftKey("TypeId");
+                    m.MapRightKey("AttributeId");
+                });
 
-            //HasOptional(i => i.Attribute2)
-            //    .WithMany(i => i.ItemTypes)
-            //    .HasForeignKey(i => i.Attribute2Id)
-            //    .WillCascadeOnDelete(false);
+            HasMany(i => i.Items)
+                .WithRequired(i => i.Type)
+                .HasForeignKey(i => i.TypeId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

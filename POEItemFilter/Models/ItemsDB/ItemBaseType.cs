@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using POEItemFilter.Library.Enumerables;
 
 namespace POEItemFilter.Models.ItemsDB
 {
@@ -11,21 +10,16 @@ namespace POEItemFilter.Models.ItemsDB
 
         public virtual ICollection<ItemType> Types { get; set; }
 
-        public Attributes? Attribute1 { get; set; }
+        public virtual ICollection<ItemDB> Items { get; set; }
 
-        public Attributes? Attribute2 { get; set; }
-
-        //public ItemAttribute Attribute1 { get; set; }
-
-        //public byte? Attribute1Id { get; set; }
-
-        //public ItemAttribute Attribute2 { get; set; }
-
-        //public byte? Attribute2Id { get; set; }
+        public virtual ICollection<ItemAttribute> Attributes { get; set; }
 
         public ItemBaseType()
         {
             Types = new HashSet<ItemType>();
+            Items = new HashSet<ItemDB>();
+            Attributes = new HashSet<ItemAttribute>();
         }
     }
 }
+
