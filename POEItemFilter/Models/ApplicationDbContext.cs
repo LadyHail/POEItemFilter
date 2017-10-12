@@ -28,6 +28,7 @@ namespace POEItemFilter.Models
             modelBuilder.Configurations.Add(new ItemDBConfiguration());
             modelBuilder.Configurations.Add(new ItemBaseTypeConfiguration());
             modelBuilder.Configurations.Add(new ItemTypeConfiguration());
+            //modelBuilder.Configurations.Add(new ItemAttributeConfiguration());
         }
     }
 }

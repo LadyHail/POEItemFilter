@@ -15,6 +15,16 @@ namespace POEItemFilter.Library.EntityConfiguration
 
             Property(i => i.ItemBaseTypeId)
                 .IsRequired();
+
+            //HasOptional(i => i.Attribute1)
+            //    .WithMany(i => i.ItemTypes)
+            //    .HasForeignKey(i => i.Attribute1Id)
+            //    .WillCascadeOnDelete(false);
+
+            //HasOptional(i => i.Attribute2)
+            //    .WithMany(i => i.ItemTypes)
+            //    .HasForeignKey(i => i.Attribute2Id)
+            //    .WillCascadeOnDelete(false);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using POEItemFilter.Models.ItemsDB.Enum;
+using POEItemFilter.Library.Enumerables;
 
 namespace POEItemFilter.Models.ItemsDB
 {

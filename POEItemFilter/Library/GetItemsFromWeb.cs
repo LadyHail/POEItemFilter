@@ -6,9 +6,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
-using POEItemFilter.Models.ItemsDB.Enum;
 
 namespace POEItemFilter.Library
 {
