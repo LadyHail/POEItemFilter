@@ -215,9 +215,9 @@
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.cs" />
-    <Compile Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.Designer.cs">
-      <DependentUpon>201710111846547_AddBaseTypeAndTypeModels.cs</DependentUpon>
+    <Compile Include="Migrations\201710111921561_ModelUpdate.cs" />
+    <Compile Include="Migrations\201710111921561_ModelUpdate.Designer.cs">
+      <DependentUpon>201710111921561_ModelUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -346,8 +346,8 @@
     <EmbeddedResource Include="Migrations\201710091536569_InitialModelForItemDb.resx">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710111846547_AddBaseTypeAndTypeModels.resx">
-      <DependentUpon>201710111846547_AddBaseTypeAndTypeModels.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710111921561_ModelUpdate.resx">
+      <DependentUpon>201710111921561_ModelUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

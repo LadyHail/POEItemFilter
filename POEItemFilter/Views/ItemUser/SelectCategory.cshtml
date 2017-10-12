@@ -1,4 +1,4 @@
-﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemDB>
+﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemBaseType>
 
 @{
     ViewBag.Title = "Create item filter";
@@ -14,9 +14,9 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="categoryDropdownMenu">
         <li><a href="">All</a></li>
-        @foreach (var item in Model.GroupBy(i => i.BaseType).Select(i => i.First()))
+        @foreach (var item in Model)
         {
-            <li><a href="@item.BaseType.ToString()">@item.BaseType.ToString()</a></li>
+            <li><a>@item.Name</a></li>
         }
         <li role="separator" class="divider"></li>
     </ul>

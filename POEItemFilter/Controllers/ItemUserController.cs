@@ -21,7 +21,7 @@ namespace POEItemFilter.Controllers
         // GET: ItemUser
         public ActionResult SelectCategory()
         {
-            var items = _context.ItemsDB.ToList();
+            var items = _context.BaseTypes.ToList();
             return View(items);
         }
 

@@ -8,7 +8,7 @@ namespace POEItemFilter.Models.ItemsDB
 
         public string Name { get; set; }
 
-        public ICollection<ItemType> Types { get; set; }
+        public virtual ICollection<ItemType> Types { get; set; }
 
         public ItemBaseType()
         {

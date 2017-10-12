@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 using POEItemFilter.Models.ItemsDB;
 
 namespace POEItemFilter.Library.EntityConfiguration
@@ -11,12 +10,15 @@ namespace POEItemFilter.Library.EntityConfiguration
             HasKey(i => i.Id);
 
             Property(i => i.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
-                .IsRequired();
+                .HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
 
             Property(i => i.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            HasMany(i => i.Types)
+                .WithRequired()
+                .WillCascadeOnDelete(false);
         }
     }
 }

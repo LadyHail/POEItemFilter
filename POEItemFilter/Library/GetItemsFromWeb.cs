@@ -36,31 +36,8 @@ namespace POEItemFilter.Library
 
                 foreach (DictionaryEntry link in downloadingLinks)
                 {
-                    ItemBaseType newBaseType = null;
-                    bool isBaseTypeInDb = _context.BaseTypes.Select(i => i.Name).Contains(itemBaseType.ToString());
-                    if (!isBaseTypeInDb)
-                    {
-                        newBaseType = new ItemBaseType();
-                        newBaseType.Name = itemBaseType.ToString();
-                        //newBaseType.Types.Add(new ItemType()
-                        //{
-                        //    Name = link.Key.ToString()
-                        //});
-                        _context.BaseTypes.Add(newBaseType);
-                        _context.SaveChanges();
-                    }
-
-                    bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(link.Key.ToString());
-                    if (!isTypeInDb)
-                    {
-                        ItemType newType = new ItemType();
-                        newType.Name = link.Key.ToString();
-                        _context.Types.Add(newType);
-
-                        var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
-                        existingBaseType.Types.Add(newType);
-                        _context.SaveChanges();
-                    }
+                    SaveNewBaseType(itemBaseType.ToString(), link.Key.ToString());
+                    SaveNewType(itemBaseType.ToString(), link.Key.ToString());
 
                     RawWebData = GetWebsiteText(link.Value.ToString());
 
@@ -285,6 +262,36 @@ namespace POEItemFilter.Library
 
             output = regex.Matches(rawWebData);
             return output;
+        }
+
+        private void SaveNewBaseType(string itemBaseType, string linkKey)
+        {
+            bool isBaseTypeInDb = _context.BaseTypes.Select(i => i.Name).Contains(itemBaseType);
+            if (!isBaseTypeInDb)
+            {
+                ItemBaseType newBaseType = new ItemBaseType();
+                newBaseType.Name = itemBaseType.ToString();
+                newBaseType.Types.Add(new ItemType()
+                {
+                    Name = linkKey
+                });
+                _context.BaseTypes.Add(newBaseType);
+                _context.SaveChanges();
+            }
+        }
+
+        private void SaveNewType(string itemBaseType, string linkKey)
+        {
+            bool isTypeInDb = _context.Types.Select(i => i.Name).Contains(linkKey);
+            if (!isTypeInDb)
+            {
+                ItemType newType = new ItemType();
+                newType.Name = linkKey;
+                var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
+                newType.ItemBaseTypeId = existingBaseType.Id;
+                _context.Types.Add(newType);
+                _context.SaveChanges();
+            }
         }
 
         private Hashtable GetWebsitesLinks(BaseTypes itemBaseType)

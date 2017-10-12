@@ -12,6 +12,9 @@ namespace POEItemFilter.Library.EntityConfiguration
             Property(i => i.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            Property(i => i.ItemBaseTypeId)
+                .IsRequired();
         }
     }
 }

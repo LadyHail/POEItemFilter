@@ -2,8 +2,10 @@
 {
     public class ItemType
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public byte ItemBaseTypeId { get; set; }
     }
 }
