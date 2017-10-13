@@ -1,0 +1,20 @@
+﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemBaseType>
+
+@{
+    Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
+}
+
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="categoryDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select item's category
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="categoryDropdownMenu">
+        <li><a>All</a></li>
+        @foreach (var item in Model)
+        {
+            <li><a>@item.Name</a></li>
+        }
+        <li role="separator" class="divider"></li>
+    </ul>
+</div>

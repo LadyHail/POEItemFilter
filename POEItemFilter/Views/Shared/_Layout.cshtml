@@ -16,7 +16,7 @@
             <p>&copy; @DateTime.Now.Year - Path of Exile Item Filter</p>
         </footer>
     </div>
-
+    @* Jeśli wysypie błąd scripts not defined - w view brakuje tej sekcji. Ustawić na false. *@
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
 </body>

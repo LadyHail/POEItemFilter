@@ -1,0 +1,50 @@
+﻿@model POEItemFilter.ViewModels.NewItemViewModel
+
+@{
+    ViewBag.Title = "Create item filter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add new item</h2>
+
+@{
+    Html.RenderPartial("BaseTypePartialView", Model.BaseTypes);
+}
+
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="classDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select item's class
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="classDropdownMenu">
+        @foreach (var item in Model.Types)
+        {
+                <li><a>@item.Name</a></li>
+        }
+        <li role="separator" class="divider"></li>
+    </ul>
+</div>
+
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="attributeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select item's attribute
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="attributeDropdownMenu">
+        @foreach (var item in Model.Attributes)
+        {
+            <li><a>@item.Name</a></li>
+        }
+        <li role="separator" class="divider"></li>
+    </ul>
+</div>
+
+    @section scripts
+{
+        <script>
+            $(".dropdown-menu li a").click(function () {
+                $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+            });
+        </script>
+    }
