@@ -345,6 +345,9 @@
     <Content Include="Views\UsersItems\NewItem.cshtml" />
     <Content Include="Views\UsersItems\_NewItemPartial.cshtml" />
     <Content Include="Views\UsersItems\Index.cshtml" />
+    <Content Include="Views\UsersItems\TypePartialView.cshtml" />
+    <Content Include="Views\UsersItems\AttributePartialView.cshtml" />
+    <Content Include="Views\UsersItems\ItemPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

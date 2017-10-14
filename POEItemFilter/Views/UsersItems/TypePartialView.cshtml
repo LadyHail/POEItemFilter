@@ -1,10 +1,10 @@
-﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemBaseType>
+﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemType>
 
 @{
     Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
 }
 
-<select id="baseTypes">
+<select id="types">
     <option value=@(Model.Last().Id + 1)>All</option>
     @foreach (var item in Model)
     {

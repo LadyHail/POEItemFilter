@@ -7,44 +7,49 @@
 
 <h2>Add new item</h2>
 
-@{
-    Html.RenderPartial("BaseTypePartialView", Model.BaseTypes);
-}
+<div id="baseTypesView">@Html.Partial("BaseTypePartialView", Model.BaseTypes)</div>
 
-<div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="classDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Select item's class
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="classDropdownMenu">
-        @foreach (var item in Model.Types)
-        {
-                <li><a>@item.Name</a></li>
-        }
-        <li role="separator" class="divider"></li>
-    </ul>
-</div>
+<div id="typesView">@Html.Partial("TypePartialView", Model.Types)</div>
 
-<div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="attributeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Select item's attribute
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="attributeDropdownMenu">
-        @foreach (var item in Model.Attributes)
-        {
-            <li><a>@item.Name</a></li>
-        }
-        <li role="separator" class="divider"></li>
-    </ul>
-</div>
+<div id="attributesView">@Html.Partial("AttributePartialView", Model.Attributes)</div>
+
+<div id="itemsView">@Html.Partial("ItemPartialView", Model.Items)</div>
 
     @section scripts
 {
         <script>
-            $(".dropdown-menu li a").click(function () {
-                $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+            $(document).ready(function () {
+                $("#baseTypes").change(function () {
+                    var selectedId = $(this).val();
+
+                    $.get("/UsersItems/SelectBaseType/" + selectedId, function (data) {
+                        $("div:first").html(data);
+                    });
+                });
+
+                $("#types").change(function () {
+                    var selectedId = $(this).val();
+
+                    $.get("/UsersItems/SelectType/" + selectedId, function (data) {
+                        $("div:first").html(data);
+                    });
+                });
+
+                if (localStorage.selectedId) {
+                    $("select").val(localStorage.selectedId);
+                }
+
+                $("select").change(function () {
+                    var currentVal = $(this).val();
+                    localStorage.setItem("selectedId", currentVal);
+                });
+
+                window.onbeforeunload = function (e) {
+                    window.onunload = function () {
+                        window.localStorage.clear();
+                    }
+                    return undefined;
+                };
             });
         </script>
     }

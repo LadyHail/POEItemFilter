@@ -1,0 +1,33 @@
+﻿@model IEnumerable<POEItemFilter.Models.ItemsDB.ItemAttribute>
+
+@{
+    Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
+}
+
+@{
+    if (Model.Count() == 0)
+    {
+
+    }
+
+    else
+    {
+        <select id="attribute1">
+            <option value=@(Model.Last().Id + 1)>All</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+
+        <select id="attribute2">
+            <option value=@(Model.Last().Id + 1)>All</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    }
+}
+
+
