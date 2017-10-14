@@ -78,13 +78,11 @@ namespace POEItemFilter.Controllers
         {
             var baseTypes = _context.BaseTypes.ToList();
 
-            var types = _context.Types.ToList();
-
-            var attribute = _context.Types.SingleOrDefault(t => t.Id == id);
-            var attributes = _context.Attributes
-                .Where(i => i.Types == attribute)
-                .Select(i => i)
+            var types = baseTypes
+                .SelectMany(i => i.Types)
                 .ToList();
+
+            var attributes = types.SingleOrDefault(i => i.Id == id).Attributes;
 
             var items = _context.ItemsDB
                 .Where(i => i.TypeId == id)
@@ -102,14 +100,32 @@ namespace POEItemFilter.Controllers
             return View("NewItem", viewModel);
         }
 
-        public ActionResult ItemsFilter(int id)
+        public ActionResult SelectAttribute(int id)
         {
-            var items = _context.ItemsDB
-                .Where(i => i.BaseTypeId == id)
-                .Select(i => i)
+            var baseTypes = _context.BaseTypes.ToList();
+
+            var types = baseTypes
+                .SelectMany(i => i.Types)
                 .ToList();
 
-            return View("ItemPartialView", items);
+            var attributes = baseTypes
+                .SelectMany(i => i.Attributes)
+                .ToList();
+
+            var items = _context.Attributes
+                .Where(a => a.Id == id)
+                .SelectMany(b => b.Items)
+                .ToList();
+
+            var viewModel = new NewItemViewModel()
+            {
+                BaseTypes = baseTypes,
+                Types = types,
+                Attributes = attributes,
+                Items = items
+            };
+
+            return View("NewItem", viewModel);
         }
 
         public ActionResult Index()

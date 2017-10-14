@@ -35,6 +35,14 @@
                     });
                 });
 
+                $("#attribute1").change(function () {
+                    var selectedId = $(this).val();
+
+                    $.get("/UsersItems/SelectAttribute/" + selectedId, function (data) {
+                        $("div:first").html(data);
+                    });
+                });
+
                 if (localStorage.selectedId) {
                     $("select").val(localStorage.selectedId);
                 }
