@@ -201,9 +201,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FiltersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersItemsController.cs" />
+    <Compile Include="Library\EntityConfiguration\FilterConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemAttributeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemBaseTypeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemDBConfiguration.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Filters\Filter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Library\Enumerables\Attributes.cs" />
     <Compile Include="Library\Enumerables\BaseTypes.cs" />
@@ -349,6 +352,7 @@
     <Content Include="Views\UsersItems\TypePartialView.cshtml" />
     <Content Include="Views\UsersItems\AttributePartialView.cshtml" />
     <Content Include="Views\UsersItems\ItemPartialView.cshtml" />
+    <Content Include="Views\Filters\NewFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

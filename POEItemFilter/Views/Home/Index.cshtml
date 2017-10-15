@@ -3,12 +3,13 @@
 }
 
 @Html.Partial("_NavBar")
-<div class="jumbotron">
+<div class="jumbotron" id="startPage">
     <h1>Welcome!</h1>
+
     <p class="lead">Are you tired of bunch of items laying around?</p>
             <p class="lead">Your inventory gets full really fast?</p>
             <p class="lead">It's place for you! Create your own item filter now!</p>
-    <p><a href="~/UsersItems/NewItem" class="btn btn-primary btn-lg">Create filter &raquo;</a></p>
+    <p><a href="~/Filters/NewFilter" class="btn btn-primary btn-lg" id="createFilterButton">Create filter &raquo;</a></p>
 </div>
 
 @*<div class="row">
@@ -23,3 +24,15 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>*@
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".btn").hide();
+            $(".jumbotron").hide().slideDown(500, function () {
+                $(".btn").fadeIn(1000);
+            });
+        });
+    </script>
+}

@@ -4,7 +4,7 @@
     Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
 }
 
-<select id="items">
+<select id="items" class="my-btn">
     <option value=@(Model.Last().Id + 1)>All</option>
     @foreach (var item in Model)
     {

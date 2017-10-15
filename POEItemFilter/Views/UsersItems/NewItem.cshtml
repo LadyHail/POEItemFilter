@@ -8,11 +8,11 @@
 <h2>Add new item</h2>
 
 <div id="baseTypesView">@Html.Partial("BaseTypePartialView", Model.BaseTypes)</div>
-
+<p/>
 <div id="typesView">@Html.Partial("TypePartialView", Model.Types)</div>
-
+<p />
 <div id="attributesView">@Html.Partial("AttributePartialView", Model.Attributes)</div>
-
+<p />
 <div id="itemsView">@Html.Partial("ItemPartialView", Model.Items)</div>
 
     @section scripts
@@ -23,7 +23,7 @@
                     var selectedId = $(this).val();
 
                     $.get("/UsersItems/SelectBaseType/" + selectedId, function (data) {
-                        $("div:first").html(data);
+                        $("div:has(h2)").html(data);
                     });
                 });
 
@@ -31,7 +31,7 @@
                     var selectedId = $(this).val();
 
                     $.get("/UsersItems/SelectType/" + selectedId, function (data) {
-                        $("div:first").html(data);
+                        $("div:has(h2)").html(data);
                     });
                 });
 
@@ -39,7 +39,7 @@
                     var selectedId = $(this).val();
 
                     $.get("/UsersItems/SelectAttribute/" + selectedId, function (data) {
-                        $("div:first").html(data);
+                        $("div:has(h2)").html(data);
                     });
                 });
 
