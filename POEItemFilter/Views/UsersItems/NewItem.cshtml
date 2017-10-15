@@ -19,45 +19,106 @@
 {
         <script>
             $(document).ready(function () {
-                $("#baseTypes").change(function () {
-                    var selectedId = $(this).val();
+                setOldValues();
 
-                    $.get("/UsersItems/SelectBaseType/" + selectedId, function (data) {
+                $("select").change(function () {                
+                    if ($("#baseTypes").text() == "Armour") {
+                        $("#attribute1").show();
+                        $("#attribute2").show();
+                    } else {
+                        $("#attribute1").hide();
+                        $("#attribute2").hide();
+                    }
+
+                    var baseType = $("#baseTypes").val();
+                    var type = $("#types").val();
+                    var attribute1 = $("#attribute1").val();
+                    var attribute2 = $("#attribute2").val();
+
+                    setCookie("baseTypeSelectedId", baseType);
+                    setCookie("typeSelectedId", type);
+                    setCookie("attribute1SelectedId", attribute1);
+                    setCookie("attribute2SelectedId", attribute2);
+
+                    var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
+                    $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
                         $("div:has(h2)").html(data);
                     });
                 });
 
-                $("#types").change(function () {
-                    var selectedId = $(this).val();
-
-                    $.get("/UsersItems/SelectType/" + selectedId, function (data) {
-                        $("div:has(h2)").html(data);
-                    });
-                });
-
-                $("#attribute1").change(function () {
-                    var selectedId = $(this).val();
-
-                    $.get("/UsersItems/SelectAttribute/" + selectedId, function (data) {
-                        $("div:has(h2)").html(data);
-                    });
-                });
-
-                if (localStorage.selectedId) {
-                    $("select").val(localStorage.selectedId);
+                function setCookie(cname, cvalue) {
+                    document.cookie = cname + "=" + cvalue;
                 }
 
-                $("select").change(function () {
-                    var currentVal = $(this).val();
-                    localStorage.setItem("selectedId", currentVal);
-                });
-
-                window.onbeforeunload = function (e) {
-                    window.onunload = function () {
-                        window.localStorage.clear();
+                function getCookie(cname) {
+                    var name = cname + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var ca = decodedCookie.split(";");
+                    for (var i = 0; i < ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            alert("Saved: " + c.substring(name.length, c.length));
+                            return c.substring(name.length, c.length);
+                        }
                     }
-                    return undefined;
-                };
+                    alert("Cookie not found!");
+                    return "";
+                }
+
+                function setOldValues() {
+                    var baseTypeSelectedId = getCookie("baseTypeSelectedId");
+                    var typeSelectedId = getCookie("typeSelectedId");
+                    var attribute1SelectedId = getCookie("attribute1SelectedId");
+                    var attribute2SelectedId = getCookie("attribute2SelectedId");
+
+                    if (baseTypeSelectedId != "") {
+                        $("#baseTypes").val(baseTypeSelectedId);
+                    }
+                    else {
+                        $("#baseTypes option:first").val();
+                    }
+
+                    if (typeSelectedId != "") {
+                        $("#types").val(typeSelectedId);
+                    }
+                    else {
+                        $("#types option:first").val();
+                    }
+
+                    if (attribute1SelectedId != "") {
+                        $("#attribute1").val(attribute1SelectedId);
+                    }
+                    else {
+                        $("#attribute1 option:first").val();
+                    }
+
+                    if (attribute2SelectedId != "") {
+                        $("#attribute2").val(attribute2SelectedId);
+
+                    }
+                    else {
+                        $("#attribute2 option:first").val();
+                    }
+                }
+
+                //if (localStorage.selectedId) {
+                //    $("select").val(localStorage.selectedId);
+                //}
+
+                //$("select").change(function () {
+                //    var currentVal = $(this).val();
+                //    localStorage.setItem("selectedId", currentVal);
+                //});
+
+                //window.onbeforeunload = function (e) {
+                //    window.onunload = function () {
+                //        window.localStorage.clear();
+                //    }
+                //    return undefined;
+                //};
             });
         </script>
     }
