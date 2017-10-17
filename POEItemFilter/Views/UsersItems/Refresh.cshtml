@@ -1,0 +1,311 @@
+﻿@model POEItemFilter.ViewModels.NewItemViewModel
+
+@{
+    Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
+}
+
+<p />
+<select id="baseTypes" class="my-btn">
+    <option value=@(Model.BaseTypes.Last().Id + 1)>All</option>
+    @foreach (var item in Model.BaseTypes)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+<p />
+<select id="types" class="my-btn">
+    <option value=@(Model.Types.Last().Id + 1)>All</option>
+    @foreach (var item in Model.Types)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+<p />
+@{
+    if (Model.Attributes != null)
+    {
+        <select id="attribute1" class="my-btn">
+            <option value=@(Model.Attributes.Last().Id + 1)>All</option>
+            @foreach (var item in Model.Attributes)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+
+        <select id="attribute2" class="my-btn">
+            <option value=@(Model.Attributes.Last().Id + 1)>All</option>
+            @foreach (var item in Model.Attributes)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    }
+}
+<p />
+<select id="items" class="my-btn">
+    <option value=@(Model.Items.Last().Id + 1)>All</option>
+    @foreach (var item in Model.Items)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            setOldValues();
+
+            $("#baseTypes").change(function () {
+                if ($("#baseTypes option:selected").text() == "Armour" || $("#baseTypes option:selected").text() == "All") {
+                    $("#attribute1").show();
+                    $("#attribute2").show();
+                } else {
+                    $("#attribute1").hide();
+                    $("#attribute2").hide();
+                }
+
+                var baseType = $("#baseTypes").val();
+                var type = null;
+                var attribute1 = null;
+                var attribute2 = null;
+                var item = null;
+
+                setCookie("baseTypeSelectedId", baseType);
+                setCookie("typeSelectedId", type);
+                setCookie("attribute1SelectedId", attribute1);
+                setCookie("attribute2SelectedId", attribute2);
+                setCookie("itemSelectedId", item);
+                setOldValues();
+
+                var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
+                $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $("#databaseItems").html(data);
+                });
+            });
+
+            $("#types").change(function () {
+                if ($("#baseTypes option:selected").text() == "Armour" || $("#types option:selected").text() == "BodyArmour" || $("#types option:selected").text() == "Helmet" ||
+                    $("#types option:selected").text() == "Shield" || $("#types option:selected").text() == "Gloves" || $("#types option:selected").text() == "Boots") {
+                    $("#attribute1").show();
+                    $("#attribute2").show();
+                } else {
+                    $("#attribute1").hide();
+                    $("#attribute2").hide();
+                }
+
+                if ($("#baseTypes option:selected").text() != "All") {
+                    var baseType = $("#baseTypes").val();
+                    var type = $("#types").val();
+                    var attribute1 = null;
+                    var attribute2 = null;
+                    var item = null;
+                } else {
+                    var baseType = null;
+                    var type = $("#types").val();
+                    var attribute1 = null;
+                    var attribute2 = null;
+                    var item = null;
+                }
+
+                setCookie("baseTypeSelectedId", baseType);
+                setCookie("typeSelectedId", type);
+                setCookie("attribute1SelectedId", attribute1);
+                setCookie("attribute2SelectedId", attribute2);
+                setCookie("itemSelectedId", item);
+                setOldValues();
+
+                var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
+                $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $("#databaseItems").html(data);
+                });
+            });
+
+            $("#attribute1").change(function () {
+                if ($("#baseTypes option:selected").text() != "All") {
+                    if ($("#types option:selected").text() != "All") {
+                        var baseType = $("#baseTypes").val();
+                        var type = $("#types").val();
+                        var attribute1 = $("#attribute1").val();
+                        if ($("#attribute2 option:selected").text() != "All") {
+                            var attribute2 = $("#attribute2").val();
+                        } else {
+                            var attribute2 = null;
+                        }
+                        var item = null;
+                    } else {
+                        var baseType = $("#baseTypes").val();
+                        var type = null;
+                        var attribute1 = $("#attribute1").val();
+                        if ($("#attribute2 option:selected").text() != "All") {
+                            var attribute2 = $("#attribute2").val();
+                        } else {
+                            var attribute2 = null;
+                        }
+                        var item = null;
+                    }
+                } else {
+                    if ($("#types option:selected").text() != "All") {
+                        var baseType = null;
+                        var type = $("#types").val();
+                        var attribute1 = $("#attribute1").val();
+                        if ($("#attribute2 option:selected").text() != "All") {
+                            var attribute2 = $("#attribute2").val();
+                        } else {
+                            var attribute2 = null;
+                        }
+                        var item = null;
+                    } else {
+                        var baseType = null;
+                        var type = null;
+                        var attribute1 = $("#attribute1").val();
+                        if ($("#attribute2 option:selected").text() != "All") {
+                            var attribute2 = $("#attribute2").val();
+                        } else {
+                            var attribute2 = null;
+                        }
+                        var item = null;
+                    }
+                }
+
+                setCookie("baseTypeSelectedId", baseType);
+                setCookie("typeSelectedId", type);
+                setCookie("attribute1SelectedId", attribute1);
+                setCookie("attribute2SelectedId", attribute2);
+                setCookie("itemSelectedId", item);
+                setOldValues();
+
+                var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
+                $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $("#databaseItems").html(data);
+                });
+            });
+
+            $("#attribute2").change(function () {
+                if ($("#baseTypes option:selected").text() != "All") {
+                    if ($("#types option:selected").text() != "All") {
+                        var baseType = $("#baseTypes").val();
+                        var type = $("#types").val();
+                        var attribute2 = $("#attribute2").val();
+                        if ($("#attribute1 option:selected").text() != "All") {
+                            var attribute1 = $("#attribute1").val();
+                        } else {
+                            var attribute1 = null;
+                        }
+                        var item = null;
+                    } else {
+                        var baseType = $("#baseTypes").val();
+                        var type = null;
+                        var attribute2 = $("#attribute2").val();
+                        if ($("#attribute1 option:selected").text() != "All") {
+                            var attribute1 = $("#attribute1").val();
+                        } else {
+                            var attribute1 = null;
+                        }
+                        var item = null;
+                    }
+                } else {
+                    if ($("#types option:selected").text() != "All") {
+                        var baseType = null;
+                        var type = $("#types").val();
+                        var attribute2 = $("#attribute2").val();
+                        if ($("#attribute1 option:selected").text() != "All") {
+                            var attribute1 = $("#attribute1").val();
+                        } else {
+                            var attribute1 = null;
+                        }
+                        var item = null;
+                    } else {
+                        var baseType = null;
+                        var type = null;
+                        var attribute2 = $("#attribute2").val();
+                        if ($("#attribute1 option:selected").text() != "All") {
+                            var attribute1 = $("#attribute1").val();
+                        } else {
+                            var attribute1 = null;
+                        }
+                        var item = null;
+                    }
+                }
+
+                setCookie("baseTypeSelectedId", baseType);
+                setCookie("typeSelectedId", type);
+                setCookie("attribute1SelectedId", attribute1);
+                setCookie("attribute2SelectedId", attribute2);
+                setCookie("itemSelectedId", item);
+                setOldValues();
+
+                var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
+                $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $("#databaseItems").html(data);
+                });
+            });
+
+            function setCookie(cname, cvalue) {
+                document.cookie = cname + "=" + cvalue;
+            }
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(";");
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            function setOldValues() {
+                var baseTypeSelectedId = getCookie("baseTypeSelectedId");
+                var typeSelectedId = getCookie("typeSelectedId");
+                var attribute1SelectedId = getCookie("attribute1SelectedId");
+                var attribute2SelectedId = getCookie("attribute2SelectedId");
+                var itemSelectedId = getCookie("itemSelectedId");
+
+                if (baseTypeSelectedId != "" && baseTypeSelectedId != "null") {
+                    $("#baseTypes").val(baseTypeSelectedId);
+                }
+                else {
+                    $("#baseTypes option:first").val();
+                }
+
+                if (typeSelectedId != "" && typeSelectedId != "null") {
+                    $("#types").val(typeSelectedId);
+                }
+                else {
+                    $("#types option:first").val();
+                }
+
+                if (attribute1SelectedId != "" && attribute1SelectedId != "null") {
+                    $("#attribute1").val(attribute1SelectedId);
+                }
+                else {
+                    $("#attribute1 option:first").val();
+                }
+
+                if (attribute2SelectedId != "" && attribute2SelectedId != "null") {
+                    $("#attribute2").val(attribute2SelectedId);
+
+                }
+                else {
+                    $("#attribute2 option:first").val();
+                }
+
+                if (itemSelectedId != "" && itemSelectedId != "null") {
+                    $("#items").val(itemSelectedId);
+
+                }
+                else {
+                    $("#items option:first").val();
+                }
+            }
+        });
+    </script>
+}

@@ -42,17 +42,34 @@ namespace POEItemFilter.Controllers
 
         public ActionResult Refresh(string id)
         {
-            string[] ids = id.Split('|');
-            int baseTypeId = int.Parse(ids[0]);
-            int typeId = int.Parse(ids[1]);
-            int attribute1Id = int.Parse(ids[2]);
-            int attribute2Id = int.Parse(ids[3]);
-
             var baseTypes = _context.BaseTypes.ToList();
 
             var itemsList = baseTypes
                 .SelectMany(i => i.Items)
                 .ToList();
+
+            string[] ids = id.Split('|');
+            int baseTypeId, typeId, attribute1Id, attribute2Id;
+
+            if (!int.TryParse(ids[0], out baseTypeId))
+            {
+                baseTypeId = baseTypes.Count() + 1;
+            }
+
+            if (!int.TryParse(ids[1], out typeId))
+            {
+                typeId = baseTypes.SelectMany(i => i.Types).Count() + 1;
+            }
+
+            if (!int.TryParse(ids[2], out attribute1Id))
+            {
+                attribute1Id = baseTypes.SelectMany(i => i.Attributes).Count() + 1;
+            }
+
+            if (!int.TryParse(ids[3], out attribute2Id))
+            {
+                attribute2Id = baseTypes.SelectMany(i => i.Attributes).Count() + 1;
+            }
 
             bool isBaseTypeInDb = baseTypes.Any(i => i.Id == baseTypeId);
 
@@ -93,84 +110,174 @@ namespace POEItemFilter.Controllers
                 }
             }
 
-            bool isAttr1InDb = baseTypes
-                .SelectMany(i => i.Attributes)
-                .Any(i => i.Id == attribute1Id);
+            bool isBaseTypeArmour = baseTypes.SelectMany(i => i.Attributes).Any(i => i.BaseTypeId == baseTypeId);
+            bool isTypeArmour = baseTypes.Where(i => i.Name == "Armour").SelectMany(i => i.Types).Any(i => i.Id == typeId);
 
-            bool isAttr2InDb = baseTypes
-                .SelectMany(i => i.Attributes)
-                .Any(i => i.Id == attribute2Id);
-
-            var attributes = baseTypes
-                .SelectMany(i => i.Attributes)
-                .ToList();
-
+            var attributes = (List<ItemAttribute>)null;
             var items = (List<ItemDB>)null;
 
-            if (isAttr1InDb && !isAttr2InDb)
+            if (isBaseTypeArmour || isTypeArmour || !isBaseTypeInDb && !isTypeIdInDb)
             {
-                items = baseTypes
+                bool isAttr1InDb = baseTypes
                     .SelectMany(i => i.Attributes)
-                    .Where(i => i.Id == attribute1Id)
-                    .SelectMany(i => i.Items)
-                    .ToList();
-            }
+                    .Any(i => i.Id == attribute1Id);
 
-            else if (!isAttr1InDb && isAttr2InDb)
-            {
-                items = baseTypes
+                bool isAttr2InDb = baseTypes
                     .SelectMany(i => i.Attributes)
-                    .Where(i => i.Id == attribute2Id)
-                    .SelectMany(i => i.Items)
-                    .ToList();
-            }
+                    .Any(i => i.Id == attribute2Id);
 
-            else if (isAttr1InDb && isAttr2InDb)
-            {
-                var firstFilter = attributes
-                    .Where(i => i.Id == attribute1Id)
-                    .SelectMany(i => i.Items)
+                attributes = baseTypes
+                    .SelectMany(i => i.Attributes)
                     .ToList();
 
-                var secondFilter = attributes
-                    .Where(i => i.Id == attribute2Id)
-                    .SelectMany(i => i.Items)
-                    .ToList();
+                if (isAttr1InDb && !isAttr2InDb)
+                {
+                    var firstFilter = attributes
+                        .Where(i => i.Id == attribute1Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
 
-                items = firstFilter
-                    .Join(secondFilter,
-                     a => a.Id,
-                     b => b.Id,
-                    (a, b) => new ItemDB()
+                    var secondFilter = attributes
+                        .Where(i => i.Id != attribute1Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
+
+                    items = new List<ItemDB>();
+                    foreach (var item in firstFilter)
                     {
-                        Attributes = b.Attributes,
-                        BaseType = b.BaseType,
-                        BaseTypeId = b.BaseTypeId,
-                        Id = b.Id,
-                        Level = b.Level,
-                        Name = b.Name,
-                        Type = b.Type,
-                        TypeId = b.TypeId
-                    })
-                    .Select(i => i)
-                    .ToList();
+                        bool match = secondFilter.Any(i => i.Id == item.Id);
+                        if (!match)
+                        {
+                            items.Add(item);
+                        }
+                    }
+                }
 
-                // Alternative
-                //items = (from a in firstFilter
-                //         join b in secondFilter
-                //         on a.Id
-                //         equals b.Id
-                //         select new ItemDB()
-                //         {
-                //             Attributes = b.Attributes,
-                //             BaseType = b.BaseType,
-                //             BaseTypeId = b.BaseTypeId,
-                //             Id = b.Id,
-                //             Level = b.Level,
-                //             Name = b.Name,
-                //             Type = b.Type,
-                //             TypeId = b.TypeId
-                //         }).ToList();
+                else if (!isAttr1InDb && isAttr2InDb)
+                {
+                    var firstFilter = attributes
+                        .Where(i => i.Id == attribute2Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
+
+                    var secondFilter = attributes
+                        .Where(i => i.Id != attribute2Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
+
+                    items = new List<ItemDB>();
+                    foreach (var item in firstFilter)
+                    {
+                        bool match = secondFilter.Any(i => i.Id == item.Id);
+                        if (!match)
+                        {
+                            items.Add(item);
+                        }
+                    }
+                }
+
+                else if (isAttr1InDb && isAttr2InDb)
+                {
+                    if (attribute1Id != attribute2Id)
+                    {
+                        var firstFilter = attributes
+                        .Where(i => i.Id == attribute1Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
+
+                        var secondFilter = attributes
+                            .Where(i => i.Id == attribute2Id)
+                            .SelectMany(i => i.Items)
+                            .ToList();
+
+                        items = firstFilter
+                            .Join(secondFilter,
+                             a => a.Id,
+                             b => b.Id,
+                            (a, b) => new ItemDB()
+                            {
+                                Attributes = b.Attributes,
+                                BaseType = b.BaseType,
+                                BaseTypeId = b.BaseTypeId,
+                                Id = b.Id,
+                                Level = b.Level,
+                                Name = b.Name,
+                                Type = b.Type,
+                                TypeId = b.TypeId
+                            })
+                            .ToList();
+
+                        // Alternative
+                        //items = (from a in firstFilter
+                        //         join b in secondFilter
+                        //         on a.Id
+                        //         equals b.Id
+                        //         select new ItemDB()
+                        //         {
+                        //             Attributes = b.Attributes,
+                        //             BaseType = b.BaseType,
+                        //             BaseTypeId = b.BaseTypeId,
+                        //             Id = b.Id,
+                        //             Level = b.Level,
+                        //             Name = b.Name,
+                        //             Type = b.Type,
+                        //             TypeId = b.TypeId
+                        //         }).ToList();
+                    }
+                    else
+                    {
+                        var firstFilter = attributes
+                        .Where(i => i.Id == attribute1Id)
+                        .SelectMany(i => i.Items)
+                        .ToList();
+
+                        var secondFilter = attributes
+                            .Where(i => i.Id != attribute2Id)
+                            .SelectMany(i => i.Items)
+                            .ToList();
+
+                        items = new List<ItemDB>();
+                        foreach (var item in firstFilter)
+                        {
+                            bool match = secondFilter.Any(i => i.Id == item.Id);
+                            if (!match)
+                            {
+                                items.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                if (isTypeIdInDb && items != null)
+                {
+                    items = items.Where(i => i.TypeId == typeId).ToList();
+                }
+                else if (isBaseTypeInDb && items != null)
+                {
+                    items = items.Where(i => i.BaseTypeId == baseTypeId).ToList();
+                }
+                else if (isTypeIdInDb)
+                {
+                    items = itemsList
+                        .Where(i => i.TypeId == typeId)
+                        .Select(i => i)
+                        .ToList();
+                }
+                else if (isBaseTypeInDb)
+                {
+                    items = itemsList
+                        .Where(i => i.BaseTypeId == baseTypeId)
+                        .Select(i => i)
+                        .ToList();
+                }
+                else if (attributes.Any(i => i.Id == attribute1Id) || attributes.Any(i => i.Id == attribute2Id))
+                {
+
+                }
+                else
+                {
+                    items = itemsList;
+                }
             }
             else
             {
@@ -202,7 +309,7 @@ namespace POEItemFilter.Controllers
                 Items = items
             };
 
-            return View("NewItem", viewModel);
+            return View("Refresh", viewModel);
         }
 
         public ActionResult Index()
