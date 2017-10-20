@@ -40,6 +40,11 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// The method filters database depending on received data.
+        /// </summary>
+        /// <param name="id">Represents data entered by the user. Format: baseType|type|attribute1|attribute2. If user don't select one of the parameters, then it's null.</param>
+        /// <returns>Refresh view with new data.</returns>
         public ActionResult Refresh(string id)
         {
             var baseTypes = _context.BaseTypes.ToList();
@@ -116,6 +121,7 @@ namespace POEItemFilter.Controllers
             var attributes = (List<ItemAttribute>)null;
             var items = (List<ItemDB>)null;
 
+            // This part of code applies only to items with attributes (armour and it's types)
             if (isBaseTypeArmour || isTypeArmour || !isBaseTypeInDb && !isTypeIdInDb)
             {
                 bool isAttr1InDb = baseTypes
@@ -279,6 +285,8 @@ namespace POEItemFilter.Controllers
                     items = itemsList;
                 }
             }
+
+            // If item doesn't have attribute.
             else
             {
                 if (isTypeIdInDb)

@@ -12,12 +12,12 @@
     @Html.Partial("_NavBar")
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Path of Exile Item Filter</p>
-            <p style="text-align:right"><a href="http://glyphicons.com/">Glyphicons</a></p>
-        </footer>
     </div>
+    <footer class="container body-content">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Path of Exile Item Filter</p>
+        <p style="text-align:right"><a href="http://glyphicons.com/">Glyphicons</a></p>
+    </footer>
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
 </body>

@@ -36,8 +36,11 @@ namespace POEItemFilter.Library
 
                 foreach (DictionaryEntry link in downloadingLinks)
                 {
-                    SaveNewBaseType(itemBaseType.ToString());
-                    SaveNewType(itemBaseType.ToString(), link.Key.ToString());
+                    SaveNewBaseType(itemBaseType.BaseTypeToString());
+
+                    Types itemType = (Types)link.Key;
+
+                    SaveNewType(itemBaseType.BaseTypeToString(), itemType.TypeToString());
 
                     RawWebData = GetWebsiteText(link.Value.ToString());
 
@@ -53,7 +56,7 @@ namespace POEItemFilter.Library
 
                         foreach (Match item in items)
                         {
-                            SaveNewItem(item, (Types)link.Key, itemBaseType);
+                            SaveNewItem(item, itemType, itemBaseType);
                         }
                     }
                     _context.SaveChanges();
@@ -118,9 +121,9 @@ namespace POEItemFilter.Library
                 newItem.Level = byte.Parse(item.Groups["level"].Value);
             }
 
-            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
+            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.BaseTypeToString());
 
-            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.ToString());
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.TypeToString());
 
             bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
 
@@ -157,11 +160,11 @@ namespace POEItemFilter.Library
         private void SaveArmourItem(Match item, Types itemType, string attribute1Value, string attribute2Value)
         {
             SaveNewAttribute(attribute1Value);
-            ConnectAttributeAndType(attribute1Value, itemType.ToString());
+            ConnectAttributeAndType(attribute1Value, itemType.TypeToString());
             ConnectAttributeAndBaseType(attribute1Value);
 
             SaveNewAttribute(attribute2Value);
-            ConnectAttributeAndType(attribute2Value, itemType.ToString());
+            ConnectAttributeAndType(attribute2Value, itemType.TypeToString());
             ConnectAttributeAndBaseType(attribute2Value);
 
             ItemDB newItem = new ItemDB();
@@ -174,7 +177,7 @@ namespace POEItemFilter.Library
 
             newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == BaseTypes.Armour.ToString());
 
-            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.ToString());
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.TypeToString());
 
             var attribute1 = _context.Attributes.SingleOrDefault(i => i.Name == attribute1Value);
             newItem.Attributes.Add(attribute1);
@@ -298,7 +301,7 @@ namespace POEItemFilter.Library
             {
                 ItemType newType = new ItemType();
                 newType.Name = itemType;
-                var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.ToString());
+                var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType);
                 newType.BaseTypeId = existingBaseType.Id;
                 _context.Types.Add(newType);
                 _context.SaveChanges();

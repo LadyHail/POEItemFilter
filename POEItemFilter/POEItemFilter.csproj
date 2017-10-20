@@ -223,6 +223,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Library\EntityConfiguration\ItemTypeConfiguration.cs" />
+    <Compile Include="Library\Enumerables\EnumToString.cs" />
     <Compile Include="Library\GetItemsFromWeb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">

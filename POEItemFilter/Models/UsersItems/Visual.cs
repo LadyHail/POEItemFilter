@@ -8,8 +8,6 @@
 
         public string SetBackgroundColor { get; set; }
 
-        public string PlayAlertSound { get; set; }
-
         public string SetFontSize { get; set; } = "32";
     }
 }
