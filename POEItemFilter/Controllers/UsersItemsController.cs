@@ -34,14 +34,15 @@ namespace POEItemFilter.Controllers
                 Items = items,
                 BaseTypes = baseTypes,
                 Types = types,
-                Attributes = attributes
+                Attributes = attributes,
+                ItemUser = new ItemUser()
             };
 
             return View(viewModel);
         }
 
         /// <summary>
-        /// The method filters database depending on received data.
+        /// The method is filtering database depending on received data.
         /// </summary>
         /// <param name="id">Represents data entered by the user. Format: baseType|type|attribute1|attribute2. If user don't select one of the parameters, then it's null.</param>
         /// <returns>Refresh view with new data.</returns>
@@ -323,6 +324,15 @@ namespace POEItemFilter.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult SaveItem(string id)
+        {
+            string[] ids = id.Split('|');
+
+
+
+            return Json(Url.Action("NewFilter", "Filters"));
         }
     }
 }

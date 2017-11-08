@@ -13,11 +13,20 @@ namespace POEItemFilter.Library.EntityConfiguration
                 .HasMaxLength(100)
                 .IsRequired();
 
-            HasMany(f => f.Items);
-
             Property(f => f.Description)
                 .IsOptional()
                 .HasMaxLength(500);
+
+            Property(f => f.CreateDate)
+                .IsRequired();
+
+            Property(f => f.EditDate)
+                .IsRequired();
+
+            //HasMany(f => f.Items)
+            //    .WithRequired(f => f.Filter)
+            //    .HasForeignKey(f => f.FilterId)
+            //    .WillCascadeOnDelete(false);
         }
     }
 }

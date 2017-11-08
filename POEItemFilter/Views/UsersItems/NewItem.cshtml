@@ -20,9 +20,9 @@
         <select id="baseTypes" class="my-btn">
             <option value=@(Model.BaseTypes.Last().Id + 1)>All</option>
             @foreach (var item in Model.BaseTypes)
-    {
+            {
                 <option value="@item.Id">@item.Name</option>
-    }
+            }
         </select>
         <p />
 
@@ -30,32 +30,32 @@
         <select id="types" class="my-btn">
             <option value=@(Model.Types.Last().Id + 1)>All</option>
             @foreach (var item in Model.Types)
-    {
+            {
                 <option value="@item.Id">@item.Name</option>
-    }
+            }
         </select>
         <p />
 
         @{
-    if (Model.Attributes != null)
-    {
+            if (Model.Attributes != null)
+            {
                 <span>Select attributes:</span>
                 <select id="attribute1" class="my-btn">
                     <option value=@(Model.Attributes.Last().Id + 1)>All</option>
                     @foreach (var item in Model.Attributes)
-            {
+                    {
                         <option value="@item.Id">@item.Name</option>
-            }
+                    }
                 </select>
 
                 <select id="attribute2" class="my-btn">
                     <option value=@(Model.Attributes.Last().Id + 1)>All</option>
                     @foreach (var item in Model.Attributes)
-            {
+                    {
                         <option value="@item.Id">@item.Name</option>
-            }
+                    }
                 </select>
-    }
+            }
         }
         <p />
 
@@ -63,9 +63,9 @@
         <select id="items" class="my-btn">
             <option value=@(Model.Items.Last().Id + 1)>All</option>
             @foreach (var item in Model.Items)
-    {
+            {
                 <option value="@item.Id">@item.Name</option>
-    }
+            }
         </select>
     </div>
     <hr />
@@ -89,9 +89,9 @@
         <select id="itemLvlSelect" class="my-btn">
             <option value="300">All</option>
             @for (int i = 0; i <= 100; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -109,9 +109,9 @@
         <select id="itemQualitySelect" class="my-btn">
             <option value="300">All</option>
             @for (int i = 0; i <= 20; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -154,9 +154,9 @@
         <select id="socketsNumberSelect" class="my-btn">
             <option value="300">All</option>
             @for (int i = 1; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -175,9 +175,9 @@
             <option value="300">All</option>
             <option value="0">0</option>
             @for (int i = 2; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -187,36 +187,36 @@
         <select id="redSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <span style="margin-left: 30px">Green</span>
         <select id="greenSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <span style="margin-left: 30px">Blue</span>
         <select id="blueSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <span style="margin-left: 30px">White</span>
         <select id="whiteSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 6; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -242,9 +242,9 @@
         <select id="heightSelect" class="my-btn">
             <option value="300">All</option>
             @for (int i = 1; i <= 4; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -261,9 +261,9 @@
         <select id="widthSelect" class="my-btn">
             <option value="300">All</option>
             @for (int i = 1; i <= 2; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
 
         <p></p>
@@ -296,23 +296,23 @@
         <select id="borderRedSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="borderGreenSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="borderBlueSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <p></p>
 
@@ -320,23 +320,23 @@
         <select id="textRedSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="textGreenSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="textBlueSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <p></p>
 
@@ -344,23 +344,23 @@
         <select id="backRedSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="backGreenSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <select id="backBlueSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 0; i <= 255; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <p></p>
 
@@ -368,27 +368,51 @@
         <select id="fontSizeSelect" class="my-btn">
             <option value="300"></option>
             @for (int i = 18; i <= 45; i++)
-        {
+            {
                 <option value="@i">@i</option>
-        }
+            }
         </select>
         <p></p>
     </div>
 </div>
 
 <div id="saveButton" style="float:right">
+    <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
+    <p />
+    <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg">
+        <option value="0">Show</option>
+        <option value="1">Hide</option>
+    </select>
+    <p />
     <button id="saveItem" type="button" class="btn btn-default btn-success btn-lg" aria-label="Left Align" style="float:right">
         Add item
         <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
     </button>
 </div>
 
-
     @section scripts
 {
         <script>
             $(document).ready(function () {
                 setOldValues();
+
+                // Add item to filter.
+                $("#saveItem").click(function () {
+                    var itemModel = String($("#baseTypes").val() + "|" + $("#types").val() + "|" + $("#attribute1").val() + "|" + $("#attribute2").val() + "|" +
+                        $("#itemLvlSelectSign").val() + "|" + $("#itemLvlSelect").val() + "|" + $("#itemQualitySelectSign").val() + "|" + $("#itemQualitySelect").val() + "|" + $("#itemRaritySelectSign").val() + "|" + $("#itemRaritySelect").val() + "|" +
+                        $("#socketsNumberSelectSign").val() + "|" + $("#socketsNumberSelect").val() + "|" + $("#linkedSocketsNumberSelectSign").val() + "|" + $("#linkedSocketsNumberSelect").val() + "|" +
+                        $("#redSelect").val() + "|" + $("#greenSelect").val() + "|" + $("#blueSelect").val() + "|" + $("#whiteSelect").val() + "|" +
+                        $("#heightSelectSign").val() + "|" + $("#heightSelect").val() + "|" + $("#widthSelectSign").val() + "|" + $("#widthSelect").val() + "|" +
+                        $("#identifiedSelect").val() + "|" + $("#corruptedSelect").val() + "|" + $("#borderRedSelect").val() + "|" + $("#borderGreenSelect").val() + "|" + $("#borderBlueSelect").val() + "|" +
+                        $("#textRedSelect").val() + "|" + $("#textGreenSelect").val() + "|" + $("#textBlueSelect").val() + "|" + 
+                        $("#backRedSelect").val() + "|" + $("#backGreenSelect").val() + "|" + $("#backBlueSelect").val() + "|" + $("#fontSizeSelect").val());
+                    $.post("/UsersItems/SaveItem/" + itemModel, function (data) {
+                        window.location.href = data;
+                    });
+                });
+
+                    //$.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    //    $("#databaseItems").html(data);
 
                 // Hide at start most part of view.
                 $("#itemLvl").hide();

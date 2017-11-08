@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace POEItemFilter.Models.Filters
 {
@@ -8,8 +8,21 @@ namespace POEItemFilter.Models.Filters
 
         public string Name { get; set; }
 
-        public List<ItemUser> Items { get; set; }
+        //public ICollection<ItemUser> Items { get; set; }
 
         public string Description { get; set; }
+
+        //public string UserId { get; set; } //nvarchar(128)
+
+        public DateTime CreateDate { get; set; }
+
+        public DateTime EditDate { get; set; }
+
+        // czy polecany dla konkretnej klasy
+
+        //public Filter()
+        //{
+        //    Items = new HashSet<ItemUser>();
+        //}
     }
 }

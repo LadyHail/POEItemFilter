@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
 using POEItemFilter.EntityConfiguration;
 using POEItemFilter.Library.EntityConfiguration;
+using POEItemFilter.Models.Filters;
 using POEItemFilter.Models.ItemsDB;
 
 namespace POEItemFilter.Models
@@ -13,6 +14,7 @@ namespace POEItemFilter.Models
         public DbSet<ItemBaseType> BaseTypes { get; set; }
         public DbSet<ItemType> Types { get; set; }
         public DbSet<ItemAttribute> Attributes { get; set; }
+        public DbSet<Filter> Filters { get; set; }
 
         public ApplicationDbContext()
             : base("POEItemFilterContext", throwIfV1Schema: false)
@@ -35,6 +37,7 @@ namespace POEItemFilter.Models
             modelBuilder.Configurations.Add(new ItemBaseTypeConfiguration());
             modelBuilder.Configurations.Add(new ItemTypeConfiguration());
             modelBuilder.Configurations.Add(new ItemAttributeConfiguration());
+            modelBuilder.Configurations.Add(new FilterConfiguration());
         }
     }
 }
