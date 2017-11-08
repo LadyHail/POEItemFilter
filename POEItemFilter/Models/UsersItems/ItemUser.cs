@@ -1,6 +1,4 @@
-﻿using POEItemFilter.Library.Enumerables;
-
-namespace POEItemFilter.Models
+﻿namespace POEItemFilter.Models
 {
     public class ItemUser
     {
@@ -13,22 +11,22 @@ namespace POEItemFilter.Models
         /// <summary>
         /// eg. Armour.
         /// </summary>
-        public BaseTypes? MainCategory { get; set; }
+        public string MainCategory { get; set; }
 
         /// <summary>
         /// eg. Boot.
         /// </summary>
-        public Types? Class { get; set; }
+        public string Class { get; set; }
 
         /// <summary>
         /// One of three: strength, dexterity, intelligence.
         /// </summary>
-        public Attributes? Attribute1 { get; set; }
+        public string Attribute1 { get; set; }
 
         /// <summary>
         /// One of three: strength, dexterity, intelligence.
         /// </summary>
-        public Attributes? Attribute2 { get; set; }
+        public string Attribute2 { get; set; }
 
         /// <summary>
         /// eg. Iron Hat.

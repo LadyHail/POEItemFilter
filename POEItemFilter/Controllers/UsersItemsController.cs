@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using POEItemFilter.Library;
 using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
 using POEItemFilter.ViewModels;
@@ -328,11 +330,219 @@ namespace POEItemFilter.Controllers
 
         public ActionResult SaveItem(string id)
         {
-            string[] ids = id.Split('|');
+            string[] splitId = id.Split('|');
+            ItemUser item = new ItemUser();
 
+            for (int i = 0; i < splitId.Length; i++)
+            {
+                int number = int.Parse(splitId[i].ToString());
+                switch (i)
+                {
+                    case 0:
+                        item.MainCategory = _context.BaseTypes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
 
+                    case 1:
+                        item.Class = _context.Types.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
 
-            return Json(Url.Action("NewFilter", "Filters"));
+                    case 2:
+                        item.Attribute1 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 3:
+                        item.Attribute2 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 4:
+                        item.ItemLevel = InequalitySelector.Select(number);
+                        break;
+
+                    case 5:
+                        if (item.ItemLevel != null)
+                        {
+                            item.ItemLevel += " " + number;
+                        }
+                        break;
+
+                    case 6:
+                        item.Quality = InequalitySelector.Select(number);
+                        break;
+
+                    case 7:
+                        if (item.Quality != null)
+                        {
+                            item.Quality += " " + number;
+                        }
+                        break;
+
+                    case 8:
+                        item.Rarity = InequalitySelector.Select(number);
+                        break;
+
+                    case 9:
+                        if (item.Rarity != null)
+                        {
+                            item.Rarity += " " + number;
+                        }
+                        break;
+
+                    case 10:
+                        item.Sockets = InequalitySelector.Select(number);
+                        break;
+
+                    case 11:
+                        if (item.Sockets != null)
+                        {
+                            item.Sockets += " " + number;
+                        }
+                        break;
+
+                    case 12:
+                        item.LinkedSockets = InequalitySelector.Select(number);
+                        break;
+
+                    case 13:
+                        if (item.LinkedSockets != null)
+                        {
+                            item.LinkedSockets += " " + number;
+                        }
+                        break;
+
+                    case 14:
+                        if (number != 300)
+                        {
+                            item.SocketsGroup = string.Concat(Enumerable.Repeat("R", number));
+                        }
+                        break;
+
+                    case 15:
+                        if (number != 300)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("G", number));
+                        }
+                        break;
+
+                    case 16:
+                        if (number != 300)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("B", number));
+                        }
+                        break;
+
+                    case 17:
+                        if (number != 300)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("W", number));
+                        }
+                        break;
+
+                    case 18:
+                        item.Height = InequalitySelector.Select(number);
+                        break;
+
+                    case 19:
+                        if (item.Height != null)
+                        {
+                            item.Height += " " + number;
+                        }
+                        break;
+
+                    case 20:
+                        item.Width = InequalitySelector.Select(number);
+                        break;
+
+                    case 21:
+                        if (item.Width != null)
+                        {
+                            item.Width += " " + number;
+                        }
+                        break;
+
+                    case 22:
+                        item.Identified = Convert.ToBoolean(number);
+                        break;
+
+                    case 23:
+                        item.Corrupted = Convert.ToBoolean(number);
+                        break;
+
+                    case 24:
+                        if (number != 300)
+                        {
+                            item.SetBorderColor = number.ToString();
+
+                        }
+                        break;
+
+                    case 25:
+                        if (number != 300)
+                        {
+                            item.SetBorderColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 26:
+                        if (number != 300)
+                        {
+                            item.SetBorderColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 27:
+                        if (number != 300)
+                        {
+                            item.SetTextColor = number.ToString();
+                        }
+                        break;
+
+                    case 28:
+                        if (number != 300)
+                        {
+                            item.SetTextColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 29:
+                        if (number != 300)
+                        {
+                            item.SetTextColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 30:
+                        if (number != 300)
+                        {
+                            item.SetBackgroundColor = number.ToString();
+                        }
+                        break;
+
+                    case 31:
+                        if (number != 300)
+                        {
+                            item.SetBackgroundColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 32:
+                        if (number != 300)
+                        {
+                            item.SetBackgroundColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 33:
+                        if (number != 300)
+                        {
+                            item.SetFontSize = number.ToString();
+                        }
+                        break;
+                }
+            }
+
+            GenerateFilter.Start(item);
+
+            return Json(Url.Action("AddItem", "Filters"));
         }
     }
 }

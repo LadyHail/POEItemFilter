@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using POEItemFilter.Models;
 
 namespace POEItemFilter.Controllers
 {
@@ -13,6 +14,11 @@ namespace POEItemFilter.Controllers
         public ActionResult NewFilter()
         {
             return View();
+        }
+
+        public ActionResult AddItem(ItemUser item)
+        {
+            return View("NewFilter");
         }
     }
 }

@@ -3,23 +3,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="newFilter" style="display:none">
-    <h2>Create new item filter</h2>
+<div id="row">
 
-    <p>
-        <textarea id="filterName" class="my-textarea">Enter filter name</textarea>
-    </p>
+    <div id="newFilter" style="float:left">
+        <h2>Create new item filter</h2>
 
-    <p>
-        <textarea id="description" class="my-textarea">Let people know more about Your filter! 
+        <p>
+            <textarea id="filterName" class="my-textarea">Enter filter name</textarea>
+        </p>
+
+        <p>
+            <textarea id="description" class="my-textarea">Let people know more about Your filter! 
 What kind of items are You looking for? Currency? Unique? 
 Maybe it's used by specific class?</textarea>
-    </p>
+        </p>
 
-    <p>
-        <a href="~/UsersItems/NewItem" class="btn btn-default">New Item &raquo;</a>
-        <a href="" class="btn btn-default">Generate filter &raquo;</a>
-    </p>
+        <p>
+            <a href="~/UsersItems/NewItem" class="btn btn-primary">New Item &raquo;</a>
+            <a href="" class="btn btn-primary">Generate filter &raquo;</a>
+        </p>
+    </div>
+
+    <div id="itemsList" style="float:left">
+        <table class="table">
+            <tr>
+            <th>Items list</th>
+            </tr>
+            <tr>
+                <td>test</td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 @section scripts
