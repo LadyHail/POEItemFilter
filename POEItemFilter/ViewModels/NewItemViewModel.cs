@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
 
 namespace POEItemFilter.ViewModels
@@ -14,6 +13,12 @@ namespace POEItemFilter.ViewModels
 
         public IEnumerable<ItemAttribute> Attributes { get; set; }
 
-        public ItemUser ItemUser { get; set; }
+        public int LastItemId { get; set; }
+
+        public int LastBaseTypeId { get; set; }
+
+        public int LastTypeId { get; set; }
+
+        public int LastAttributeId { get; set; }
     }
 }

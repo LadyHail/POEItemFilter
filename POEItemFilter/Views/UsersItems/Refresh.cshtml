@@ -7,9 +7,9 @@
 <p />
 <span>Select category: </span>
 <select id="baseTypes" class="my-btn">
-    <option value=@(Model.BaseTypes.Last().Id + 1)>All</option>
+    <option value=@(Model.LastBaseTypeId)>All</option>
     @foreach (var item in Model.BaseTypes)
-    {
+            {
         <option value="@item.Id">@item.Name</option>
     }
 </select>
@@ -17,42 +17,42 @@
 
 <span>Select type: </span>
 <select id="types" class="my-btn">
-    <option value=@(Model.Types.Last().Id + 1)>All</option>
+    <option value=@(Model.LastTypeId)>All</option>
     @foreach (var item in Model.Types)
-    {
+            {
         <option value="@item.Id">@item.Name</option>
     }
 </select>
 <p />
 
 @{
-    if (Model.Attributes != null)
-    {
+            if (Model.Attributes != null)
+            {
         <span>Select attributes:</span>
-        <select id="attribute1" class="my-btn">
-            <option value=@(Model.Attributes.Last().Id + 1)>All</option>
-            @foreach (var item in Model.Attributes)
-            {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
+                <select id="attribute1" class="my-btn">
+                    <option value=@(Model.LastAttributeId)>All</option>
+                    @foreach (var item in Model.Attributes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
 
-        <select id="attribute2" class="my-btn">
-            <option value=@(Model.Attributes.Last().Id + 1)>All</option>
-            @foreach (var item in Model.Attributes)
-            {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
+                <select id="attribute2" class="my-btn">
+                    <option value=@(Model.LastAttributeId)>All</option>
+                    @foreach (var item in Model.Attributes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
     }
 }
 <p />
 
 <span>Select item: </span>
 <select id="items" class="my-btn">
-    <option value=@(Model.Items.Last().Id + 1)>All</option>
+    <option value=@(Model.LastItemId)>All</option>
     @foreach (var item in Model.Items)
-    {
+            {
         <option value="@item.Id">@item.Name</option>
     }
 </select>

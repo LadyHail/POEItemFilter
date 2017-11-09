@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using POEItemFilter.Models;
+using POEItemFilter.ViewModels;
 
 namespace POEItemFilter.Controllers
 {
@@ -18,7 +19,16 @@ namespace POEItemFilter.Controllers
 
         public ActionResult AddItem(ItemUser item)
         {
-            return View("NewFilter");
+            if (Session["ItemsList"] == null)
+            {
+                Session["ItemsList"] = new ItemUserList();
+                Session.Timeout = 30;
+            }
+
+            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
+            viewModel.UsersItems.Add(item);
+
+            return View("NewFilter", viewModel);
         }
     }
 }

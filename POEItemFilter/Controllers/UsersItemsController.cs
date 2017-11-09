@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using POEItemFilter.Library;
+using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
 using POEItemFilter.ViewModels;
@@ -36,8 +37,7 @@ namespace POEItemFilter.Controllers
                 Items = items,
                 BaseTypes = baseTypes,
                 Types = types,
-                Attributes = attributes,
-                ItemUser = new ItemUser()
+                Attributes = attributes
             };
 
             return View(viewModel);
@@ -57,7 +57,12 @@ namespace POEItemFilter.Controllers
                 .ToList();
 
             string[] ids = id.Split('|');
-            int baseTypeId, typeId, attribute1Id, attribute2Id;
+            int baseTypeId, typeId, attribute1Id, attribute2Id, lastBaseTypeId, lastTypeId, lastAttributeId, lastItemId;
+
+            lastBaseTypeId = baseTypes.LastOrDefault().Id + 1;
+            lastTypeId = baseTypes.SelectMany(i => i.Types).LastOrDefault().Id + 1;
+            lastAttributeId = baseTypes.SelectMany(i => i.Attributes).LastOrDefault().Id + 1;
+            lastItemId = itemsList.LastOrDefault().Id + 1;
 
             if (!int.TryParse(ids[0], out baseTypeId))
             {
@@ -317,7 +322,11 @@ namespace POEItemFilter.Controllers
                 BaseTypes = baseTypes,
                 Types = types,
                 Attributes = attributes,
-                Items = items
+                Items = items,
+                LastBaseTypeId = lastBaseTypeId,
+                LastAttributeId = lastAttributeId,
+                LastItemId = lastItemId,
+                LastTypeId = lastTypeId
             };
 
             return View("Refresh", viewModel);
@@ -335,7 +344,11 @@ namespace POEItemFilter.Controllers
 
             for (int i = 0; i < splitId.Length; i++)
             {
-                int number = int.Parse(splitId[i].ToString());
+                int number = -1;
+                if (splitId[i] != "undefined")
+                {
+                    number = int.Parse(splitId[i].ToString());
+                }
                 switch (i)
                 {
                     case 0:
@@ -383,7 +396,7 @@ namespace POEItemFilter.Controllers
                     case 9:
                         if (item.Rarity != null)
                         {
-                            item.Rarity += " " + number;
+                            item.Rarity += " " + (Rarity)number;
                         }
                         break;
 
@@ -537,12 +550,14 @@ namespace POEItemFilter.Controllers
                             item.SetFontSize = number.ToString();
                         }
                         break;
+
+                    case 34:
+                        item.BaseType = _context.ItemsDB.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
                 }
             }
 
-            GenerateFilter.Start(item);
-
-            return Json(Url.Action("AddItem", "Filters"));
+            return Json(Url.Action("AddItem", "Filters", item));
         }
     }
 }

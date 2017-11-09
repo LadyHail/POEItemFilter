@@ -1,4 +1,7 @@
-﻿namespace POEItemFilter.Models
+﻿using System;
+using System.Reflection;
+
+namespace POEItemFilter.Models
 {
     public class ItemUser
     {
@@ -112,5 +115,24 @@
         /// Default: true.
         /// </summary>
         public bool Show { get; set; } = true;
+
+        public override string ToString()
+        {
+            string output = "";
+            Type type = GetType();
+            PropertyInfo[] properties = type.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.GetValue(this, null) != null)
+                {
+                    if (property.Name != "Id")
+                    {
+                        output += (property.Name + ": " + property.GetValue(this, null).ToString()).TrimEnd() + " | ";
+                    }
+                }
+            }
+            return output;
+        }
     }
 }

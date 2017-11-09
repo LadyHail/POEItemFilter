@@ -1,4 +1,6 @@
-﻿@{
+﻿@model POEItemFilter.ViewModels.ItemUserList
+
+@{
     ViewBag.Title = "Create new item filter";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -24,16 +26,22 @@ Maybe it's used by specific class?</textarea>
         </p>
     </div>
 
-    <div id="itemsList" style="float:left">
-        <table class="table">
-            <tr>
-            <th>Items list</th>
-            </tr>
-            <tr>
-                <td>test</td>
-            </tr>
-        </table>
-    </div>
+    @if (Model != null)
+    {
+        <div id="itemsList" style="float:left">
+            <table class="table">
+                <tr>
+                    <th>Items list</th>
+                </tr>
+                @foreach (var item in Model.UsersItems)
+                {
+                    <tr>
+                        <td>@item.ToString()</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 </div>
 
 @section scripts
