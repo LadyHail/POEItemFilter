@@ -22,7 +22,7 @@ Maybe it's used by specific class?</textarea>
 
         <p>
             <a href="~/UsersItems/NewItem" class="btn btn-primary">New Item &raquo;</a>
-            <a href="" class="btn btn-primary">Generate filter &raquo;</a>
+            <a href="~/Home/Index" id="createFilter" class="btn btn-primary">Generate filter &raquo;</a>
         </p>
     </div>
 
@@ -54,6 +54,26 @@ Maybe it's used by specific class?</textarea>
             $("#newFilter").hide().slideDown(500, function () {
                 $(".btn").fadeIn(1000);
             });
-        });
+
+            //firefox: nie pobiera pliku tylko przekierowuje na home/index; na chrome i edge: pobiera plik, ale nie przekierowuje; w każdym za pierwszym razem sypie error; UPDATE: CHROME: działa, tylko nie przekierowuje
+            $("#createFilter").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SaveFilter", "Filters")",
+                    contentType: "application/json; charset=utf-8", //to co klient wysyła do servera
+                    dataType: "json", //to co serwer wysyła do klienta
+                    data: JSON.stringify({ "filterName": $("#filterName").val(), "description": $("#description").val() }),
+                    success: function (data) {
+                        if (data.fileName != "") {
+                            window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
+                            //alert("Well done!");
+                        };
+                    },
+                    error: function (data, status, error) {
+                       // alert("Error!");
+                    },
+                });
+            });
+    });
     </script>
     }
