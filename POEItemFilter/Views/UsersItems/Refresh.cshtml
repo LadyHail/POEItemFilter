@@ -4,58 +4,26 @@
     Layout = "~/Views/UsersItems/_NewItemPartial.cshtml";
 }
 
-<p />
-<span>Select category: </span>
-<select id="baseTypes" class="my-btn">
-    <option value=@(Model.LastBaseTypeId)>All</option>
-    @foreach (var item in Model.BaseTypes)
+<p>
+    @Html.Label("Select category: ")
+    @Html.DropDownListFor(b => b.BaseTypes, new SelectList(Model.BaseTypes, "Id", "Name"), "All", new { @id = "baseTypes", @class = "my-btn" })
+</p>
+<p>
+    @Html.Label("Select class: ")
+    @Html.DropDownListFor(t => t.Types, new SelectList(Model.Types, "Id", "Name"), "All", new { @id = "types", @class = "my-btn" })
+</p>
+<p>
+    @if (Model.Attributes != null)
             {
-        <option value="@item.Id">@item.Name</option>
+        @Html.Label("Select attributes: ")
+        @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute1", @class = "my-btn" })
+        @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute2", @class = "my-btn" })
     }
-</select>
-<p />
-
-<span>Select type: </span>
-<select id="types" class="my-btn">
-    <option value=@(Model.LastTypeId)>All</option>
-    @foreach (var item in Model.Types)
-            {
-        <option value="@item.Id">@item.Name</option>
-    }
-</select>
-<p />
-
-@{
-            if (Model.Attributes != null)
-            {
-        <span>Select attributes:</span>
-                <select id="attribute1" class="my-btn">
-                    <option value=@(Model.LastAttributeId)>All</option>
-                    @foreach (var item in Model.Attributes)
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-                </select>
-
-                <select id="attribute2" class="my-btn">
-                    <option value=@(Model.LastAttributeId)>All</option>
-                    @foreach (var item in Model.Attributes)
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-                </select>
-    }
-}
-<p />
-
-<span>Select item: </span>
-<select id="items" class="my-btn">
-    <option value=@(Model.LastItemId)>All</option>
-    @foreach (var item in Model.Items)
-            {
-        <option value="@item.Id">@item.Name</option>
-    }
-</select>
+</p>
+<p>
+    @Html.Label("Select item: ")
+    @Html.DropDownListFor(i => i.Items, new SelectList(Model.Items, "Id", "Name"), "All", new { @id = "items", @class = "my-btn" })
+</p>
 
 
 @section scripts

@@ -17,11 +17,20 @@ namespace POEItemFilter.Controllers
 
         public ActionResult NewFilter()
         {
+            if (Session["ItemsList"] != null)
+            {
+                ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
+                return View(viewModel);
+            }
             return View();
         }
 
         public ActionResult AddItem(ItemUser item)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("NewItem", "UsersItems");
+            }
             if (Session["ItemsList"] == null)
             {
                 Session["ItemsList"] = new ItemUserList();
@@ -75,10 +84,16 @@ namespace POEItemFilter.Controllers
                         {
                             if (property.GetValue(item, null) != null)
                             {
-                                if (property.Name != "Id" && property.Name != "Show")
+                                if (property.Name != "Id" &&
+                                    property.Name != "Show" &&
+                                    property.Name != "Attribute1" &&
+                                    property.Name != "Attribute2")
                                 {
-                                    output = "    " + (property.Name + " " + property.GetValue(item, null).ToString()).Trim();
-                                    filterText.WriteLine(output);
+                                    if (property.Name != "SetFontSize" && property.GetValue(item, null).ToString() != "32")
+                                    {
+                                        output = "    " + (property.Name + " " + property.GetValue(item, null).ToString()).Trim();
+                                        filterText.WriteLine(output);
+                                    }
                                 }
                             }
                         }
@@ -107,6 +122,12 @@ namespace POEItemFilter.Controllers
             Response.AppendHeader("Content-Disposition", cd.ToString());
 
             return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
+        }
+
+        [HttpPost]
+        public void ClearSession()
+        {
+            Session.Clear();
         }
     }
 }

@@ -21,8 +21,8 @@ Maybe it's used by specific class?</textarea>
         </p>
 
         <p>
-            <a href="~/UsersItems/NewItem" class="btn btn-primary">New Item &raquo;</a>
-            <a href="~/Home/Index" id="createFilter" class="btn btn-primary">Generate filter &raquo;</a>
+            <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="#" id="createFilter" class="btn btn-primary">Generate filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
 
@@ -55,25 +55,48 @@ Maybe it's used by specific class?</textarea>
                 $(".btn").fadeIn(1000);
             });
 
-            //firefox: nie pobiera pliku tylko przekierowuje na home/index; na chrome i edge: pobiera plik, ale nie przekierowuje; w każdym za pierwszym razem sypie error; UPDATE: CHROME: działa, tylko nie przekierowuje
-            $("#createFilter").click(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("SaveFilter", "Filters")",
-                    contentType: "application/json; charset=utf-8", //to co klient wysyła do servera
-                    dataType: "json", //to co serwer wysyła do klienta
-                    data: JSON.stringify({ "filterName": $("#filterName").val(), "description": $("#description").val() }),
-                    success: function (data) {
-                        if (data.fileName != "") {
-                            window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
-                            //alert("Well done!");
-                        };
-                    },
-                    error: function (data, status, error) {
-                       // alert("Error!");
-                    },
-                });
+            $("#filterName").click(function () {
+                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
             });
+
+            $("#description").click(function () {
+                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
+            });
+
+            $("#createFilter").click(function () {
+                const filterName = $("#filterName").val();
+                if (filterName === "" || filterName === "Enter filter name") {
+                    alert("Filter name can't be empty!");
+                } else if ($("#itemsList").length === 0) {
+                    alert("Can't create empty filter! Add items!")
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SaveFilter", "Filters")",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify({ "filterName": $("#filterName").val(), "description": $("#description").val() }),
+                        success: function (data) {
+                            if (data.fileName != "") {
+                                window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
+                                ClearSession();
+                                alert("Well done!");
+                            };
+                        },
+                        error: function (data, status, error) {
+                            alert("Oops... Something went wrong!");
+                        },
+                    });
+                }
+            });
+
+            function ClearSession() {
+                $("#filterName").val($("#filterName").prop("defaultValue"));
+                $("#description").val($("#description").prop("defaultValue"));
+                $("#itemsList").remove();
+                $.post("/Filters/ClearSession", function () {
+                });
+            };
     });
     </script>
     }

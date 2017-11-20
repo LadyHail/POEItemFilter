@@ -12,13 +12,5 @@ namespace POEItemFilter.ViewModels
         public IEnumerable<ItemType> Types { get; set; }
 
         public IEnumerable<ItemAttribute> Attributes { get; set; }
-
-        public int LastItemId { get; set; }
-
-        public int LastBaseTypeId { get; set; }
-
-        public int LastTypeId { get; set; }
-
-        public int LastAttributeId { get; set; }
     }
 }

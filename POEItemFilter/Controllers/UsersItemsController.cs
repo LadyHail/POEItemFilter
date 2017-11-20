@@ -28,16 +28,16 @@ namespace POEItemFilter.Controllers
         public ActionResult NewItem()
         {
             var baseTypes = _context.BaseTypes.ToList();
-            var items = baseTypes.SelectMany(i => i.Items).ToList();
-            var types = baseTypes.SelectMany(i => i.Types).ToList();
-            var attributes = baseTypes.SelectMany(i => i.Attributes).ToList();
+            var items = _context.ItemsDB.ToList();
+            var types = _context.Types.ToList();
+            var attributes = _context.Attributes.ToList();
 
             var viewModel = new NewItemViewModel()
             {
                 Items = items,
                 BaseTypes = baseTypes,
                 Types = types,
-                Attributes = attributes
+                Attributes = attributes,
             };
 
             return View(viewModel);
@@ -57,12 +57,7 @@ namespace POEItemFilter.Controllers
                 .ToList();
 
             string[] ids = id.Split('|');
-            int baseTypeId, typeId, attribute1Id, attribute2Id, lastBaseTypeId, lastTypeId, lastAttributeId, lastItemId;
-
-            lastBaseTypeId = baseTypes.LastOrDefault().Id + 1;
-            lastTypeId = baseTypes.SelectMany(i => i.Types).LastOrDefault().Id + 1;
-            lastAttributeId = baseTypes.SelectMany(i => i.Attributes).LastOrDefault().Id + 1;
-            lastItemId = itemsList.LastOrDefault().Id + 1;
+            int baseTypeId, typeId, attribute1Id, attribute2Id;
 
             if (!int.TryParse(ids[0], out baseTypeId))
             {
@@ -323,10 +318,6 @@ namespace POEItemFilter.Controllers
                 Types = types,
                 Attributes = attributes,
                 Items = items,
-                LastBaseTypeId = lastBaseTypeId,
-                LastAttributeId = lastAttributeId,
-                LastItemId = lastItemId,
-                LastTypeId = lastTypeId
             };
 
             return View("Refresh", viewModel);
@@ -345,7 +336,7 @@ namespace POEItemFilter.Controllers
             for (int i = 0; i < splitId.Length; i++)
             {
                 int number = -1;
-                if (splitId[i] != "undefined")
+                if (int.TryParse(splitId[i], out var result))
                 {
                     number = int.Parse(splitId[i].ToString());
                 }
@@ -372,7 +363,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 5:
-                        if (item.ItemLevel != null)
+                        if (number == -1)
+                        {
+                            item.ItemLevel = null;
+                        }
+                        else if (item.ItemLevel != null)
                         {
                             item.ItemLevel += " " + number;
                         }
@@ -383,7 +378,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 7:
-                        if (item.Quality != null)
+                        if (number == -1)
+                        {
+                            item.Quality = null;
+                        }
+                        else if (item.Quality != null)
                         {
                             item.Quality += " " + number;
                         }
@@ -394,7 +393,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 9:
-                        if (item.Rarity != null)
+                        if (number == -1)
+                        {
+                            item.Rarity = null;
+                        }
+                        else if (item.Rarity != null)
                         {
                             item.Rarity += " " + (Rarity)number;
                         }
@@ -405,7 +408,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 11:
-                        if (item.Sockets != null)
+                        if (number == -1)
+                        {
+                            item.Sockets = null;
+                        }
+                        else if (item.Sockets != null)
                         {
                             item.Sockets += " " + number;
                         }
@@ -416,35 +423,39 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 13:
-                        if (item.LinkedSockets != null)
+                        if (number == -1)
+                        {
+                            item.LinkedSockets = null;
+                        }
+                        else if (item.LinkedSockets != null)
                         {
                             item.LinkedSockets += " " + number;
                         }
                         break;
 
                     case 14:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SocketsGroup = string.Concat(Enumerable.Repeat("R", number));
                         }
                         break;
 
                     case 15:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SocketsGroup += string.Concat(Enumerable.Repeat("G", number));
                         }
                         break;
 
                     case 16:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SocketsGroup += string.Concat(Enumerable.Repeat("B", number));
                         }
                         break;
 
                     case 17:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SocketsGroup += string.Concat(Enumerable.Repeat("W", number));
                         }
@@ -455,7 +466,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 19:
-                        if (item.Height != null)
+                        if (number == -1)
+                        {
+                            item.Height = null;
+                        }
+                        else if (item.Height != null)
                         {
                             item.Height += " " + number;
                         }
@@ -466,7 +481,11 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 21:
-                        if (item.Width != null)
+                        if (number == -1)
+                        {
+                            item.Width = null;
+                        }
+                        else if (item.Width != null)
                         {
                             item.Width += " " + number;
                         }
@@ -481,7 +500,7 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 24:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBorderColor = number.ToString();
 
@@ -489,63 +508,63 @@ namespace POEItemFilter.Controllers
                         break;
 
                     case 25:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBorderColor += " " + number.ToString();
                         }
                         break;
 
                     case 26:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBorderColor += " " + number.ToString();
                         }
                         break;
 
                     case 27:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetTextColor = number.ToString();
                         }
                         break;
 
                     case 28:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetTextColor += " " + number.ToString();
                         }
                         break;
 
                     case 29:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetTextColor += " " + number.ToString();
                         }
                         break;
 
                     case 30:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBackgroundColor = number.ToString();
                         }
                         break;
 
                     case 31:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBackgroundColor += " " + number.ToString();
                         }
                         break;
 
                     case 32:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetBackgroundColor += " " + number.ToString();
                         }
                         break;
 
                     case 33:
-                        if (number != 300)
+                        if (number != -1)
                         {
                             item.SetFontSize = number.ToString();
                         }
@@ -554,8 +573,14 @@ namespace POEItemFilter.Controllers
                     case 34:
                         item.BaseType = _context.ItemsDB.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
                         break;
+
+                    case 35:
+                        item.Show = number == 0 ? true : false;
+                        break;
                 }
             }
+
+            item.BaseType = item.BaseType == null && splitId[36].ToString() != "" && splitId[36].ToString() != "undefined" ? splitId[36].ToString() : item.BaseType;
 
             return Json(Url.Action("AddItem", "Filters", item));
         }

@@ -8,66 +8,70 @@
 <h2><b>Add item</b></h2>
 <hr />
 
-<div id="itemInfo">
+@{ 
+    var signsList = new SelectList(new[]
+    {
+        new {Id = "", Sign = ""},
+        new {Id = "1", Sign = "= (equal)"},
+        new {Id = "2", Sign = "> (greater than)"},
+        new {Id = "3", Sign = "< (less than)"},
+        new {Id = "4", Sign = ">= (greater or equal)"},
+        new {Id = "5", Sign = "<= (less or equal)"},
+    },
+    "Id", "Sign", "");
+
+    var itemRarity = new SelectList(new[]
+    {
+        new {Id = "", Name = "All"},
+        new {Id = "1", Name = "Normal"},
+        new {Id = "2", Name = "Magic"},
+        new {Id = "3", Name = "Rare"},
+        new {Id = "4", Name = "Unique"},
+    },
+    "Id", "Name", "");
+
+    var boolSelect = new SelectList(new[]
+    {
+        new {Id = "0", Name = "No (default)"},
+        new {Id = "1", Name = "Yes"},
+    },
+    "Id", "Name", 0);
+
     <button id="basicToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
         Basic information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
-    <p />
+    <p id="basicBreak"/>
     <div id="databaseItems" class="container body-content">
-        <p />
-        <span>Select category: </span>
-        <select id="baseTypes" class="my-btn">
-            <option value=@(Model.LastBaseTypeId)>All</option>
-            @foreach (var item in Model.BaseTypes)
+        <p>
+            @Html.Label("Select category: ")
+            @Html.DropDownListFor(b => b.BaseTypes, new SelectList(Model.BaseTypes, "Id", "Name"), "All", new { @id = "baseTypes", @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Select class: ")
+            @Html.DropDownListFor(t => t.Types, new SelectList(Model.Types, "Id", "Name"), "All", new { @id = "types", @class = "my-btn" })
+        </p>
+        <p>
+            @if (Model.Attributes != null)
             {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
-        <p />
-
-        <span>Select type: </span>
-        <select id="types" class="my-btn">
-            <option value=@(Model.LastTypeId)>All</option>
-            @foreach (var item in Model.Types)
-            {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
-        <p />
-
-        @{
-            if (Model.Attributes != null)
-            {
-                <span>Select attributes:</span>
-                <select id="attribute1" class="my-btn">
-                    <option value=@(Model.LastAttributeId)>All</option>
-                    @foreach (var item in Model.Attributes)
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-                </select>
-
-                <select id="attribute2" class="my-btn">
-                    <option value=@(Model.LastAttributeId)>All</option>
-                    @foreach (var item in Model.Attributes)
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-                </select>
-            }
-        }
-        <p />
-
-        <span>Select item: </span>
-        <select id="items" class="my-btn">
-            <option value=@(Model.LastItemId)>All</option>
-            @foreach (var item in Model.Items)
-            {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
+                @Html.Label("Select attributes: ")
+                @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute1", @class = "my-btn" })
+                @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute2", @class = "my-btn" })
+            }           
+        </p>
+        <p>
+            @Html.Label("Select item: ")
+            @Html.DropDownListFor(i => i.Items, new SelectList(Model.Items, "Id", "Name"), "All", new { @id = "items", @class = "my-btn" })
+        </p>
     </div>
+    <p id="itemNotInDbCB">
+        @Html.Label("Item is not in database?")
+        @Html.CheckBox("itemNotInDb", false)
+    </p>
+    <p id="userItemTB">
+        @Html.Label("Item name: ")
+        @Html.TextBox("userItem", "", new { @class = "my-btn" })
+    </p>
     <hr />
 
     <button id="lvlToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
@@ -75,320 +79,137 @@
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p />
-    <div id="itemLvl" style="display:none" class="container body-content">
-        <span>Item level: </span>
-        <select id="itemLvlSelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="itemLvlSelect" class="my-btn">
-            <option value="300">All</option>
-            @for (int i = 0; i <= 100; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
-
-        <span>Item quality: </span>
-        <select id="itemQualitySelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="itemQualitySelect" class="my-btn">
-            <option value="300">All</option>
-            @for (int i = 0; i <= 20; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
-
-        <span>Item rarity: </span>
-        <select id="itemRaritySelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="itemRaritySelect" class="my-btn">
-            <option value="300">All</option>
-            <option value="1">Normal</option>
-            <option value="2">Magic</option>
-            <option value="3">Rare</option>
-            <option value="4">Unique</option>
-        </select>
+    <div id="itemLvl" class="container body-content">
+        <p>
+            @Html.Label("Item level: ")
+            @Html.DropDownList("itemLvlSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("itemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Item quality: ")
+            @Html.DropDownList("itemQualitySelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("itemQualitySelect", new SelectList(Enumerable.Range(0, 21)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Item rarity: ")
+            @Html.DropDownList("itemRaritySelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("itemRaritySelect", itemRarity, new { @class = "my-btn" })
+        </p>
     </div>
     <hr />
+
     <button id="socketsToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
         Sockets information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p />
-    <div id="sockets" style="display:none" class="container body-content">
-        <span>Number of sockets: </span>
-        <select id="socketsNumberSelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="socketsNumberSelect" class="my-btn">
-            <option value="300">All</option>
-            @for (int i = 1; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
-
-        <span>Number of linked sockets: </span>
-        <select id="linkedSocketsNumberSelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="linkedSocketsNumberSelect" class="my-btn">
-            <option value="300">All</option>
-            <option value="0">0</option>
-            @for (int i = 2; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
-
-        <p>Colours of linked sockets:</p>
-        <span>Red</span>
-        <select id="redSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <span style="margin-left: 30px">Green</span>
-        <select id="greenSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <span style="margin-left: 30px">Blue</span>
-        <select id="blueSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <span style="margin-left: 30px">White</span>
-        <select id="whiteSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 6; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
+    <div id="sockets" class="container body-content">
+        <p>
+            @Html.Label("Number of sockets: ")
+            @Html.DropDownList("socketsNumberSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("socketsNumberSelect", new SelectList(Enumerable.Range(0, 7)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Number of linked sockets: ")
+            @Html.DropDownList("linkedSocketsNumberSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("linkedSocketsNumberSelect", new SelectList(Enumerable.Range(2, 5)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Colours of linked sockets: ")
+            @Html.Label("Red: ")
+            @Html.DropDownList("redSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.Label("Green: ")
+            @Html.DropDownList("greenSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.Label("Blue: ")
+            @Html.DropDownList("blueSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.Label("White: ")
+            @Html.DropDownList("whiteSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+        </p>
     </div>
-
     <hr />
+
     <button id="sizeToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
         Dimension information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p />
-    <div id="size" style="display:none" class="container body-content">
-        <span>Set height: </span>
-        <select id="heightSelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="heightSelect" class="my-btn">
-            <option value="300">All</option>
-            @for (int i = 1; i <= 4; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
-        <span>Set width: </span>
-        <select id="widthSelectSign" class="my-btn">
-            <option value="300"></option>
-            <option value="1">= (equl)</option>
-            <option value="2">> (greater than)</option>
-            <option value="3">< (less than)</option>
-            <option value="4">>= (greater or equal)</option>
-            <option value="5"><= (less or equal)</option>
-        </select>
-
-        <select id="widthSelect" class="my-btn">
-            <option value="300">All</option>
-            @for (int i = 1; i <= 2; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <p></p>
+    <div id="size" class="container body-content">
+        <p>
+            @Html.Label("Set height: ")
+            @Html.DropDownList("heightSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("heightSelect", new SelectList(Enumerable.Range(1, 4)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Set width: ")
+            @Html.DropDownList("widthSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("widthSelect", new SelectList(Enumerable.Range(1, 2)), "All", new { @class = "my-btn" })
+        </p>
     </div>
-
     <hr />
+
     <button id="otherToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
         Other information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p />
-    <div id="other" style="display:none" class="container body-content">
-        <span>Identified?</span>
-        <select id="identifiedSelect" class="my-btn">
-            <option value="0">No (default)</option>
-            <option value="1">Yes</option>
-        </select>
-
-        <p></p>
-
-        <span>Corrupted?</span>
-        <select id="corruptedSelect" class="my-btn">
-            <option value="0">No (default)</option>
-            <option value="1">Yes</option>
-        </select>
-
-        <p></p>
-
-        <span>Border color:</span>
-        <select id="borderRedSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="borderGreenSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="borderBlueSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <p></p>
-
-        <span>Text color:</span>
-        <select id="textRedSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="textGreenSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="textBlueSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <p></p>
-
-        <span>Background color:</span>
-        <select id="backRedSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="backGreenSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="backBlueSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 0; i <= 255; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <p></p>
-
-        <span>Font size:</span>
-        <select id="fontSizeSelect" class="my-btn">
-            <option value="300"></option>
-            @for (int i = 18; i <= 45; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <p></p>
+    <div id="other" class="container body-content">
+        <p>
+            @Html.Label("Identified?")
+            @Html.DropDownList("identifiedSelect", boolSelect, new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Corrupted?")
+            @Html.DropDownList("corruptedSelect", boolSelect, new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Border color: ")
+            @Html.Label("Red: ")
+            @Html.DropDownList("borderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Green: ")
+            @Html.DropDownList("borderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Blue: ")
+            @Html.DropDownList("borderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Text color: ")
+            @Html.Label("Red: ")
+            @Html.DropDownList("textRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Green: ")
+            @Html.DropDownList("textGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Blue: ")
+            @Html.DropDownList("textBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Background color: ")
+            @Html.Label("Red: ")
+            @Html.DropDownList("backRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Green: ")
+            @Html.DropDownList("backGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Blue: ")
+            @Html.DropDownList("backBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Font size: ")
+            @Html.DropDownList("fontSizeSelect", new SelectList(Enumerable.Range(18, 45)), "", new { @class = "my-btn" })
+        </p>
     </div>
-</div>
+    <hr />
 
-<div id="saveButton" style="float:right">
-    <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
-    <p />
-    <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg">
-        <option value="0">Show</option>
-        <option value="1">Hide</option>
-    </select>
-    <p />
-    <button id="saveItem" type="button" class="btn btn-default btn-success btn-lg" aria-label="Left Align" style="float:right">
-        Add item
-        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-    </button>
-</div>
+    <div id="saveButton" style="float:right">
+        <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
+        <p />
+        <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg">
+            <option value="0">Show</option>
+            <option value="1">Hide</option>
+        </select>
+        <p />
+        <button id="saveItem" type="submit" class="btn btn-default btn-success btn-lg" aria-label="Left Align" style="float:right">
+            Add item 
+            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+}
 
     @section scripts
 {
@@ -396,8 +217,26 @@
             $(document).ready(function () {
                 setOldValues();
 
-                // Add item to filter.
+                var dbItems = $("#databaseItems");
+                var userItem = $("#userItemTB").detach();
+                $("#itemNotInDb").click(function () {
+                    if (document.getElementById("itemNotInDb").checked) {
+                        dbItems.detach();
+                        userItem.insertAfter("#itemNotInDbCB");
+                    } else {
+                        dbItems.insertAfter("#basicBreak");
+                        userItem.detach();
+                    }
+                });
+
+                // Add item to filter and clear cookies.
                 $("#saveItem").click(function () {
+                    setCookie("baseTypeSelectedId", null);
+                    setCookie("typeSelectedId", null);
+                    setCookie("attribute1SelectedId", null);
+                    setCookie("attribute2SelectedId", null);
+                    setCookie("itemSelectedId", null);
+
                     var itemModel = String($("#baseTypes").val() + "|" + $("#types").val() + "|" + $("#attribute1").val() + "|" + $("#attribute2").val() + "|" +
                         $("#itemLvlSelectSign").val() + "|" + $("#itemLvlSelect").val() + "|" + $("#itemQualitySelectSign").val() + "|" + $("#itemQualitySelect").val() + "|" + $("#itemRaritySelectSign").val() + "|" + $("#itemRaritySelect").val() + "|" +
                         $("#socketsNumberSelectSign").val() + "|" + $("#socketsNumberSelect").val() + "|" + $("#linkedSocketsNumberSelectSign").val() + "|" + $("#linkedSocketsNumberSelect").val() + "|" +
@@ -405,7 +244,8 @@
                         $("#heightSelectSign").val() + "|" + $("#heightSelect").val() + "|" + $("#widthSelectSign").val() + "|" + $("#widthSelect").val() + "|" +
                         $("#identifiedSelect").val() + "|" + $("#corruptedSelect").val() + "|" + $("#borderRedSelect").val() + "|" + $("#borderGreenSelect").val() + "|" + $("#borderBlueSelect").val() + "|" +
                         $("#textRedSelect").val() + "|" + $("#textGreenSelect").val() + "|" + $("#textBlueSelect").val() + "|" + 
-                        $("#backRedSelect").val() + "|" + $("#backGreenSelect").val() + "|" + $("#backBlueSelect").val() + "|" + $("#fontSizeSelect").val() + "|" + $("#items").val());
+                        $("#backRedSelect").val() + "|" + $("#backGreenSelect").val() + "|" + $("#backBlueSelect").val() + "|" + $("#fontSizeSelect").val() + "|" +
+                        $("#items").val() + "|" + $("#showOrHideSelect").val() + "|" + $("#userItem").val());
                     $.post("/UsersItems/SaveItem/" + itemModel, function (data) {
                         window.location.href = data;
                     });
@@ -420,6 +260,8 @@
                 // Toggle hide/show part of view.
                 $("#basicToggle").click(function () {
                     $("#databaseItems").slideToggle();
+                    $("#itemNotInDbCB").slideToggle();
+                    $("#userItemTB").slideToggle();
                 });
 
                 $("#lvlToggle").click(function () {

@@ -6,9 +6,6 @@
         {
             switch (number)
             {
-                case 300:
-                    return null;
-
                 case 1:
                     return "=";
 

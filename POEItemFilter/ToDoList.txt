@@ -1,0 +1,13 @@
+﻿BACK:
+1. Sprawdzić czy poprawnie zapisuje itemy do pliku. Sprawdzić MainCategory.
+
+2. Dodać walidację wprowadzanych danych.
+
+3. Dodać obsługę błędów.
+
+FRONT:
+4. Poprawić kod w View na C#.
+
+5. Przepisać requesty na AJAX.
+
+6. Zamiast przesyłania stringów przesyłać cały obiekt.
