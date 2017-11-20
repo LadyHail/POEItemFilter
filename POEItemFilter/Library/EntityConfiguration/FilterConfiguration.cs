@@ -23,6 +23,11 @@ namespace POEItemFilter.Library.EntityConfiguration
             Property(f => f.EditDate)
                 .IsRequired();
 
+            HasRequired(f => f.User)
+                .WithMany(f => f.Filter)
+                .HasForeignKey(f => f.UserId)
+                .WillCascadeOnDelete(false);
+
             //HasMany(f => f.Items)
             //    .WithRequired(f => f.Filter)
             //    .HasForeignKey(f => f.FilterId)

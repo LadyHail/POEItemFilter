@@ -13,7 +13,9 @@ namespace POEItemFilter.Models.Filters
 
         public string Description { get; set; }
 
-        //public string UserId { get; set; } //nvarchar(128)
+        public string UserId { get; set; } //nvarchar(128)
+
+        public virtual ApplicationUser User { get; set; }
 
         public DateTime CreateDate { get; set; }
 

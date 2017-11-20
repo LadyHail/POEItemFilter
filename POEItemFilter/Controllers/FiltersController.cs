@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.ViewModels;
@@ -75,7 +76,12 @@ namespace POEItemFilter.Controllers
                 newFilter.Description = description;
                 newFilter.CreateDate = DateTime.UtcNow;
                 newFilter.EditDate = newFilter.CreateDate;
-                newFilter.Dedicated = (Classes)int.Parse(dedicated);
+                if (dedicated != null)
+                {
+                    newFilter.Dedicated = (Classes)int.Parse(dedicated);
+                }
+                var test = User.Identity.GetUserId();
+                newFilter.UserId = test;
                 _context.Filters.Add(newFilter);
                 _context.SaveChanges();
 
