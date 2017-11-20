@@ -224,6 +224,7 @@
     </Compile>
     <Compile Include="Library\EntityConfiguration\ItemTypeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemUserConfiguration.cs" />
+    <Compile Include="Library\Enumerables\Classes.cs" />
     <Compile Include="Library\Enumerables\EnumToString.cs" />
     <Compile Include="Library\Enumerables\Rarity.cs" />
     <Compile Include="Library\GenerateFilter.cs" />
@@ -244,6 +245,10 @@
     <Compile Include="Migrations\201711080926280_AddFilterTable.cs" />
     <Compile Include="Migrations\201711080926280_AddFilterTable.Designer.cs">
       <DependentUpon>201711080926280_AddFilterTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711201128457_AddDedicatedToFilterTable.cs" />
+    <Compile Include="Migrations\201711201128457_AddDedicatedToFilterTable.Designer.cs">
+      <DependentUpon>201711201128457_AddDedicatedToFilterTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -389,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711080926280_AddFilterTable.resx">
       <DependentUpon>201711080926280_AddFilterTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711201128457_AddDedicatedToFilterTable.resx">
+      <DependentUpon>201711201128457_AddDedicatedToFilterTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

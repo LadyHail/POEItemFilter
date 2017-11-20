@@ -3,6 +3,18 @@
 @{
     ViewBag.Title = "Create new item filter";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var classes = new SelectList(new[]
+    {
+        new {Id = "0", Name = "All"},
+        new {Id = "1", Name = "Marauder"},
+        new {Id = "2", Name = "Duelist"},
+        new {Id = "3", Name = "Ranger"},
+        new {Id = "4", Name = "Shadow"},
+        new {Id = "5", Name = "Witch"},
+        new {Id = "6", Name = "Templar"},
+        new {Id = "7", Name = "Scion"},
+    }, "Id", "Name", 0);
 }
 
 <div id="row">
@@ -19,7 +31,13 @@
 What kind of items are You looking for? Currency? Unique? 
 Maybe it's used by specific class?</textarea>
         </p>
-
+        <p id="dedicatedP">
+            @Html.Label("Is your filter dedicated to class?")
+            @Html.CheckBox("dedicatedCB", false)
+            <p id="classesDL">
+            @Html.DropDownList("classes", classes, new { @class = "my-btn" })
+            </p>
+        </p>
         <p>
             <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
             <a href="#" id="createFilter" class="btn btn-primary">Generate filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
@@ -55,27 +73,54 @@ Maybe it's used by specific class?</textarea>
                 $(".btn").fadeIn(1000);
             });
 
+            //Prevent user to enter special character.
+            $("textarea").keyup(function() {
+                let raw_text = $(this).val();
+                let return_text = raw_text.replace(/[^a-zA-Z0-9 _]/g, '');
+                $(this).val(return_text);
+            });
+
+            //Set behaviour of checkbox. 
+            var dedicated = $("#dedicatedCB");
+            var classes = $("#classesDL").detach();
+            $("#dedicatedCB").click(function () {
+                if (document.getElementById("dedicatedCB").checked) {
+                    classes.insertAfter(dedicated);
+                } else {
+                    classes.detach();
+                }
+            });
+
+            //Clear filterName after click if value is default.
             $("#filterName").click(function () {
                 $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
             });
 
+            //Clear description after click if value is default.
             $("#description").click(function () {
                 $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
             });
 
+            //Check if input is valid. Send data to server. Output: create filter file.
             $("#createFilter").click(function () {
                 const filterName = $("#filterName").val();
+                const description = $("#description");
+                
                 if (filterName === "" || filterName === "Enter filter name") {
                     alert("Filter name can't be empty!");
                 } else if ($("#itemsList").length === 0) {
                     alert("Can't create empty filter! Add items!")
+                } else if ($("#classes").val() < 0 && $("#classes").val() > 7) {
+                    alert("Invalid class!")
                 } else {
+                    description.val() === description.prop("defaultValue") ? description.val("") : "";
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("SaveFilter", "Filters")",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        data: JSON.stringify({ "filterName": $("#filterName").val(), "description": $("#description").val() }),
+                        data: JSON.stringify({
+                            "filterName": $("#filterName").val(), "description": $("#description").val(), "dedicated": $("#classes").val() }),
                         success: function (data) {
                             if (data.fileName != "") {
                                 window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
@@ -90,9 +135,12 @@ Maybe it's used by specific class?</textarea>
                 }
             });
 
+            //Clear session after file is created.
             function ClearSession() {
                 $("#filterName").val($("#filterName").prop("defaultValue"));
                 $("#description").val($("#description").prop("defaultValue"));
+                dedicated.prop("checked", false);
+                classes.detach();
                 $("#itemsList").remove();
                 $.post("/Filters/ClearSession", function () {
                 });

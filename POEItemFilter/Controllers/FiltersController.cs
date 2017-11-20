@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Web.Mvc;
+using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.ViewModels;
 
@@ -9,6 +10,18 @@ namespace POEItemFilter.Controllers
 {
     public class FiltersController : Controller
     {
+        ApplicationDbContext _context;
+
+        public FiltersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
         // GET: Filters
         public ActionResult Index()
         {
@@ -38,13 +51,21 @@ namespace POEItemFilter.Controllers
             }
 
             ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
+            if (Session.IsNewSession)
+            {
+                item.Id = 0;
+            }
+            else
+            {
+                item.Id = viewModel.UsersItems.Count;
+            }
             viewModel.UsersItems.Add(item);
 
             return View("NewFilter", viewModel);
         }
 
         [HttpPost]
-        public JsonResult SaveFilter(string filterName, string description)
+        public JsonResult SaveFilter(string filterName, string description, string dedicated)
         {
             Models.Filters.Filter newFilter = new Models.Filters.Filter();
             if (filterName != null)
@@ -54,6 +75,9 @@ namespace POEItemFilter.Controllers
                 newFilter.Description = description;
                 newFilter.CreateDate = DateTime.UtcNow;
                 newFilter.EditDate = newFilter.CreateDate;
+                newFilter.Dedicated = (Classes)int.Parse(dedicated);
+                _context.Filters.Add(newFilter);
+                _context.SaveChanges();
 
                 //Create file
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"\Filters");

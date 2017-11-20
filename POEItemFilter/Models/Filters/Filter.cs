@@ -1,4 +1,5 @@
 ﻿using System;
+using POEItemFilter.Library.Enumerables;
 
 namespace POEItemFilter.Models.Filters
 {
@@ -18,7 +19,7 @@ namespace POEItemFilter.Models.Filters
 
         public DateTime EditDate { get; set; }
 
-        // czy polecany dla konkretnej klasy
+        public Classes? Dedicated { get; set; }
 
         //public Filter()
         //{

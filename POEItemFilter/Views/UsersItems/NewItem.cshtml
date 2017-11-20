@@ -70,7 +70,7 @@
     </p>
     <p id="userItemTB">
         @Html.Label("Item name: ")
-        @Html.TextBox("userItem", "", new { @class = "my-btn" })
+        @Html.TextBox("userItem", "", new { @class = "my-textarea" })
     </p>
     <hr />
 
@@ -217,6 +217,7 @@
             $(document).ready(function () {
                 setOldValues();
 
+                // Add/remove additional textarea if item is not in database.
                 var dbItems = $("#databaseItems");
                 var userItem = $("#userItemTB").detach();
                 $("#itemNotInDb").click(function () {
@@ -466,6 +467,7 @@
                     });
                 });
 
+                // Functions to set cookies behaviour.
                 function setCookie(cname, cvalue) {
                     document.cookie = cname + "=" + cvalue;
                 }
