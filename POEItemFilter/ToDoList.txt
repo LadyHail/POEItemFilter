@@ -7,7 +7,9 @@
 
 [SOLVED] 4. Połączyć filtry z DB.
 
-5. Połączyć filtr z użytkownikiem.
+[SOLVED] 5. Połączyć filtr z użytkownikiem.
+
+[SOLVED] 6. Zmienić username.
 
 FRONT:
 4. Poprawić kod w View na C#.
