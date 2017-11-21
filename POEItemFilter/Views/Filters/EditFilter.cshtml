@@ -1,7 +1,7 @@
-﻿@model POEItemFilter.ViewModels.ItemUserList
+﻿@model POEItemFilter.ViewModels.EditFilterViewModel
 
 @{
-    ViewBag.Title = "Create new item filter";
+    ViewBag.Title = "Edit items filter";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var classes = new SelectList(new[]
@@ -20,27 +20,28 @@
 <div id="row">
 
     <div id="newFilter" style="float:left">
-        <h2>Create new item filter</h2>
+        <h2>Edit items filter</h2>
 
         <p>
-            <textarea id="filterName" class="my-textarea">Enter filter name</textarea>
+            <textarea id="filterName" class="my-textarea">@Model.Filter.Name</textarea>
         </p>
 
         <p>
-            <textarea id="description" class="my-textarea">Let people know more about Your filter! 
-What kind of items are You looking for? Currency? Unique? 
-Maybe it's used by specific class?</textarea>
+            <textarea id="description" class="my-textarea">@Model.Filter.Description</textarea>
         </p>
-        <p id="dedicatedP">
-            @Html.Label("Is your filter dedicated to class?")
-            @Html.CheckBox("dedicatedCB", false)
-        </p>
-            <p id="classesDL">
-            @Html.DropDownList("classes", classes, new { @class = "my-btn" })
+        @if (Model.Filter.Dedicated != null)
+        {
+            <p id="dedicatedP">
+                @Html.Label("Is your filter dedicated to class?")
+                @Html.CheckBox("dedicatedCB", true)
             </p>
+            <p id="classesDL">
+                @Html.DropDownList("classes", classes, Model.Filter.Dedicated.ToString(), new { @class = "my-btn" })
+            </p>
+        }
         <p>
             <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-            <a href="#" id="createFilter" class="btn btn-primary">Generate filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="#" id="saveFilter" class="btn btn-primary">Save filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
 
@@ -53,7 +54,7 @@ Maybe it's used by specific class?</textarea>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
-                @foreach (var item in Model.UsersItems)
+                @foreach (var item in Model.ItemsList)
                 {
                     <tr>
                         <td>@item.ToString()</td>
@@ -122,18 +123,8 @@ Maybe it's used by specific class?</textarea>
                 }
             });
 
-            //Clear filterName after click if value is default.
-            $("#filterName").click(function () {
-                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
-            });
-
-            //Clear description after click if value is default.
-            $("#description").click(function () {
-                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
-            });
-
             //Check if input is valid. Send data to server. Output: create filter file.
-            $("#createFilter").click(function () {
+            $("#saveFilter").click(function () {
                 const filterName = $("#filterName").val();
                 const description = $("#description");
 
@@ -144,23 +135,16 @@ Maybe it's used by specific class?</textarea>
                 } else if ($("#classes").val() < 0 && $("#classes").val() > 7) {
                     alert("Invalid class!")
                 } else {
-                    description.val() === description.prop("defaultValue") ? description.val("") : "";
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("SaveFilter", "Filters")",
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: JSON.stringify({
-                            "filterName": $("#filterName").val(), "description": $("#description").val(), "dedicated": $("#classes").val() }),
+                            "filterName": $("#filterName").val(), "description": $("#description").val(), "dedicated": $("#classes").val(), "id": "@Model.Filter.Id" }),
                         success: function (data) {
-                            if (data.fileName != "") {
-                                window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
+                                window.location.href = "/Filters/MyFilters";
                                 ClearSession();
-                                bootbox.alert("Well done!");
-                            };
-                        },
-                        error: function (data, status, error) {
-                            bootbox.alert("Oops... Something went wrong!");
                         },
                     });
                 }
@@ -178,4 +162,4 @@ Maybe it's used by specific class?</textarea>
             };
     });
     </script>
-    }
+}

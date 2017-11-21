@@ -11,9 +11,17 @@
 
 [SOLVED] 6. Zmienić username.
 
+7. Weryfikacja email.
+
+8. Możliwość edycji username i email.
+
+9. Dodać awatary
+
 FRONT:
 4. Poprawić kod w View na C#.
 
 5. Przepisać requesty na AJAX.
 
 6. Zamiast przesyłania stringów przesyłać cały obiekt.
+
+7. EditFilter NewItem

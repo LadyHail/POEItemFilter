@@ -270,6 +270,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EditFilterViewModel.cs" />
     <Compile Include="ViewModels\ItemUserList.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
   </ItemGroup>
@@ -286,6 +287,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -379,6 +382,8 @@
     <Content Include="Views\UsersItems\Index.cshtml" />
     <Content Include="Views\Filters\NewFilter.cshtml" />
     <Content Include="Views\UsersItems\Refresh.cshtml" />
+    <Content Include="Views\Filters\MyFilters.cshtml" />
+    <Content Include="Views\Filters\EditFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

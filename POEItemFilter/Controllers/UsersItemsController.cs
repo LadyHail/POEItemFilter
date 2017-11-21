@@ -584,5 +584,20 @@ namespace POEItemFilter.Controllers
 
             return Json(Url.Action("AddItem", "Filters", item));
         }
+
+        //[HttpDelete]
+        public ActionResult DeleteItem(int id)
+        {
+            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
+            var item = viewModel.UsersItems.SingleOrDefault(i => i.Id == id);
+            if (item == null)
+            {
+                return View("NewFilter", "Filters");
+            }
+            viewModel.UsersItems.Remove(item);
+            Session["ItemsList"] = viewModel;
+
+            return RedirectToAction("NewFilter", "Filters");
+        }
     }
 }

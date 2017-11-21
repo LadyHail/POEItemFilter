@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -23,10 +24,11 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
-        // GET: Filters
-        public ActionResult Index()
+        public ActionResult MyFilters()
         {
-            return View();
+            var currentUser = User.Identity.GetUserId();
+            var viewModel = _context.Filters.Where(f => f.UserId == currentUser).ToList();
+            return View(viewModel);
         }
 
         public ActionResult NewFilter()
@@ -34,7 +36,10 @@ namespace POEItemFilter.Controllers
             if (Session["ItemsList"] != null)
             {
                 ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
-                return View(viewModel);
+                if (viewModel.UsersItems.Count > 0)
+                {
+                    return View(viewModel);
+                }
             }
             return View();
         }
@@ -45,31 +50,33 @@ namespace POEItemFilter.Controllers
             {
                 return RedirectToAction("NewItem", "UsersItems");
             }
-            if (Session["ItemsList"] == null)
+
+            ItemUserList model = Session["ItemsList"] as ItemUserList;
+            if (model == null)
             {
+                item.Id = 0;
                 Session["ItemsList"] = new ItemUserList();
                 Session.Timeout = 30;
             }
-
-            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
-            if (Session.IsNewSession)
-            {
-                item.Id = 0;
-            }
             else
             {
-                item.Id = viewModel.UsersItems.Count;
+                item.Id = model.UsersItems.Count;
             }
+            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
             viewModel.UsersItems.Add(item);
-
             return View("NewFilter", viewModel);
         }
 
         [HttpPost]
-        public JsonResult SaveFilter(string filterName, string description, string dedicated)
+        public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
         {
             Models.Filters.Filter newFilter = new Models.Filters.Filter();
-            if (filterName != null)
+            if (id != "")
+            {
+                int filterId = int.Parse(id);
+                newFilter = _context.Filters.SingleOrDefault(f => f.Id == filterId);
+            }
+            if (filterName != null && id == "")
             {
                 //Create filter model
                 newFilter.Name = filterName;
@@ -92,7 +99,7 @@ namespace POEItemFilter.Controllers
                 filterText.WriteLine("#Description: " + newFilter.Description);
 
                 //Add items to file
-                ItemUserList itemsList = (ItemUserList)Session["ItemsList"] as ItemUserList;
+                ItemUserList itemsList = Session["ItemsList"] as ItemUserList;
                 if (itemsList != null)
                 {
                     foreach (var item in itemsList.UsersItems)
@@ -133,9 +140,22 @@ namespace POEItemFilter.Controllers
 
                 return Json(new { fileName = newFilter.Name }, JsonRequestBehavior.AllowGet);
             }
+            else if (filterName != null && id != "")
+            {
+                //Update filter model
+                newFilter.Name = filterName;
+                newFilter.Description = description;
+                newFilter.EditDate = DateTime.Now;
+                if (dedicated != null)
+                {
+                    newFilter.Dedicated = (Classes)int.Parse(dedicated);
+                }
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
             else
             {
-                return null;
+                return Json(new { success = false });
             }
         }
 
@@ -154,10 +174,40 @@ namespace POEItemFilter.Controllers
             return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
+        [HttpGet]
+        public FileResult DownloadInt(int id)
+        {
+            //file += ".filter";
+            //string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + file;
+            //var cd = new System.Net.Mime.ContentDisposition
+            //{
+            //    FileName = file,
+            //    Inline = false,
+            //};
+            //Response.AppendHeader("Content-Disposition", cd.ToString());
+
+            //return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
+            return File(AppDomain.CurrentDomain.BaseDirectory + @"\Filters\test.filter", System.Net.Mime.MediaTypeNames.Application.Octet, "test.filter");
+        }
+
         [HttpPost]
         public void ClearSession()
         {
             Session.Clear();
+        }
+
+        public ActionResult EditFilter(int id)
+        {
+            var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
+            if (filterInDb == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new EditFilterViewModel();
+            viewModel.Filter = filterInDb;
+            //viewModel.ItemsList = itemsList;
+            return View(viewModel);
         }
     }
 }

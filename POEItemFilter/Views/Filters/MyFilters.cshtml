@@ -1,0 +1,82 @@
+﻿@model IEnumerable<POEItemFilter.Models.Filters.Filter>
+
+@{
+    ViewBag.Title = "MyFilters";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Filters</h2>
+
+<div>
+@if (Model != null)
+{
+    <div id="filtersList">
+        <table class="table" id="filtersListTable">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Dedicated to class</th>
+                <th>Create Date</th>
+                <th>Edit Date</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Download</th>
+            </tr>
+            @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Dedicated</td>
+                    <td>@item.CreateDate</td>
+                    <td>@item.EditDate</td>
+                    <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-details">Details</button></td>
+                    <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
+                    <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-download">Download</button></td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            //Details
+            @*$("#filtersListTable").on("click", ".js-details", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("EditFilter", "Filters")" + "/" + button.attr("data-item-id"),
+                   success: function (data) {
+                       window.location.href = "/Filters/EditFilter/" + button.attr("data-item-id");
+                   },
+                });
+            });*@
+
+            //Edit filter
+            $("#filtersListTable").on("click", ".js-edit", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("EditFilter", "Filters")" + "/" + button.attr("data-item-id"),
+                   success: function (data) {
+                       window.location.href = "/Filters/EditFilter/" + button.attr("data-item-id");
+                   },
+                });
+            });
+
+            //Download filter
+            $("#filtersListTable").on("click", ".js-download", function () {
+                var button = $(this);
+                $.ajax({
+                   url: "@Url.Action("DownloadInt", "Filters")" + "/" + button.attr("data-item-id"),
+                   @*success: function (data) {
+                       window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "DownloadInt"})/?file=" + "test.filter";
+                   },*@
+                });
+            });
+        });
+        </script>
+    }

@@ -13,6 +13,7 @@ namespace POEItemFilter
                         "~/Scripts/esm/popper.js",
                         "~/Scripts/umd/popper.js",
                         "~/Scripts/bootstrap.js",
+                        "~/Scripts/bootbox.js",
                         "~/Scripts/respond.js"));
 
 
