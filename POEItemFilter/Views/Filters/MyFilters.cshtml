@@ -46,15 +46,15 @@
         $(document).ready(function () {
 
             //Details
-            @*$("#filtersListTable").on("click", ".js-details", function () {
+            $("#filtersListTable").on("click", ".js-details", function () {
                 var button = $(this);
                 $.ajax({
-                    url: "@Url.Action("EditFilter", "Filters")" + "/" + button.attr("data-item-id"),
+                    url: "@Url.Action("Details", "Filters")" + "/" + button.attr("data-item-id"),
                    success: function (data) {
-                       window.location.href = "/Filters/EditFilter/" + button.attr("data-item-id");
+                       window.location.href = "/Filters/Details/" + button.attr("data-item-id");
                    },
                 });
-            });*@
+            });
 
             //Edit filter
             $("#filtersListTable").on("click", ".js-edit", function () {

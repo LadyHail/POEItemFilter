@@ -254,6 +254,10 @@
     <Compile Include="Migrations\201711201222378_ConnectFilterWithUser.Designer.cs">
       <DependentUpon>201711201222378_ConnectFilterWithUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.cs" />
+    <Compile Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.Designer.cs">
+      <DependentUpon>201711211846252_ConnectUsersItemsWithFilterTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -384,6 +388,7 @@
     <Content Include="Views\UsersItems\Refresh.cshtml" />
     <Content Include="Views\Filters\MyFilters.cshtml" />
     <Content Include="Views\Filters\EditFilter.cshtml" />
+    <Content Include="Views\Filters\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -409,6 +414,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711201222378_ConnectFilterWithUser.resx">
       <DependentUpon>201711201222378_ConnectFilterWithUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.resx">
+      <DependentUpon>201711211846252_ConnectUsersItemsWithFilterTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

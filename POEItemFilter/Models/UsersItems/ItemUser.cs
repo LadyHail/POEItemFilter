@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using POEItemFilter.Models.Filters;
 
 namespace POEItemFilter.Models
 {
@@ -7,9 +8,9 @@ namespace POEItemFilter.Models
     {
         public int Id { get; set; }
 
-        //public int FilterId { get; set; }
+        public int FilterId { get; set; }
 
-        //public Filter Filter { get; set; }
+        public Filter Filter { get; set; }
 
         /// <summary>
         /// eg. Armour.
@@ -126,7 +127,7 @@ namespace POEItemFilter.Models
             {
                 if (property.GetValue(this, null) != null)
                 {
-                    if (property.Name != "Id")
+                    if (property.Name != "Id" && property.Name != "FilterId" && property.Name != "Filter")
                     {
                         output += (property.Name + ": " + property.GetValue(this, null).ToString()).TrimEnd() + " | ";
                     }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using POEItemFilter.Library;
 using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.ViewModels;
@@ -71,12 +71,12 @@ namespace POEItemFilter.Controllers
         public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
         {
             Models.Filters.Filter newFilter = new Models.Filters.Filter();
-            if (id != "")
+            if (id != "" && id != null)
             {
                 int filterId = int.Parse(id);
                 newFilter = _context.Filters.SingleOrDefault(f => f.Id == filterId);
             }
-            if (filterName != null && id == "")
+            if (filterName != null && (id == "" || id == null))
             {
                 //Create filter model
                 newFilter.Name = filterName;
@@ -87,60 +87,26 @@ namespace POEItemFilter.Controllers
                 {
                     newFilter.Dedicated = (Classes)int.Parse(dedicated);
                 }
-                var test = User.Identity.GetUserId();
-                newFilter.UserId = test;
-                _context.Filters.Add(newFilter);
-                _context.SaveChanges();
+                newFilter.UserId = User.Identity.GetUserId();
 
                 //Create file
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"\Filters");
-                FileInfo filterFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + newFilter.Name + ".filter");
-                StreamWriter filterText = filterFile.AppendText();
+                StreamWriter filterText = GenerateFilter.CreateTempFile(newFilter.Name);
                 filterText.WriteLine("#Description: " + newFilter.Description);
 
                 //Add items to file
                 ItemUserList itemsList = Session["ItemsList"] as ItemUserList;
                 if (itemsList != null)
                 {
-                    foreach (var item in itemsList.UsersItems)
-                    {
-                        if (item.Show == true)
-                        {
-                            filterText.WriteLine("Show");
-                        }
-                        else
-                        {
-                            filterText.WriteLine("Hide");
-                        }
+                    GenerateFilter.SaveItems(filterText, itemsList, newFilter);
 
-                        string output = "";
-                        Type type = item.GetType();
-                        PropertyInfo[] properties = type.GetProperties();
-
-                        foreach (PropertyInfo property in properties)
-                        {
-                            if (property.GetValue(item, null) != null)
-                            {
-                                if (property.Name != "Id" &&
-                                    property.Name != "Show" &&
-                                    property.Name != "Attribute1" &&
-                                    property.Name != "Attribute2")
-                                {
-                                    if (property.Name != "SetFontSize" && property.GetValue(item, null).ToString() != "32")
-                                    {
-                                        output = "    " + (property.Name + " " + property.GetValue(item, null).ToString()).Trim();
-                                        filterText.WriteLine(output);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    _context.Filters.Add(newFilter);
+                    _context.SaveChanges();
                 }
                 filterText.Close();
 
                 return Json(new { fileName = newFilter.Name }, JsonRequestBehavior.AllowGet);
             }
-            else if (filterName != null && id != "")
+            else if (filterName != null && id != "" && id != null)
             {
                 //Update filter model
                 newFilter.Name = filterName;
@@ -199,15 +165,30 @@ namespace POEItemFilter.Controllers
         public ActionResult EditFilter(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
+            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();
             if (filterInDb == null)
+            {
+                return HttpNotFound();
+            }
+            if (itemsInDb == null)
             {
                 return HttpNotFound();
             }
 
             var viewModel = new EditFilterViewModel();
             viewModel.Filter = filterInDb;
-            //viewModel.ItemsList = itemsList;
+            viewModel.ItemsList = itemsInDb;
             return View(viewModel);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();
+            if (itemsInDb == null)
+            {
+                return HttpNotFound();
+            }
+            return View(itemsInDb);
         }
     }
 }

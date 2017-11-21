@@ -1,0 +1,16 @@
+﻿@model IEnumerable<POEItemFilter.Models.ItemUser>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details:</h2>
+<hr />
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.ToString()</td>
+    </tr>
+}
+

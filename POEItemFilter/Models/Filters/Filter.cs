@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using POEItemFilter.Library.Enumerables;
 
 namespace POEItemFilter.Models.Filters
@@ -9,7 +10,7 @@ namespace POEItemFilter.Models.Filters
 
         public string Name { get; set; }
 
-        //public ICollection<ItemUser> Items { get; set; }
+        public ICollection<ItemUser> Items { get; set; }
 
         public string Description { get; set; }
 
@@ -23,9 +24,9 @@ namespace POEItemFilter.Models.Filters
 
         public Classes? Dedicated { get; set; }
 
-        //public Filter()
-        //{
-        //    Items = new HashSet<ItemUser>();
-        //}
+        public Filter()
+        {
+            Items = new HashSet<ItemUser>();
+        }
     }
 }

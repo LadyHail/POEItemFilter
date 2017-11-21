@@ -15,6 +15,7 @@ namespace POEItemFilter.Models
         public DbSet<ItemType> Types { get; set; }
         public DbSet<ItemAttribute> Attributes { get; set; }
         public DbSet<Filter> Filters { get; set; }
+        public DbSet<ItemUser> UsersItems { get; set; }
 
         public ApplicationDbContext()
             : base("POEItemFilterContext", throwIfV1Schema: false)
@@ -38,6 +39,7 @@ namespace POEItemFilter.Models
             modelBuilder.Configurations.Add(new ItemTypeConfiguration());
             modelBuilder.Configurations.Add(new ItemAttributeConfiguration());
             modelBuilder.Configurations.Add(new FilterConfiguration());
+            modelBuilder.Configurations.Add(new ItemUserConfiguration());
         }
     }
 }

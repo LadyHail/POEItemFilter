@@ -28,10 +28,10 @@ namespace POEItemFilter.Library.EntityConfiguration
                 .HasForeignKey(f => f.UserId)
                 .WillCascadeOnDelete(false);
 
-            //HasMany(f => f.Items)
-            //    .WithRequired(f => f.Filter)
-            //    .HasForeignKey(f => f.FilterId)
-            //    .WillCascadeOnDelete(false);
+            HasMany(f => f.Items)
+                .WithRequired(f => f.Filter)
+                .HasForeignKey(f => f.FilterId)
+                .WillCascadeOnDelete(false);
         }
     }
 }
