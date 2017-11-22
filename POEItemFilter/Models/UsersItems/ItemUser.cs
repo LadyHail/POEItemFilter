@@ -6,6 +6,8 @@ namespace POEItemFilter.Models
 {
     public class ItemUser
     {
+        //PlayAlertSound 7 300
+        //visual: czwarty parametr Alpha [0-255]
         public int Id { get; set; }
 
         public int FilterId { get; set; }

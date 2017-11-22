@@ -24,7 +24,6 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
-        // GET: AllItems
         public ActionResult NewItem()
         {
             var baseTypes = _context.BaseTypes.ToList();

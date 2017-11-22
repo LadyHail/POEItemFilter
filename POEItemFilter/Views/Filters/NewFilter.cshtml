@@ -145,35 +145,36 @@ Maybe it's used by specific class?</textarea>
                     alert("Invalid class!")
                 } else {
                     description.val() === description.prop("defaultValue") ? description.val("") : "";
-                    $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("SaveFilter", "Filters")",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: JSON.stringify({
-                            "filterName": $("#filterName").val(), "description": $("#description").val(), "dedicated": $("#classes").val() }),
-                        success: function (data) {
-                            if (data.fileName != "") {
-                                window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
-                                ClearSession();
-                                bootbox.alert("Well done!");
-                            };
-                        },
-                        error: function (data, status, error) {
-                            bootbox.alert("Oops... Something went wrong!");
-                        },
-                    });
+                    
+                    var request = $.ajax({
+                            type: "POST",
+                            url: "@Url.Action("SaveFilter", "Filters")",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify({
+                                "filterName": $("#filterName").val(), "description": $("#description").val(), "dedicated": $("#classes").val()
+                            }),
+                            success: function (data) {
+                                if (data.fileName != "") {
+                                    window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
+                                };
+                            },
+                            error: function (data, status, error) {
+                                bootbox.alert("Oops... Something went wrong!");
+                            },
+                        });
+                    $.when(request).then(ClearSession(filterName));
                 }
             });
 
-            //Clear session after file is created.
-            function ClearSession() {
+            //Clear session after file is downloaded.
+            function ClearSession(fileName) {
                 $("#filterName").val($("#filterName").prop("defaultValue"));
                 $("#description").val($("#description").prop("defaultValue"));
                 dedicated.prop("checked", false);
                 classes.detach();
                 $("#itemsList").remove();
-                $.post("/Filters/ClearSession", function () {
+                $.post("/Filters/ClearSession/?fileName=" + fileName, function () {
                 });
             };
     });

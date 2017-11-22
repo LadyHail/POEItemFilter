@@ -157,8 +157,9 @@ namespace POEItemFilter.Controllers
         }
 
         [HttpPost]
-        public void ClearSession()
+        public void ClearSession(string fileName)
         {
+            GenerateFilter.DeleteTempFile(fileName);
             Session.Clear();
         }
 
