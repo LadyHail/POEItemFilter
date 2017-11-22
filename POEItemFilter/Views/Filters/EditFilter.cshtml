@@ -40,7 +40,7 @@
             </p>
         }
         <p>
-            <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="~/UsersItems/NewItemInEditMode/@Model.Filter.Id" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
             <a href="#" id="saveFilter" class="btn btn-primary">Save filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
@@ -51,14 +51,14 @@
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>
-                    <th>Edit</th>
+                    @*<th>Edit</th>*@
                     <th>Delete</th>
                 </tr>
                 @foreach (var item in Model.ItemsList)
                 {
                     <tr>
                         <td>@item.ToString()</td>
-                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
+                        @*<td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>*@
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
                     </tr>
                 }
@@ -95,7 +95,7 @@
                 bootbox.confirm("Are you sure you want to delete this item?", function (result) {
                     if (result) {
                         $.ajax({
-                            url: "@Url.Action("DeleteItem", "UsersItems")" + "/" + button.attr("data-item-id"),
+                            url: "@Url.Action("DeleteItemDb", "UsersItems")" + "/" + button.attr("data-item-id"),
                             //method: "DELETE",
                             success: function () {
                                 button.parents("tr").remove();

@@ -30,8 +30,6 @@ namespace POEItemFilter.Library
         {
             foreach (var item in itemsList.UsersItems)
             {
-                newFilter.Items.Add(item);
-
                 string visibility = item.Show == true ? "Show" : "Hide";
                 filterText.WriteLine(visibility);
 
@@ -62,6 +60,7 @@ namespace POEItemFilter.Library
                 filterText.WriteLine(output);
             }
             filterText.Write("Hide");
+            filterText.Close();
         }
 
         /// <summary>

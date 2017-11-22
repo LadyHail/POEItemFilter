@@ -67,6 +67,19 @@ namespace POEItemFilter.Controllers
             return View("NewFilter", viewModel);
         }
 
+        public ActionResult AddItemEdit(ItemUser item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("MyFilters", "UsersItems");
+            }
+
+            _context.UsersItems.Add(item);
+            _context.SaveChanges();
+
+            return RedirectToAction("EditFilter", new { id = item.FilterId });
+        }
+
         [HttpPost]
         public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
         {
@@ -97,6 +110,10 @@ namespace POEItemFilter.Controllers
                 ItemUserList itemsList = Session["ItemsList"] as ItemUserList;
                 if (itemsList != null)
                 {
+                    foreach (var item in itemsList.UsersItems)
+                    {
+                        newFilter.Items.Add(item);
+                    }
                     GenerateFilter.SaveItems(filterText, itemsList, newFilter);
 
                     _context.Filters.Add(newFilter);
@@ -143,23 +160,36 @@ namespace POEItemFilter.Controllers
         [HttpGet]
         public FileResult DownloadInt(int id)
         {
-            //file += ".filter";
-            //string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + file;
-            //var cd = new System.Net.Mime.ContentDisposition
-            //{
-            //    FileName = file,
-            //    Inline = false,
-            //};
-            //Response.AppendHeader("Content-Disposition", cd.ToString());
+            var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
+            StreamWriter filterText = GenerateFilter.CreateTempFile(filterInDb.Name);
+            filterText.WriteLine("#Description: " + filterInDb.Description);
 
-            //return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
-            return File(AppDomain.CurrentDomain.BaseDirectory + @"\Filters\test.filter", System.Net.Mime.MediaTypeNames.Application.Octet, "test.filter");
+            var itemsInDb = filterInDb.Items.ToList();
+            ItemUserList itemsList = new ItemUserList()
+            {
+                UsersItems = itemsInDb,
+            };
+            GenerateFilter.SaveItems(filterText, itemsList, filterInDb);
+
+            string filterName = filterInDb.Name + ".filter";
+            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + filterName;
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = filterName,
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+
+            return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, filterName);
         }
 
         [HttpPost]
         public void ClearSession(string fileName)
         {
-            GenerateFilter.DeleteTempFile(fileName);
+            if (fileName != "")
+            {
+                GenerateFilter.DeleteTempFile(fileName);
+            }
             Session.Clear();
         }
 

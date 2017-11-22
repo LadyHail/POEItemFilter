@@ -73,7 +73,7 @@
                 $.ajax({
                    url: "@Url.Action("DownloadInt", "Filters")" + "/" + button.attr("data-item-id"),
                    @*success: function (data) {
-                       window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "DownloadInt"})/?file=" + "test.filter";
+                       window.location.href = "@Url.RouteUrl(new { Controller = "Filters", Action = "DownloadInt"})/?file=" + data;
                    },*@
                 });
             });

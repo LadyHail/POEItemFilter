@@ -389,6 +389,7 @@
     <Content Include="Views\Filters\MyFilters.cshtml" />
     <Content Include="Views\Filters\EditFilter.cshtml" />
     <Content Include="Views\Filters\Details.cshtml" />
+    <Content Include="Views\UsersItems\NewItemInEditMode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

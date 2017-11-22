@@ -6,11 +6,12 @@
 }
 
 <h2>Details:</h2>
-<hr />
-@foreach (var item in Model)
-{
-    <tr>
-        <td>@item.ToString()</td>
-    </tr>
-}
 
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ToString()</td>
+        </tr>
+    }
+</table>

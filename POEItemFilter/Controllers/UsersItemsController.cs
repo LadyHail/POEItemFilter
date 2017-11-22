@@ -42,6 +42,24 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        public ActionResult NewItemInEditMode(int id)
+        {
+            var baseTypes = _context.BaseTypes.ToList();
+            var items = _context.ItemsDB.ToList();
+            var types = _context.Types.ToList();
+            var attributes = _context.Attributes.ToList();
+
+            var viewModel = new NewItemViewModel()
+            {
+                Items = items,
+                BaseTypes = baseTypes,
+                Types = types,
+                Attributes = attributes,
+            };
+
+            return View(viewModel);
+        }
+
         /// <summary>
         /// The method is filtering database depending on received data.
         /// </summary>
@@ -584,8 +602,266 @@ namespace POEItemFilter.Controllers
             return Json(Url.Action("AddItem", "Filters", item));
         }
 
+        public ActionResult SaveItemEdit(string id)
+        {
+            string[] splitId = id.Split('|');
+            ItemUser item = new ItemUser();
+
+            for (int i = 0; i < splitId.Length; i++)
+            {
+                int number = -1;
+                if (int.TryParse(splitId[i], out var result))
+                {
+                    number = int.Parse(splitId[i].ToString());
+                }
+                switch (i)
+                {
+                    case 0:
+                        item.MainCategory = _context.BaseTypes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 1:
+                        item.Class = _context.Types.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 2:
+                        item.Attribute1 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 3:
+                        item.Attribute2 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 4:
+                        item.ItemLevel = InequalitySelector.Select(number);
+                        break;
+
+                    case 5:
+                        if (number == -1)
+                        {
+                            item.ItemLevel = null;
+                        }
+                        else if (item.ItemLevel != null)
+                        {
+                            item.ItemLevel += " " + number;
+                        }
+                        break;
+
+                    case 6:
+                        item.Quality = InequalitySelector.Select(number);
+                        break;
+
+                    case 7:
+                        if (number == -1)
+                        {
+                            item.Quality = null;
+                        }
+                        else if (item.Quality != null)
+                        {
+                            item.Quality += " " + number;
+                        }
+                        break;
+
+                    case 8:
+                        item.Rarity = InequalitySelector.Select(number);
+                        break;
+
+                    case 9:
+                        if (number == -1)
+                        {
+                            item.Rarity = null;
+                        }
+                        else if (item.Rarity != null)
+                        {
+                            item.Rarity += " " + (Rarity)number;
+                        }
+                        break;
+
+                    case 10:
+                        item.Sockets = InequalitySelector.Select(number);
+                        break;
+
+                    case 11:
+                        if (number == -1)
+                        {
+                            item.Sockets = null;
+                        }
+                        else if (item.Sockets != null)
+                        {
+                            item.Sockets += " " + number;
+                        }
+                        break;
+
+                    case 12:
+                        item.LinkedSockets = InequalitySelector.Select(number);
+                        break;
+
+                    case 13:
+                        if (number == -1)
+                        {
+                            item.LinkedSockets = null;
+                        }
+                        else if (item.LinkedSockets != null)
+                        {
+                            item.LinkedSockets += " " + number;
+                        }
+                        break;
+
+                    case 14:
+                        if (number != -1)
+                        {
+                            item.SocketsGroup = string.Concat(Enumerable.Repeat("R", number));
+                        }
+                        break;
+
+                    case 15:
+                        if (number != -1)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("G", number));
+                        }
+                        break;
+
+                    case 16:
+                        if (number != -1)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("B", number));
+                        }
+                        break;
+
+                    case 17:
+                        if (number != -1)
+                        {
+                            item.SocketsGroup += string.Concat(Enumerable.Repeat("W", number));
+                        }
+                        break;
+
+                    case 18:
+                        item.Height = InequalitySelector.Select(number);
+                        break;
+
+                    case 19:
+                        if (number == -1)
+                        {
+                            item.Height = null;
+                        }
+                        else if (item.Height != null)
+                        {
+                            item.Height += " " + number;
+                        }
+                        break;
+
+                    case 20:
+                        item.Width = InequalitySelector.Select(number);
+                        break;
+
+                    case 21:
+                        if (number == -1)
+                        {
+                            item.Width = null;
+                        }
+                        else if (item.Width != null)
+                        {
+                            item.Width += " " + number;
+                        }
+                        break;
+
+                    case 22:
+                        item.Identified = Convert.ToBoolean(number);
+                        break;
+
+                    case 23:
+                        item.Corrupted = Convert.ToBoolean(number);
+                        break;
+
+                    case 24:
+                        if (number != -1)
+                        {
+                            item.SetBorderColor = number.ToString();
+
+                        }
+                        break;
+
+                    case 25:
+                        if (number != -1)
+                        {
+                            item.SetBorderColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 26:
+                        if (number != -1)
+                        {
+                            item.SetBorderColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 27:
+                        if (number != -1)
+                        {
+                            item.SetTextColor = number.ToString();
+                        }
+                        break;
+
+                    case 28:
+                        if (number != -1)
+                        {
+                            item.SetTextColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 29:
+                        if (number != -1)
+                        {
+                            item.SetTextColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 30:
+                        if (number != -1)
+                        {
+                            item.SetBackgroundColor = number.ToString();
+                        }
+                        break;
+
+                    case 31:
+                        if (number != -1)
+                        {
+                            item.SetBackgroundColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 32:
+                        if (number != -1)
+                        {
+                            item.SetBackgroundColor += " " + number.ToString();
+                        }
+                        break;
+
+                    case 33:
+                        if (number != -1)
+                        {
+                            item.SetFontSize = number.ToString();
+                        }
+                        break;
+
+                    case 34:
+                        item.BaseType = _context.ItemsDB.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
+                        break;
+
+                    case 35:
+                        item.Show = number == 0 ? true : false;
+                        break;
+                }
+            }
+
+            item.BaseType = item.BaseType == null && splitId[36].ToString() != "" && splitId[36].ToString() != "undefined" ? splitId[36].ToString() : item.BaseType;
+            item.FilterId = int.Parse(splitId[37]);
+
+            return Json(Url.Action("AddItemEdit", "Filters", item));
+        }
+
         //[HttpDelete]
-        public ActionResult DeleteItem(int id)
+        public ActionResult DeleteItemSession(int id)
         {
             ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
             var item = viewModel.UsersItems.SingleOrDefault(i => i.Id == id);
@@ -597,6 +873,19 @@ namespace POEItemFilter.Controllers
             Session["ItemsList"] = viewModel;
 
             return RedirectToAction("NewFilter", "Filters");
+        }
+
+        public ActionResult DeleteItemDb(int id)
+        {
+            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
+            int filterId = itemInDb.FilterId;
+            if (itemInDb != null)
+            {
+                _context.UsersItems.Remove(itemInDb);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("EditFilter", "Filters", new { id = filterId });
         }
     }
 }
