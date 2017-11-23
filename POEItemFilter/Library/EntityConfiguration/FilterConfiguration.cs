@@ -31,7 +31,7 @@ namespace POEItemFilter.Library.EntityConfiguration
             HasMany(f => f.Items)
                 .WithRequired(f => f.Filter)
                 .HasForeignKey(f => f.FilterId)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
         }
     }
 }

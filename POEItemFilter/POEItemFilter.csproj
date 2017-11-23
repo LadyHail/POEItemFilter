@@ -215,6 +215,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersItemsController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Library\DeleteFileAttribute.cs" />
     <Compile Include="Library\EntityConfiguration\FilterConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemAttributeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemBaseTypeConfiguration.cs" />
@@ -257,6 +258,10 @@
     <Compile Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.cs" />
     <Compile Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.Designer.cs">
       <DependentUpon>201711211846252_ConnectUsersItemsWithFilterTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711231343318_EnableCascadeDeleteForItemsAndFilters.cs" />
+    <Compile Include="Migrations\201711231343318_EnableCascadeDeleteForItemsAndFilters.Designer.cs">
+      <DependentUpon>201711231343318_EnableCascadeDeleteForItemsAndFilters.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -418,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711211846252_ConnectUsersItemsWithFilterTable.resx">
       <DependentUpon>201711211846252_ConnectUsersItemsWithFilterTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711231343318_EnableCascadeDeleteForItemsAndFilters.resx">
+      <DependentUpon>201711231343318_EnableCascadeDeleteForItemsAndFilters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

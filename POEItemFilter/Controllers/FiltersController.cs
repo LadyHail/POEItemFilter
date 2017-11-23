@@ -143,10 +143,11 @@ namespace POEItemFilter.Controllers
         }
 
         [HttpGet]
+        [DeleteFile]
         public FileResult Download(string file)
         {
             file += ".filter";
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + file;
+            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"Filters\" + file;
             var cd = new System.Net.Mime.ContentDisposition
             {
                 FileName = file,
@@ -157,8 +158,8 @@ namespace POEItemFilter.Controllers
             return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
-        [HttpGet]
-        public FileResult DownloadInt(int id)
+        [HttpPost]
+        public JsonResult GenerateText(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
             StreamWriter filterText = GenerateFilter.CreateTempFile(filterInDb.Name);
@@ -171,16 +172,7 @@ namespace POEItemFilter.Controllers
             };
             GenerateFilter.SaveItems(filterText, itemsList, filterInDb);
 
-            string filterName = filterInDb.Name + ".filter";
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + filterName;
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = filterName,
-                Inline = false,
-            };
-            Response.AppendHeader("Content-Disposition", cd.ToString());
-
-            return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, filterName);
+            return Json(new { fileName = filterInDb.Name }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -206,6 +198,12 @@ namespace POEItemFilter.Controllers
                 return HttpNotFound();
             }
 
+            bool isAuthorized = filterInDb.UserId == User.Identity.GetUserId();
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
+
             var viewModel = new EditFilterViewModel();
             viewModel.Filter = filterInDb;
             viewModel.ItemsList = itemsInDb;
@@ -220,6 +218,20 @@ namespace POEItemFilter.Controllers
                 return HttpNotFound();
             }
             return View(itemsInDb);
+        }
+
+        public ActionResult DeleteFilter(int id)
+        {
+            var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
+            if (filterInDb == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.Filters.Remove(filterInDb);
+            _context.SaveChanges();
+
+            return null;
         }
     }
 }
