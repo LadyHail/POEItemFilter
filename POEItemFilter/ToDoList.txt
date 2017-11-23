@@ -1,5 +1,5 @@
 ﻿BACK:
-1. Sprawdzić czy poprawnie zapisuje itemy do pliku. Sprawdzić MainCategory.
+[SOLVED] 1. Sprawdzić czy poprawnie zapisuje itemy do pliku. Sprawdzić MainCategory.
 
 [SOLVED] 2. Dodać walidację wprowadzanych danych.
 
@@ -16,6 +16,12 @@
 8. Możliwość edycji username i email.
 
 9. Dodać awatary
+
+10. Autoryzacja użytkowników.
+
+11. Edycja Items.
+
+12. Search for filter.
 
 FRONT:
 4. Poprawić kod w View na C#.

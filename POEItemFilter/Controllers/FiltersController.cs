@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -35,8 +36,8 @@ namespace POEItemFilter.Controllers
         {
             if (Session["ItemsList"] != null)
             {
-                ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
-                if (viewModel.UsersItems.Count > 0)
+                List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+                if (viewModel.Count > 0)
                 {
                     return View(viewModel);
                 }
@@ -51,19 +52,19 @@ namespace POEItemFilter.Controllers
                 return RedirectToAction("NewItem", "UsersItems");
             }
 
-            ItemUserList model = Session["ItemsList"] as ItemUserList;
+            List<ItemUser> model = Session["ItemsList"] as List<ItemUser>;
             if (model == null)
             {
                 item.Id = 0;
-                Session["ItemsList"] = new ItemUserList();
+                Session["ItemsList"] = new List<ItemUser>();
                 Session.Timeout = 30;
             }
             else
             {
-                item.Id = model.UsersItems.Count;
+                item.Id = model.Count;
             }
-            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
-            viewModel.UsersItems.Add(item);
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            viewModel.Add(item);
             return View("NewFilter", viewModel);
         }
 
@@ -107,10 +108,10 @@ namespace POEItemFilter.Controllers
                 filterText.WriteLine("#Description: " + newFilter.Description);
 
                 //Add items to file
-                ItemUserList itemsList = Session["ItemsList"] as ItemUserList;
+                List<ItemUser> itemsList = Session["ItemsList"] as List<ItemUser>;
                 if (itemsList != null)
                 {
-                    foreach (var item in itemsList.UsersItems)
+                    foreach (var item in itemsList)
                     {
                         newFilter.Items.Add(item);
                     }
@@ -147,7 +148,7 @@ namespace POEItemFilter.Controllers
         public FileResult Download(string file)
         {
             file += ".filter";
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"Filters\" + file;
+            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\Filters\" + file;
             var cd = new System.Net.Mime.ContentDisposition
             {
                 FileName = file,
@@ -165,11 +166,10 @@ namespace POEItemFilter.Controllers
             StreamWriter filterText = GenerateFilter.CreateTempFile(filterInDb.Name);
             filterText.WriteLine("#Description: " + filterInDb.Description);
 
-            var itemsInDb = filterInDb.Items.ToList();
-            ItemUserList itemsList = new ItemUserList()
-            {
-                UsersItems = itemsInDb,
-            };
+            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i);
+            List<ItemUser> itemsList = new List<ItemUser>();
+            itemsList.AddRange(itemsInDb);
+
             GenerateFilter.SaveItems(filterText, itemsList, filterInDb);
 
             return Json(new { fileName = filterInDb.Name }, JsonRequestBehavior.AllowGet);

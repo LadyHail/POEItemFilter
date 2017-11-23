@@ -863,13 +863,13 @@ namespace POEItemFilter.Controllers
         //[HttpDelete]
         public ActionResult DeleteItemSession(int id)
         {
-            ItemUserList viewModel = Session["ItemsList"] as ItemUserList;
-            var item = viewModel.UsersItems.SingleOrDefault(i => i.Id == id);
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            var item = viewModel.SingleOrDefault(i => i.Id == id);
             if (item == null)
             {
                 return View("NewFilter", "Filters");
             }
-            viewModel.UsersItems.Remove(item);
+            viewModel.Remove(item);
             Session["ItemsList"] = viewModel;
 
             return RedirectToAction("NewFilter", "Filters");
@@ -886,6 +886,11 @@ namespace POEItemFilter.Controllers
             }
 
             return RedirectToAction("EditFilter", "Filters", new { id = filterId });
+        }
+
+        public ActionResult EditItem(int id)
+        {
+
         }
     }
 }

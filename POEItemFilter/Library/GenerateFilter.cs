@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using POEItemFilter.Models;
 using POEItemFilter.Models.Filters;
-using POEItemFilter.ViewModels;
 
 namespace POEItemFilter.Library
 {
@@ -14,8 +15,8 @@ namespace POEItemFilter.Library
         /// <returns>Destination to save filter items.</returns>
         public static StreamWriter CreateTempFile(string filterName)
         {
-            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"\Filters");
-            FileInfo filterFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + filterName + ".filter");
+            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\Filters");
+            FileInfo filterFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\Filters\" + filterName + ".filter");
             StreamWriter filterText = filterFile.AppendText();
             return filterText;
         }
@@ -26,9 +27,9 @@ namespace POEItemFilter.Library
         /// <param name="filterText">Save destination</param>
         /// <param name="itemsList">List of items to save</param>
         /// <param name="newFilter">Model of filter created by user</param>
-        public static void SaveItems(StreamWriter filterText, ItemUserList itemsList, Filter newFilter)
+        public static void SaveItems(StreamWriter filterText, List<ItemUser> itemsList, Filter newFilter)
         {
-            foreach (var item in itemsList.UsersItems)
+            foreach (var item in itemsList)
             {
                 string visibility = item.Show == true ? "Show" : "Hide";
                 filterText.WriteLine(visibility);
@@ -83,7 +84,7 @@ namespace POEItemFilter.Library
         /// <param name="fileName">Name of the filter.</param>
         public static void DeleteTempFile(string fileName)
         {
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\Filters\" + fileName + ".filter";
+            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\Filters\" + fileName + ".filter";
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);

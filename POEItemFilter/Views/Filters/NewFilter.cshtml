@@ -1,4 +1,4 @@
-﻿@model POEItemFilter.ViewModels.ItemUserList
+﻿@model IEnumerable<POEItemFilter.Models.ItemUser>
 
 @{
     ViewBag.Title = "Create new item filter";
@@ -40,7 +40,7 @@ Maybe it's used by specific class?</textarea>
             </p>
         <p>
             <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-            <a href="#" id="createFilter" class="btn btn-primary">Save & download filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="#" id="createFilter" class="btn btn-success">Save & download filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
 
@@ -53,7 +53,7 @@ Maybe it's used by specific class?</textarea>
                     @*<th>Edit</th>*@
                     <th>Delete</th>
                 </tr>
-                @foreach (var item in Model.UsersItems)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>@item.ToString()</td>
