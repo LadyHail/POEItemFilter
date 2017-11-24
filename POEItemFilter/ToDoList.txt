@@ -19,7 +19,7 @@
 
 10. Autoryzacja użytkowników.
 
-11. Edycja Items.
+[SOLVED] 11. Edycja Items.
 
 12. Search for filter.
 
@@ -30,4 +30,4 @@ FRONT:
 
 6. Zamiast przesyłania stringów przesyłać cały obiekt.
 
-7. EditFilter NewItem
+[SOLVED] 7. EditFilter NewItem

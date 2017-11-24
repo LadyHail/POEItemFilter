@@ -9,12 +9,14 @@ namespace POEItemFilter
         {
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.unobtrusive-ajax.js",
                         "~/Scripts/popper.js",
                         "~/Scripts/esm/popper.js",
                         "~/Scripts/umd/popper.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootbox.js",
-                        "~/Scripts/respond.js"));
+                        "~/Scripts/respond.js"
+                        ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

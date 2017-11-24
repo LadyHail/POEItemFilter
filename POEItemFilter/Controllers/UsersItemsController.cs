@@ -677,5 +677,10 @@ namespace POEItemFilter.Controllers
 
             return View(item);
         }
+
+        public ActionResult Test(ItemUserViewModel model)
+        {
+            return null;
+        }
     }
 }

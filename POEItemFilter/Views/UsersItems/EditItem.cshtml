@@ -36,12 +36,15 @@
         new {Id = "1", Name = "Yes"},
     },
     "Id", "Name", 0);
-
+}
     <button id="basicToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
         Basic information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p id="basicBreak" />
+
+@using (Html.BeginForm("Test", "UsersItems"))
+{
     <div id="databaseItems" class="container body-content">
         @{Html.RenderAction("Refresh", "UsersItems", new { id = "null|null|null|null" });}
     </div>
@@ -51,7 +54,7 @@
     </p>
     <p id="userItemTB">
         @Html.Label("Item name: ")
-        @Html.TextBox("userItem", "", new { @class = "my-textarea" })
+        @Html.TextBox("UserItem", "", new { @class = "my-textarea" })
     </p>
     <hr />
 
@@ -60,21 +63,22 @@
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
     <p />
+
     <div id="itemLvl" class="container body-content">
         <p>
             @Html.Label("Item level: ")
-            @Html.DropDownList("itemLvlSelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("itemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("ItemLvlSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("ItemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Item quality: ")
-            @Html.DropDownList("itemQualitySelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("itemQualitySelect", new SelectList(Enumerable.Range(0, 21)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("ItemQualitySelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("ItemQualitySelect", new SelectList(Enumerable.Range(0, 21)), "All", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Item rarity: ")
-            @Html.DropDownList("itemRaritySelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("itemRaritySelect", itemRarity, new { @class = "my-btn" })
+            @Html.DropDownList("ItemRaritySelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("ItemRaritySelect", itemRarity, new { @class = "my-btn" })
         </p>
     </div>
     <hr />
@@ -87,24 +91,25 @@
     <div id="sockets" class="container body-content">
         <p>
             @Html.Label("Number of sockets: ")
-            @Html.DropDownList("socketsNumberSelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("socketsNumberSelect", new SelectList(Enumerable.Range(0, 7)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("SocketsNumberSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("SocketsNumberSelect", new SelectList(Enumerable.Range(0, 7)), "All", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Number of linked sockets: ")
-            @Html.DropDownList("linkedSocketsNumberSelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("linkedSocketsNumberSelect", new SelectList(Enumerable.Range(2, 5)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("LinkedSocketsNumberSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("LinkedSocketsNumberSelect", new SelectList(Enumerable.Range(2, 5)), "All", new { @class = "my-btn" })
         </p>
+
         <p>
             @Html.Label("Colours of linked sockets: ")
             @Html.Label("Red: ")
-            @Html.DropDownList("redSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.DropDownList("RedSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
             @Html.Label("Green: ")
-            @Html.DropDownList("greenSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.DropDownList("GreenSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
-            @Html.DropDownList("blueSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BlueSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
             @Html.Label("White: ")
-            @Html.DropDownList("whiteSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+            @Html.DropDownList("WhiteSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
         </p>
     </div>
     <hr />
@@ -122,8 +127,8 @@
         </p>
         <p>
             @Html.Label("Set width: ")
-            @Html.DropDownList("widthSelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("widthSelect", new SelectList(Enumerable.Range(1, 2)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("WidthSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("WidthSelect", new SelectList(Enumerable.Range(1, 2)), "All", new { @class = "my-btn" })
         </p>
     </div>
     <hr />
@@ -136,42 +141,42 @@
     <div id="other" class="container body-content">
         <p>
             @Html.Label("Identified?")
-            @Html.DropDownList("identifiedSelect", boolSelect, new { @class = "my-btn" })
+            @Html.DropDownList("IdentifiedSelect", boolSelect, new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Corrupted?")
-            @Html.DropDownList("corruptedSelect", boolSelect, new { @class = "my-btn" })
+            @Html.DropDownList("CorruptedSelect", boolSelect, new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Border color: ")
             @Html.Label("Red: ")
-            @Html.DropDownList("borderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BorderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Green: ")
-            @Html.DropDownList("borderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BorderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
-            @Html.DropDownList("borderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BorderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Text color: ")
             @Html.Label("Red: ")
-            @Html.DropDownList("textRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("TextRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Green: ")
-            @Html.DropDownList("textGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("TextGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
-            @Html.DropDownList("textBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("TextBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Background color: ")
             @Html.Label("Red: ")
-            @Html.DropDownList("backRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BackRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Green: ")
-            @Html.DropDownList("backGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BackGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
-            @Html.DropDownList("backBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.DropDownList("BackBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Font size: ")
-            @Html.DropDownList("fontSizeSelect", new SelectList(Enumerable.Range(18, 45)), "", new { @class = "my-btn" })
+            @Html.DropDownList("FontSizeSelect", new SelectList(Enumerable.Range(18, 45)), "", new { @class = "my-btn" })
         </p>
     </div>
     <hr />
@@ -188,9 +193,10 @@
             Add item
             <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
         </button>
-    </div>
 
-}
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+    </div>
+ }
 
 @section scripts
 {
@@ -263,7 +269,7 @@
                 });
 
                 // This part of script applies to #databaseItems div element.
-                $("#baseTypes").change(function () {
+                $("#databaseItems").on("change", "#baseTypes", function () {
                     if ($("#baseTypes option:selected").text() == "Armour" || $("#baseTypes option:selected").text() == "All") {
                         $("#attribute1").show();
                         $("#attribute2").show();
@@ -283,15 +289,15 @@
                     setCookie("attribute1SelectedId", attribute1);
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
-                    setOldValues();
 
                     var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
                     $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
                         $("#databaseItems").html(data);
+                        setOldValues();
                     });
                 });
 
-                $("#types").change(function () {
+                $("#databaseItems").on("change", "#types", function () {
                     if ($("#baseTypes option:selected").text() == "Armour" || $("#types option:selected").text() == "BodyArmour" || $("#types option:selected").text() == "Helmet" ||
                         $("#types option:selected").text() == "Shield" || $("#types option:selected").text() == "Gloves" || $("#types option:selected").text() == "Boots") {
                         $("#attribute1").show();
@@ -320,15 +326,15 @@
                     setCookie("attribute1SelectedId", attribute1);
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
-                    setOldValues();
 
                     var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
                     $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
                         $("#databaseItems").html(data);
+                        setOldValues();
                     });
                 });
 
-                $("#attribute1").change(function () {
+                $("#databaseItems").on("change", "#attribute1", function () {
                     if ($("#baseTypes option:selected").text() != "All") {
                         if ($("#types option:selected").text() != "All") {
                             var baseType = $("#baseTypes").val();
@@ -380,15 +386,15 @@
                     setCookie("attribute1SelectedId", attribute1);
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
-                    setOldValues();
 
                     var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
                     $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
                         $("#databaseItems").html(data);
+                        setOldValues();
                     });
                 });
 
-                $("#attribute2").change(function () {
+                $("#databaseItems").on("change", "#attribute2", function() {
                     if ($("#baseTypes option:selected").text() != "All") {
                         if ($("#types option:selected").text() != "All") {
                             var baseType = $("#baseTypes").val();
@@ -440,11 +446,11 @@
                     setCookie("attribute1SelectedId", attribute1);
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
-                    setOldValues();
 
                     var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
                     $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
                         $("#databaseItems").html(data);
+                        setOldValues();
                     });
                 });
 
