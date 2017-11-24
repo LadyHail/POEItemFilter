@@ -14,6 +14,14 @@
 
         public string ItemLvlSelect { get; set; }
 
+        public string ItemLvlRangeSelect1 { get; set; }
+
+        public string ItemLvlRangeSelect2 { get; set; }
+
+        public string DropLevelSelectSign { get; set; }
+
+        public string DropLevelSelect { get; set; }
+
         public string ItemQualitySelectSign { get; set; }
 
         public string ItemQualitySelect { get; set; }
@@ -52,11 +60,15 @@
 
         public string BorderBlueSelect { get; set; }
 
+        public string BorderAlphaSelect { get; set; }
+
         public string TextRedSelect { get; set; }
 
         public string TextGreenSelect { get; set; }
 
         public string TextBlueSelect { get; set; }
+
+        public string TextAlphaSelect { get; set; }
 
         public string BackRedSelect { get; set; }
 
@@ -64,7 +76,12 @@
 
         public string BackBlueSelect { get; set; }
 
+        public string BackAlphaSelect { get; set; }
+
         public string FontSizeSelect { get; set; }
 
+        public string PlayAlertSoundTypeSelect { get; set; }
+
+        public string PlayAlertSoundVolumeSelect { get; set; }
     }
 }

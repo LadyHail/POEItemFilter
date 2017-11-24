@@ -69,6 +69,14 @@
             @Html.Label("Item level: ")
             @Html.DropDownList("ItemLvlSelectSign", signsList, new { @class = "my-btn" })
             @Html.DropDownList("ItemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+            @Html.Label("Select item level range: ")
+            @Html.DropDownList("ItemLvlRangeSelect1", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("ItemLvlRangeSelect2", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Item drop level: ")
+            @Html.DropDownList("DropLevelSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("DropLevelSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Item quality: ")
@@ -155,6 +163,8 @@
             @Html.DropDownList("BorderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
             @Html.DropDownList("BorderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Border opacity: ")
+            @Html.DropDownList("BorderAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Text color: ")
@@ -164,6 +174,8 @@
             @Html.DropDownList("TextGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
             @Html.DropDownList("TextBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Text opacity: ")
+            @Html.DropDownList("TextAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Background color: ")
@@ -173,10 +185,17 @@
             @Html.DropDownList("BackGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
             @Html.Label("Blue: ")
             @Html.DropDownList("BackBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+            @Html.Label("Background opacity: ")
+            @Html.DropDownList("BackAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Font size: ")
             @Html.DropDownList("FontSizeSelect", new SelectList(Enumerable.Range(18, 45)), "", new { @class = "my-btn" })
+        </p>
+        <p>
+            @Html.Label("Play Alert Sound: ")
+            @Html.DropDownList("PlayAlertSoundTypeSelect", new SelectList(Enumerable.Range(1, 26)), "", new { @class = "my-btn" })
+            @Html.DropDownList("PlayAlertSoundVolumeSelect", new SelectList(Enumerable.Range(0, 300)), "", new { @class = "my-btn" })
         </p>
     </div>
     <hr />
@@ -193,8 +212,6 @@
             Add item
             <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
         </button>
-
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
     </div>
  }
 
@@ -218,7 +235,7 @@
                 });
 
                 // Add item to filter and clear cookies.
-                $("#saveItem").click(function () {
+                @*$("#saveItem").click(function () {
                     setCookie("baseTypeSelectedId", null);
                     setCookie("typeSelectedId", null);
                     setCookie("attribute1SelectedId", null);
@@ -237,7 +254,7 @@
                     $.post("/UsersItems/SaveItem/" + itemModel + "/" + "@Model.FilterId" + "/" + "@Model.Id", function (data) {
                         window.location.href = data;
                     });
-                });
+                });*@
 
                 // Hide at start most part of view.
                 $("#itemLvl").hide();

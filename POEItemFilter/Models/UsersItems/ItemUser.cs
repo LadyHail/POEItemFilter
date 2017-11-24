@@ -6,8 +6,6 @@ namespace POEItemFilter.Models
 {
     public class ItemUser
     {
-        //PlayAlertSound 7 300
-        //visual: czwarty parametr Alpha [0-255]
         public int Id { get; set; }
 
         public int FilterId { get; set; }
@@ -103,6 +101,11 @@ namespace POEItemFilter.Models
         /// Value range: 18-45. Default: 32.
         /// </summary>
         public string SetFontSize { get; set; } = "32";
+
+        /// <summary>
+        /// Value format: Id=1-26 Volume=0-300
+        /// </summary>
+        public string PlayAlertSound { get; set; }
 
         /// <summary>
         /// Default: false.

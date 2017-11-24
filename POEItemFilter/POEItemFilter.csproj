@@ -263,6 +263,10 @@
     <Compile Include="Migrations\201711231343318_EnableCascadeDeleteForItemsAndFilters.Designer.cs">
       <DependentUpon>201711231343318_EnableCascadeDeleteForItemsAndFilters.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711241040505_AddAlertSoundPropToUsersItemsTable.cs" />
+    <Compile Include="Migrations\201711241040505_AddAlertSoundPropToUsersItemsTable.Designer.cs">
+      <DependentUpon>201711241040505_AddAlertSoundPropToUsersItemsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -430,6 +434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711231343318_EnableCascadeDeleteForItemsAndFilters.resx">
       <DependentUpon>201711231343318_EnableCascadeDeleteForItemsAndFilters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711241040505_AddAlertSoundPropToUsersItemsTable.resx">
+      <DependentUpon>201711241040505_AddAlertSoundPropToUsersItemsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
