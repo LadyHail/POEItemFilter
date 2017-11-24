@@ -249,8 +249,8 @@
                         $("#identifiedSelect").val() + "|" + $("#corruptedSelect").val() + "|" + $("#borderRedSelect").val() + "|" + $("#borderGreenSelect").val() + "|" + $("#borderBlueSelect").val() + "|" +
                         $("#textRedSelect").val() + "|" + $("#textGreenSelect").val() + "|" + $("#textBlueSelect").val() + "|" +
                         $("#backRedSelect").val() + "|" + $("#backGreenSelect").val() + "|" + $("#backBlueSelect").val() + "|" + $("#fontSizeSelect").val() + "|" +
-                        $("#items").val() + "|" + $("#showOrHideSelect").val() + "|" + $("#userItem").val() + "|" + filterId);
-                    $.post("/UsersItems/SaveItemEdit/" + itemModel, function (data) {
+                        $("#items").val() + "|" + $("#showOrHideSelect").val() + "|" + $("#userItem").val());
+                    $.post("/UsersItems/SaveItem/" + itemModel + "/" + filterId, function (data) {
                         window.location.href = data;
                     });
                 });

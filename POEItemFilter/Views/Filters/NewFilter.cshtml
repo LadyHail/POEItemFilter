@@ -50,14 +50,14 @@ Maybe it's used by specific class?</textarea>
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>
-                    @*<th>Edit</th>*@
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
                 @foreach (var item in Model)
                 {
                     <tr>
                         <td>@item.ToString()</td>
-                        @*<td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>*@
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
                     </tr>
                 }
@@ -78,15 +78,16 @@ Maybe it's used by specific class?</textarea>
             });
 
             //Edit item
-            @*$("#itemsListTable").on("click", ".js-edit", function () {
+            $("#itemsListTable").on("click", ".js-edit", function () {
                 var button = $(this);
-                    if (result) {
-                        $.ajax({
-                            url: "@Url.Action("EditItem", "UsersItems")" + "/" + button.attr("data-item-id"),
-                            //method: "POST",
-                        });
-                    }
-            });*@
+                $.ajax({
+                    url: "@Url.Action("EditItemSession", "UsersItems")" + "/" + button.attr("data-item-id"),
+                    //method: "POST",
+                    success: function (data) {
+                        window.location.href = "/UsersItems/EditItemSession/" + button.attr("data-item-id");
+                    },
+                });
+            });
 
             //Delete item from list
             $("#itemsListTable").on("click", ".js-delete", function () {

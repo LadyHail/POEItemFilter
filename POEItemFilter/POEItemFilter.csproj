@@ -280,7 +280,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EditFilterViewModel.cs" />
-    <Compile Include="ViewModels\ItemUserList.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +394,8 @@
     <Content Include="Views\Filters\EditFilter.cshtml" />
     <Content Include="Views\Filters\Details.cshtml" />
     <Content Include="Views\UsersItems\NewItemInEditMode.cshtml" />
+    <Content Include="Views\UsersItems\EditItem.cshtml" />
+    <Content Include="Views\UsersItems\EditItemSession.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

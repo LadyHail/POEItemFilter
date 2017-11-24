@@ -55,17 +55,35 @@ namespace POEItemFilter.Controllers
             List<ItemUser> model = Session["ItemsList"] as List<ItemUser>;
             if (model == null)
             {
-                item.Id = 0;
+                item.Id = 1;
                 Session["ItemsList"] = new List<ItemUser>();
                 Session.Timeout = 30;
             }
+            else if (item.Id != 0)
+            {
+                model[item.Id - 1] = item;
+                return View("NewFilter", model);
+            }
             else
             {
-                item.Id = model.Count;
+                item.Id = model.Count + 1;
             }
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
             viewModel.Add(item);
             return View("NewFilter", viewModel);
+        }
+
+        public ActionResult NewItemEdit(ItemUser item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("MyFilters", "UsersItems");
+            }
+
+            _context.UsersItems.Add(item);
+            _context.SaveChanges();
+
+            return RedirectToAction("EditFilter", new { id = item.FilterId });
         }
 
         public ActionResult AddItemEdit(ItemUser item)
@@ -75,7 +93,30 @@ namespace POEItemFilter.Controllers
                 return RedirectToAction("MyFilters", "UsersItems");
             }
 
-            _context.UsersItems.Add(item);
+            ItemUser itemInDb = new ItemUser();
+            itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == item.Id);
+            itemInDb.BaseType = item.BaseType;
+            itemInDb.Attribute1 = item.Attribute1;
+            itemInDb.Attribute2 = item.Attribute2;
+            itemInDb.Class = item.Class;
+            itemInDb.Corrupted = item.Corrupted;
+            itemInDb.DropLevel = item.DropLevel;
+            itemInDb.Height = item.Height;
+            itemInDb.Identified = item.Identified;
+            itemInDb.ItemLevel = item.ItemLevel;
+            itemInDb.LinkedSockets = item.LinkedSockets;
+            itemInDb.MainCategory = item.MainCategory;
+            itemInDb.Quality = item.Quality;
+            itemInDb.Rarity = item.Rarity;
+            itemInDb.SetBackgroundColor = item.SetBackgroundColor;
+            itemInDb.SetBorderColor = item.SetBorderColor;
+            itemInDb.SetFontSize = item.SetFontSize;
+            itemInDb.SetTextColor = item.SetTextColor;
+            itemInDb.Show = item.Show;
+            itemInDb.Sockets = item.Sockets;
+            itemInDb.SocketsGroup = item.SocketsGroup;
+            itemInDb.Width = item.Width;
+
             _context.SaveChanges();
 
             return RedirectToAction("EditFilter", new { id = item.FilterId });

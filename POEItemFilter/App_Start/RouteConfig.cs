@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace POEItemFilter
@@ -18,6 +14,12 @@ namespace POEItemFilter
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "FilterAndItem",
+                url: "UsersItems/{action}/{model}/{filterId}/{itemId}",
+                defaults: new { controller = "UsersItems", action = "Index", model = UrlParameter.Optional, filterId = UrlParameter.Optional, itemId = UrlParameter.Optional }
+                );
         }
     }
 }
