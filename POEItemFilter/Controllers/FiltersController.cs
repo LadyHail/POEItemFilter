@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using POEItemFilter.Library;
+using POEItemFilter.Library.CustomFilters;
 using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.ViewModels;

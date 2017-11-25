@@ -2,15 +2,19 @@
 {
     public class ItemUserViewModel
     {
-        public string BaseTypes { get; set; }
+        public int FilterId { get; set; }
 
-        public string Types { get; set; }
+        public int ItemId { get; set; }
 
-        public string Items { get; set; }
+        public byte? BaseTypes { get; set; }
+
+        public int? Types { get; set; }
+
+        public int? Items { get; set; }
 
         public string UserItem { get; set; }
 
-        public string ItemLvlSelectSign { get; set; }
+        public int ItemLvlSelectSign { get; set; }
 
         public string ItemLvlSelect { get; set; }
 
@@ -18,41 +22,45 @@
 
         public string ItemLvlRangeSelect2 { get; set; }
 
-        public string DropLevelSelectSign { get; set; }
+        public int DropLevelSelectSign { get; set; }
 
         public string DropLevelSelect { get; set; }
 
-        public string ItemQualitySelectSign { get; set; }
+        public int ItemQualitySelectSign { get; set; }
 
         public string ItemQualitySelect { get; set; }
 
-        public string ItemRaritySelectSign { get; set; }
+        public int ItemRaritySelectSign { get; set; }
 
-        public string ItemRaritySelect { get; set; }
+        public int ItemRaritySelect { get; set; }
 
-        public string SocketsNumberSelectSign { get; set; }
+        public int SocketsNumberSelectSign { get; set; }
 
         public string SocketsNumberSelect { get; set; }
 
-        public string LinkedSocketsNumberSelectSign { get; set; }
+        public int LinkedSocketsNumberSelectSign { get; set; }
 
         public string LinkedSocketsNumberSelect { get; set; }
 
-        public string RedSocketsSelect { get; set; }
+        public int RedSocketsSelect { get; set; }
 
-        public string GreenSocketsSelect { get; set; }
+        public int GreenSocketsSelect { get; set; }
 
-        public string BlueSocketsSelect { get; set; }
+        public int BlueSocketsSelect { get; set; }
 
-        public string WhiteSocketsSelect { get; set; }
+        public int WhiteSocketsSelect { get; set; }
 
-        public string WidthSelectSign { get; set; }
+        public int HeightSelectSign { get; set; }
+
+        public string HeightSelect { get; set; }
+
+        public int WidthSelectSign { get; set; }
 
         public string WidthSelect { get; set; }
 
-        public string IdentifiedSelect { get; set; }
+        public bool IdentifiedSelect { get; set; }
 
-        public string CorruptedSelect { get; set; }
+        public bool CorruptedSelect { get; set; }
 
         public string BorderRedSelect { get; set; }
 
@@ -83,5 +91,7 @@
         public string PlayAlertSoundTypeSelect { get; set; }
 
         public string PlayAlertSoundVolumeSelect { get; set; }
+
+        public bool Show { get; set; }
     }
 }

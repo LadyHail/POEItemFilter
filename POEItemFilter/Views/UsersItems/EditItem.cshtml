@@ -130,8 +130,8 @@
     <div id="size" class="container body-content">
         <p>
             @Html.Label("Set height: ")
-            @Html.DropDownList("heightSelectSign", signsList, new { @class = "my-btn" })
-            @Html.DropDownList("heightSelect", new SelectList(Enumerable.Range(1, 4)), "All", new { @class = "my-btn" })
+            @Html.DropDownList("HeightSelectSign", signsList, new { @class = "my-btn" })
+            @Html.DropDownList("HeightSelect", new SelectList(Enumerable.Range(1, 4)), "All", new { @class = "my-btn" })
         </p>
         <p>
             @Html.Label("Set width: ")
@@ -203,7 +203,7 @@
     <div id="saveButton" style="float:right">
         <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
         <p />
-        <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg">
+        <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg" name="Show">
             <option value="0">Show</option>
             <option value="1">Hide</option>
         </select>
@@ -213,6 +213,10 @@
             <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
         </button>
     </div>
+
+    @Html.Hidden("ItemId", Model.Id)
+    @Html.Hidden("FilterId", Model.FilterId)
+                
  }
 
 @section scripts

@@ -680,6 +680,9 @@ namespace POEItemFilter.Controllers
 
         public ActionResult Test(ItemUserViewModel model)
         {
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+
             return null;
         }
     }

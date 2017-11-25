@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Web.Mvc;
 
-namespace POEItemFilter.Library
+namespace POEItemFilter.Library.CustomFilters
 {
     public class DeleteFileAttribute : ActionFilterAttribute
     {

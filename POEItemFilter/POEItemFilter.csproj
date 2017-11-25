@@ -215,7 +215,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersItemsController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
-    <Compile Include="Library\DeleteFileAttribute.cs" />
+    <Compile Include="Library\CustomFilters\DeleteFileAttribute.cs" />
     <Compile Include="Library\EntityConfiguration\FilterConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemAttributeConfiguration.cs" />
     <Compile Include="Library\EntityConfiguration\ItemBaseTypeConfiguration.cs" />
@@ -231,6 +231,7 @@
     <Compile Include="Library\GenerateFilter.cs" />
     <Compile Include="Library\GetItemsFromWeb.cs" />
     <Compile Include="Library\InequalitySelector.cs" />
+    <Compile Include="Library\ItemUserModelMap.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
       <DependentUpon>201710091536569_InitialModelForItemDb.cs</DependentUpon>
