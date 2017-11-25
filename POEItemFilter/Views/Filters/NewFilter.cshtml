@@ -39,7 +39,7 @@ Maybe it's used by specific class?</textarea>
             @Html.DropDownList("classes", classes, new { @class = "my-btn" })
             </p>
         <p>
-            <a href="~/UsersItems/NewItem" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="~/UsersItems/NewItemSession" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
             <a href="#" id="createFilter" class="btn btn-success">Save & download filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
@@ -81,10 +81,10 @@ Maybe it's used by specific class?</textarea>
             $("#itemsListTable").on("click", ".js-edit", function () {
                 var button = $(this);
                 $.ajax({
-                    url: "@Url.Action("EditItemSession", "UsersItems")" + "/" + button.attr("data-item-id"),
+                    url: "@Url.Action("ItemSession", "UsersItems")" + "/" + button.attr("data-item-id"),
                     //method: "POST",
                     success: function (data) {
-                        window.location.href = "/UsersItems/EditItemSession/" + button.attr("data-item-id");
+                        window.location.href = "/UsersItems/ItemSession/" + button.attr("data-item-id");
                     },
                 });
             });

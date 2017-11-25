@@ -16,7 +16,7 @@ namespace POEItemFilter
             );
 
             routes.MapRoute(
-                name: "FilterAndItem",
+                name: "SaveOrEditItem",
                 url: "UsersItems/{action}/{model}/{filterId}/{itemId}",
                 defaults: new { controller = "UsersItems", action = "Index", model = UrlParameter.Optional, filterId = UrlParameter.Optional, itemId = UrlParameter.Optional }
                 );

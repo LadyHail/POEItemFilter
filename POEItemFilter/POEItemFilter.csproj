@@ -393,7 +393,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\UsersItems\NewItem.cshtml" />
+    <Content Include="Views\UsersItems\NewItemSession.cshtml" />
     <Content Include="Views\UsersItems\_NewItemPartial.cshtml" />
     <Content Include="Views\UsersItems\Index.cshtml" />
     <Content Include="Views\Filters\NewFilter.cshtml" />
@@ -401,8 +401,8 @@
     <Content Include="Views\Filters\MyFilters.cshtml" />
     <Content Include="Views\Filters\EditFilter.cshtml" />
     <Content Include="Views\Filters\Details.cshtml" />
-    <Content Include="Views\UsersItems\NewItemInEditMode.cshtml" />
-    <Content Include="Views\UsersItems\EditItem.cshtml" />
+    <Content Include="Views\UsersItems\NewItemDb.cshtml" />
+    <Content Include="Views\UsersItems\EditItemDb.cshtml" />
     <Content Include="Views\UsersItems\EditItemSession.cshtml" />
   </ItemGroup>
   <ItemGroup>

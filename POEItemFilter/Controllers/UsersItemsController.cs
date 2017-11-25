@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using POEItemFilter.Library;
-using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
 using POEItemFilter.ViewModels;
@@ -24,37 +22,17 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
-        public ActionResult NewItem()
+        public ActionResult NewItemSession()
         {
-            var baseTypes = _context.BaseTypes.ToList();
-            var items = _context.ItemsDB.ToList();
-            var types = _context.Types.ToList();
-            var attributes = _context.Attributes.ToList();
-
-            var viewModel = new NewItemViewModel()
-            {
-                Items = items,
-                BaseTypes = baseTypes,
-                Types = types,
-                Attributes = attributes,
-            };
-
+            ItemUser viewModel = new ItemUser();
             return View(viewModel);
         }
 
-        public ActionResult NewItemInEditMode(int id)
+        public ActionResult NewItemDb(int id)
         {
-            var baseTypes = _context.BaseTypes.ToList();
-            var items = _context.ItemsDB.ToList();
-            var types = _context.Types.ToList();
-            var attributes = _context.Attributes.ToList();
-
-            var viewModel = new NewItemViewModel()
+            ItemUser viewModel = new ItemUser()
             {
-                Items = items,
-                BaseTypes = baseTypes,
-                Types = types,
-                Attributes = attributes,
+                FilterId = id
             };
 
             return View(viewModel);
@@ -345,284 +323,6 @@ namespace POEItemFilter.Controllers
             return View();
         }
 
-        public ActionResult SaveItem(string model, int? filterId, int? itemId)
-        {
-            string[] splitId = model.Split('|');
-            ItemUser item = new ItemUser();
-
-            for (int i = 0; i < splitId.Length; i++)
-            {
-                int number = -1;
-                if (int.TryParse(splitId[i], out var result))
-                {
-                    number = int.Parse(splitId[i].ToString());
-                }
-                switch (i)
-                {
-                    case 0:
-                        item.MainCategory = _context.BaseTypes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
-                        break;
-
-                    case 1:
-                        item.Class = _context.Types.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
-                        break;
-
-                    case 2:
-                        item.Attribute1 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
-                        break;
-
-                    case 3:
-                        item.Attribute2 = _context.Attributes.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
-                        break;
-
-                    case 4:
-                        item.ItemLevel = InequalitySelector.Select(number);
-                        break;
-
-                    case 5:
-                        if (number == -1)
-                        {
-                            item.ItemLevel = null;
-                        }
-                        else if (item.ItemLevel != null)
-                        {
-                            item.ItemLevel += " " + number;
-                        }
-                        break;
-
-                    case 6:
-                        item.Quality = InequalitySelector.Select(number);
-                        break;
-
-                    case 7:
-                        if (number == -1)
-                        {
-                            item.Quality = null;
-                        }
-                        else if (item.Quality != null)
-                        {
-                            item.Quality += " " + number;
-                        }
-                        break;
-
-                    case 8:
-                        item.Rarity = InequalitySelector.Select(number);
-                        break;
-
-                    case 9:
-                        if (number == -1)
-                        {
-                            item.Rarity = null;
-                        }
-                        else if (item.Rarity != null)
-                        {
-                            item.Rarity += " " + (Rarity)number;
-                        }
-                        break;
-
-                    case 10:
-                        item.Sockets = InequalitySelector.Select(number);
-                        break;
-
-                    case 11:
-                        if (number == -1)
-                        {
-                            item.Sockets = null;
-                        }
-                        else if (item.Sockets != null)
-                        {
-                            item.Sockets += " " + number;
-                        }
-                        break;
-
-                    case 12:
-                        item.LinkedSockets = InequalitySelector.Select(number);
-                        break;
-
-                    case 13:
-                        if (number == -1)
-                        {
-                            item.LinkedSockets = null;
-                        }
-                        else if (item.LinkedSockets != null)
-                        {
-                            item.LinkedSockets += " " + number;
-                        }
-                        break;
-
-                    case 14:
-                        if (number != -1)
-                        {
-                            item.SocketsGroup = string.Concat(Enumerable.Repeat("R", number));
-                        }
-                        break;
-
-                    case 15:
-                        if (number != -1)
-                        {
-                            item.SocketsGroup += string.Concat(Enumerable.Repeat("G", number));
-                        }
-                        break;
-
-                    case 16:
-                        if (number != -1)
-                        {
-                            item.SocketsGroup += string.Concat(Enumerable.Repeat("B", number));
-                        }
-                        break;
-
-                    case 17:
-                        if (number != -1)
-                        {
-                            item.SocketsGroup += string.Concat(Enumerable.Repeat("W", number));
-                        }
-                        break;
-
-                    case 18:
-                        item.Height = InequalitySelector.Select(number);
-                        break;
-
-                    case 19:
-                        if (number == -1)
-                        {
-                            item.Height = null;
-                        }
-                        else if (item.Height != null)
-                        {
-                            item.Height += " " + number;
-                        }
-                        break;
-
-                    case 20:
-                        item.Width = InequalitySelector.Select(number);
-                        break;
-
-                    case 21:
-                        if (number == -1)
-                        {
-                            item.Width = null;
-                        }
-                        else if (item.Width != null)
-                        {
-                            item.Width += " " + number;
-                        }
-                        break;
-
-                    case 22:
-                        item.Identified = Convert.ToBoolean(number);
-                        break;
-
-                    case 23:
-                        item.Corrupted = Convert.ToBoolean(number);
-                        break;
-
-                    case 24:
-                        if (number != -1)
-                        {
-                            item.SetBorderColor = number.ToString();
-
-                        }
-                        break;
-
-                    case 25:
-                        if (number != -1)
-                        {
-                            item.SetBorderColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 26:
-                        if (number != -1)
-                        {
-                            item.SetBorderColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 27:
-                        if (number != -1)
-                        {
-                            item.SetTextColor = number.ToString();
-                        }
-                        break;
-
-                    case 28:
-                        if (number != -1)
-                        {
-                            item.SetTextColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 29:
-                        if (number != -1)
-                        {
-                            item.SetTextColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 30:
-                        if (number != -1)
-                        {
-                            item.SetBackgroundColor = number.ToString();
-                        }
-                        break;
-
-                    case 31:
-                        if (number != -1)
-                        {
-                            item.SetBackgroundColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 32:
-                        if (number != -1)
-                        {
-                            item.SetBackgroundColor += " " + number.ToString();
-                        }
-                        break;
-
-                    case 33:
-                        if (number != -1)
-                        {
-                            item.SetFontSize = number.ToString();
-                        }
-                        break;
-
-                    case 34:
-                        item.BaseType = _context.ItemsDB.Where(a => a.Id == number).Select(a => a.Name).SingleOrDefault();
-                        break;
-
-                    case 35:
-                        item.Show = number == 0 ? true : false;
-                        break;
-
-                    case 36:
-                        item.BaseType = item.BaseType == null && splitId[36].ToString() != "" && splitId[36].ToString() != "undefined" ? splitId[36].ToString() : item.BaseType;
-                        break;
-                }
-            }
-
-            if (filterId != null)
-            {
-                item.FilterId = filterId.Value;
-            }
-            if (itemId != null)
-            {
-                item.Id = itemId.Value;
-            }
-
-            if (filterId != null && itemId != null)
-            {
-                return Json(Url.Action("AddItemEdit", "Filters", item));
-            }
-            else if (filterId != null)
-            {
-                return Json(Url.Action("NewItemEdit", "Filters", item));
-            }
-
-            return Json(Url.Action("AddItem", "Filters", item));
-        }
-
-        //[HttpDelete]
         public ActionResult DeleteItemSession(int id)
         {
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
@@ -650,18 +350,7 @@ namespace POEItemFilter.Controllers
             return RedirectToAction("EditFilter", "Filters", new { id = filterId });
         }
 
-        public ActionResult EditItem(int id)
-        {
-            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
-            if (itemInDb == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(itemInDb);
-        }
-
-        public ActionResult EditItemSession(int id)
+        public ActionResult ItemSession(int id)
         {
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
             if (viewModel == null)
@@ -675,15 +364,139 @@ namespace POEItemFilter.Controllers
                 return HttpNotFound();
             }
 
-            return View(item);
+            return View("EditItemSession", item);
         }
 
-        public ActionResult Test(ItemUserViewModel model)
+        public ActionResult ItemDb(int id)
+        {
+            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
+            if (itemInDb == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("EditItemDb", itemInDb);
+        }
+
+        [HttpPost]
+        public ActionResult AddItemSession(ItemUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("NewItemSession", "UsersItems");
+            }
+
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+            List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
+            if (sessionModel == null)
+            {
+                item.Id = 1;
+                Session["ItemsList"] = new List<ItemUser>();
+                Session.Timeout = 30;
+            }
+            else if (item.Id != 0)
+            {
+                sessionModel[item.Id - 1] = item;
+                return View("NewFilter", "Filters", sessionModel);
+            }
+            else
+            {
+                item.Id = sessionModel.Count + 1;
+            }
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            viewModel.Add(item);
+
+            return RedirectToAction("NewFilter", "Filters");
+        }
+
+        [HttpPost]
+        public ActionResult AddItemDb(ItemUserViewModel model, int filterId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("MyFilters", "UsersItems");
+            }
+
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+            _context.UsersItems.Add(item);
+            _context.SaveChanges();
+
+            return RedirectToAction("EditFilter", "Filters", new { id = item.FilterId });
+        }
+
+        [HttpPost]
+        public ActionResult EditItemSession(ItemUserViewModel model, int itemId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("NewItemSession", "UsersItems");
+            }
+
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+            List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
+            if (sessionModel == null)
+            {
+                item.Id = 1;
+                Session["ItemsList"] = new List<ItemUser>();
+                Session.Timeout = 30;
+            }
+            else if (item.Id != 0)
+            {
+                int id = sessionModel.FindIndex(i => i.Id == item.Id);
+                sessionModel[id] = item;
+                return RedirectToAction("NewFilter", "Filters");
+            }
+            else
+            {
+                item.Id = sessionModel.Count + 1;
+            }
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            viewModel.Add(item);
+
+            return RedirectToAction("NewFilter", "Filters");
+        }
+
+        [HttpPost]
+        public ActionResult EditItemDb(ItemUserViewModel model, int filterId, int itemId)
         {
             ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
 
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("MyFilters", "UsersItems");
+            }
 
-            return null;
+            ItemUser itemInDb = new ItemUser();
+            itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == item.Id);
+            itemInDb.BaseType = item.BaseType;
+            itemInDb.Attribute1 = item.Attribute1;
+            itemInDb.Attribute2 = item.Attribute2;
+            itemInDb.Class = item.Class;
+            itemInDb.Corrupted = item.Corrupted;
+            itemInDb.DropLevel = item.DropLevel;
+            itemInDb.Height = item.Height;
+            itemInDb.Identified = item.Identified;
+            itemInDb.ItemLevel = item.ItemLevel;
+            itemInDb.LinkedSockets = item.LinkedSockets;
+            itemInDb.MainCategory = item.MainCategory;
+            itemInDb.PlayAlertSound = item.PlayAlertSound;
+            itemInDb.Quality = item.Quality;
+            itemInDb.Rarity = item.Rarity;
+            itemInDb.SetBackgroundColor = item.SetBackgroundColor;
+            itemInDb.SetBorderColor = item.SetBorderColor;
+            itemInDb.SetFontSize = item.SetFontSize;
+            itemInDb.SetTextColor = item.SetTextColor;
+            itemInDb.Show = item.Show;
+            itemInDb.Sockets = item.Sockets;
+            itemInDb.SocketsGroup = item.SocketsGroup;
+            itemInDb.Width = item.Width;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("EditFilter", "Filters", new { id = item.FilterId });
         }
     }
 }

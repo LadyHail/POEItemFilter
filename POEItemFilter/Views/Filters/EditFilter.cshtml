@@ -40,7 +40,7 @@
             </p>
         }
         <p>
-            <a href="~/UsersItems/NewItemInEditMode/@Model.Filter.Id" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="~/UsersItems/NewItemDb/@Model.Filter.Id" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
             <a href="#" id="saveFilter" class="btn btn-primary">Save filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
@@ -82,10 +82,10 @@
             $("#itemsListTable").on("click", ".js-edit", function () {
                 var button = $(this);
                 $.ajax({
-                    url: "@Url.Action("EditItem", "UsersItems")" + "/" + button.attr("data-item-id"),
+                    url: "@Url.Action("ItemDb", "UsersItems")" + "/" + button.attr("data-item-id"),
                     //method: "POST",
                     success: function (data) {
-                        window.location.href = "/UsersItems/EditItem/" + button.attr("data-item-id");
+                        window.location.href = "/UsersItems/ItemDb/" + button.attr("data-item-id");
                     },
                 });
             });

@@ -1,11 +1,11 @@
 ﻿@model POEItemFilter.Models.ItemUser
 
 @{
-    ViewBag.Title = "Edit item";
+    ViewBag.Title = "Add new item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2><b>Edit item</b></h2>
+<h2><b>Add new item</b></h2>
 <hr />
 
 @{
@@ -43,7 +43,7 @@
 </button>
 <p id="basicBreak" />
 
-@using (Html.BeginForm("EditItemSession", "UsersItems", new { itemId = Model.Id }, FormMethod.Post))
+@using (Html.BeginForm("AddItemSession", "UsersItems", FormMethod.Post))
 {
     <div id="databaseItems" class="container body-content">
         @{Html.RenderAction("Refresh", "UsersItems", new { id = "null|null|null|null" });}
@@ -214,7 +214,7 @@
         </button>
     </div>
 
-    @Html.Hidden("ItemId", Model.Id)
+    @Html.Hidden("ItemId")
     @Html.Hidden("FilterId")
 
  }
