@@ -24,10 +24,10 @@
 12. Search for filter.
 
 FRONT:
-4. Poprawić kod w View na C#.
+[SOLVED] 4. Poprawić kod w View na C#.
 
 5. Przepisać requesty na AJAX.
 
-6. Zamiast przesyłania stringów przesyłać cały obiekt.
+[SOLVED] 6. Zamiast przesyłania stringów przesyłać cały obiekt.
 
 [SOLVED] 7. EditFilter NewItem

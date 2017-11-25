@@ -298,8 +298,7 @@
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
 
-                    var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
-                    $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $.get("/UsersItems/Refresh/" + baseType + "/" + type + "/" + attribute1 + "/" + attribute2, function (data) {
                         $("#databaseItems").html(data);
                         setOldValues();
                     });
@@ -335,8 +334,7 @@
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
 
-                    var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
-                    $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $.get("/UsersItems/Refresh/" + baseType + "/" + type + "/" + attribute1 + "/" + attribute2, function (data) {
                         $("#databaseItems").html(data);
                         setOldValues();
                     });
@@ -395,8 +393,7 @@
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
 
-                    var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
-                    $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $.get("/UsersItems/Refresh/" + baseType + "/" + type + "/" + attribute1 + "/" + attribute2, function (data) {
                         $("#databaseItems").html(data);
                         setOldValues();
                     });
@@ -455,8 +452,7 @@
                     setCookie("attribute2SelectedId", attribute2);
                     setCookie("itemSelectedId", item);
 
-                    var selectedIds = String(baseType + "|" + type + "|" + attribute1 + "|" + attribute2); // basetype#type#attribute1#attribute2
-                    $.get("/UsersItems/Refresh/" + selectedIds, function (data) {
+                    $.get("/UsersItems/Refresh/" + baseType + "/" + type + "/" + attribute1 + "/" + attribute2, function (data) {
                         $("#databaseItems").html(data);
                         setOldValues();
                     });

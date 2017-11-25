@@ -43,36 +43,18 @@ namespace POEItemFilter.Controllers
         /// </summary>
         /// <param name="id">Represents data entered by the user. Format: baseType|type|attribute1|attribute2. If user don't select one of the parameters, then it's null.</param>
         /// <returns>Refresh view with new data.</returns>
-        public ActionResult Refresh(string id)
+        public ActionResult Refresh(int? baseType, int? type, int? attribute1, int? attribute2)
         {
             var baseTypes = _context.BaseTypes.ToList();
 
-            var itemsList = baseTypes
-                .SelectMany(i => i.Items)
-                .ToList();
+            var itemsList = _context.ItemsDB.ToList();
 
-            string[] ids = id.Split('|');
             int baseTypeId, typeId, attribute1Id, attribute2Id;
 
-            if (!int.TryParse(ids[0], out baseTypeId))
-            {
-                baseTypeId = baseTypes.Count() + 1;
-            }
-
-            if (!int.TryParse(ids[1], out typeId))
-            {
-                typeId = baseTypes.SelectMany(i => i.Types).Count() + 1;
-            }
-
-            if (!int.TryParse(ids[2], out attribute1Id))
-            {
-                attribute1Id = baseTypes.SelectMany(i => i.Attributes).Count() + 1;
-            }
-
-            if (!int.TryParse(ids[3], out attribute2Id))
-            {
-                attribute2Id = baseTypes.SelectMany(i => i.Attributes).Count() + 1;
-            }
+            baseTypeId = baseType != null ? baseType.Value : -1;
+            typeId = type != null ? type.Value : -1;
+            attribute1Id = attribute1 != null ? attribute1.Value : -1;
+            attribute2Id = attribute2 != null ? attribute2.Value : -1;
 
             bool isBaseTypeInDb = baseTypes.Any(i => i.Id == baseTypeId);
 
@@ -316,11 +298,6 @@ namespace POEItemFilter.Controllers
             };
 
             return PartialView("Refresh", viewModel);
-        }
-
-        public ActionResult Index()
-        {
-            return View();
         }
 
         public ActionResult DeleteItemSession(int id)

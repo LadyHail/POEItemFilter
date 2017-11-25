@@ -394,8 +394,6 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\UsersItems\NewItemSession.cshtml" />
-    <Content Include="Views\UsersItems\_NewItemPartial.cshtml" />
-    <Content Include="Views\UsersItems\Index.cshtml" />
     <Content Include="Views\Filters\NewFilter.cshtml" />
     <Content Include="Views\UsersItems\Refresh.cshtml" />
     <Content Include="Views\Filters\MyFilters.cshtml" />

@@ -16,9 +16,15 @@ namespace POEItemFilter
             );
 
             routes.MapRoute(
-                name: "SaveOrEditItem",
+                name: "Items",
                 url: "UsersItems/{action}/{model}/{filterId}/{itemId}",
                 defaults: new { controller = "UsersItems", action = "Index", model = UrlParameter.Optional, filterId = UrlParameter.Optional, itemId = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
+                name: "RefreshDbItems",
+                url: "UsersItems/Refresh/{baseType}/{type}/{attribute1}/{attribute2}",
+                defaults: new { controller = "UsersItems", action = "Refresh", baseType = -1, type = -1, attribute1 = -1, attribute2 = -1 }
                 );
         }
     }
