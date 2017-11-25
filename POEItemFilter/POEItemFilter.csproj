@@ -402,6 +402,7 @@
     <Content Include="Views\UsersItems\NewItemDb.cshtml" />
     <Content Include="Views\UsersItems\EditItemDb.cshtml" />
     <Content Include="Views\UsersItems\EditItemSession.cshtml" />
+    <Content Include="Views\Filters\AllFilters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

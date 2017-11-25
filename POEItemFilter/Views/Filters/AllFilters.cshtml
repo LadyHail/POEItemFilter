@@ -1,0 +1,69 @@
+﻿@model IEnumerable<POEItemFilter.Models.Filters.Filter>
+@{
+    ViewBag.Title = "Search filter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search filter</h2>
+
+<div>
+    @if (Model != null)
+    {
+        <div id="filtersList">
+            <table class="table" id="filtersListTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Dedicated to class</th>
+                    <th>Edit Date</th>
+                    <th>Details</th>
+                    <th>Download</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.Dedicated</td>
+                        <td>@item.EditDate</td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-details">Details</button></td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-success js-download">Download</button></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            //Details
+            $("#filtersListTable").on("click", ".js-details", function () {
+                const button = $(this);
+                $.ajax({
+                    url: "@Url.Action("Details", "Filters")" + "/" + button.attr("data-item-id"),
+                    success: function (data) {
+                        window.location.href = "/Filters/Details/" + button.attr("data-item-id");
+                    },
+                });
+            });
+
+            //Download filter
+            $("#filtersListTable").on("click", ".js-download", function () {
+                const button = $(this);
+                $.ajax({
+                    url: "@Url.Action("GenerateText", "Filters")" + "/" + button.attr("data-item-id"),
+                    type: "GET",
+                    success: function (data) {
+                        if (data !== null) {
+                            window.location = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
+                        }
+                    },
+                });
+            });
+        });
+    </script>
+    }

@@ -22,12 +22,14 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
+        [HttpGet]
         public ActionResult NewItemSession()
         {
             ItemUser viewModel = new ItemUser();
             return View(viewModel);
         }
 
+        [HttpGet]
         public ActionResult NewItemDb(int id)
         {
             ItemUser viewModel = new ItemUser()
@@ -43,6 +45,7 @@ namespace POEItemFilter.Controllers
         /// </summary>
         /// <param name="id">Represents data entered by the user. Format: baseType|type|attribute1|attribute2. If user don't select one of the parameters, then it's null.</param>
         /// <returns>Refresh view with new data.</returns>
+        [HttpGet]
         public ActionResult Refresh(int? baseType, int? type, int? attribute1, int? attribute2)
         {
             var baseTypes = _context.BaseTypes.ToList();
@@ -327,6 +330,7 @@ namespace POEItemFilter.Controllers
             return RedirectToAction("EditFilter", "Filters", new { id = filterId });
         }
 
+        [HttpGet]
         public ActionResult ItemSession(int id)
         {
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
@@ -344,6 +348,7 @@ namespace POEItemFilter.Controllers
             return View("EditItemSession", item);
         }
 
+        [HttpGet]
         public ActionResult ItemDb(int id)
         {
             var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);

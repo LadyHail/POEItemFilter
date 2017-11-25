@@ -26,7 +26,7 @@
 FRONT:
 [SOLVED] 4. Poprawić kod w View na C#.
 
-5. Przepisać requesty na AJAX.
+[SOLVED] 5. Przepisać requesty na AJAX.
 
 [SOLVED] 6. Zamiast przesyłania stringów przesyłać cały obiekt.
 

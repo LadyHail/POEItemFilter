@@ -26,6 +26,7 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
+        [HttpGet]
         public ActionResult MyFilters()
         {
             var currentUser = User.Identity.GetUserId();
@@ -33,6 +34,7 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public ActionResult NewFilter()
         {
             if (Session["ItemsList"] != null)
@@ -44,6 +46,13 @@ namespace POEItemFilter.Controllers
                 }
             }
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult AllFilters()
+        {
+            List<Models.Filters.Filter> viewModel = _context.Filters.ToList();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -124,7 +133,7 @@ namespace POEItemFilter.Controllers
             return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult GenerateText(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
@@ -150,6 +159,7 @@ namespace POEItemFilter.Controllers
             Session.Clear();
         }
 
+        [HttpGet]
         public ActionResult EditFilter(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
@@ -175,6 +185,7 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public ActionResult Details(int id)
         {
             var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();

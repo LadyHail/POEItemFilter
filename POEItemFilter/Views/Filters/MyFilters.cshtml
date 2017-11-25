@@ -90,7 +90,7 @@
                 const button = $(this);
                 $.ajax({
                     url: "@Url.Action("GenerateText", "Filters")" + "/" + button.attr("data-item-id"),
-                    type: "POST",
+                    type: "GET",
                     success: function (data) {
                         if (data !== null) {
                             window.location = "@Url.RouteUrl(new { Controller = "Filters", Action = "Download"})/?file=" + data.fileName;
