@@ -15,7 +15,9 @@ namespace POEItemFilter
                         "~/Scripts/umd/popper.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootbox.js",
-                        "~/Scripts/respond.js"
+                        "~/Scripts/respond.js",
+                        "~/Scripts/datatables/jquery.datatables.js",
+                        "~/Scripts/datatables/datatables.bootstrap.js"
                         ));
 
 
@@ -30,6 +32,7 @@ namespace POEItemFilter
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.css",
+                      "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
         }
     }
