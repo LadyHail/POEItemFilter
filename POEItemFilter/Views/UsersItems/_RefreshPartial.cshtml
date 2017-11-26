@@ -1,0 +1,22 @@
+﻿@model POEItemFilter.ViewModels.NewItemViewModel
+
+    <p class="toggle">
+        @Html.Label("Select category: ")
+        @Html.DropDownListFor(b => b.BaseTypes, new SelectList(Model.BaseTypes, "Id", "Name"), "All", new { @id = "baseTypes", @class = "my-btn" })
+    </p>
+    <p class="toggle">
+        @Html.Label("Select class: ")
+        @Html.DropDownListFor(t => t.Types, new SelectList(Model.Types, "Id", "Name"), "All", new { @id = "types", @class = "my-btn" })
+    </p>
+    <p class="toggle">
+        @if (Model.Attributes != null)
+            {
+            @Html.Label("Select attributes: ")
+            @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute1", @class = "my-btn" })
+            @Html.DropDownListFor(a => a.Attributes, new SelectList(Model.Attributes, "Id", "Name"), "All", new { @id = "attribute2", @class = "my-btn" })
+        }
+    </p>
+    <p class="toggle">
+        @Html.Label("Select item: ")
+        @Html.DropDownListFor(i => i.Items, new SelectList(Model.Items, "Id", "Name"), "All", new { @id = "items", @class = "my-btn" })
+    </p>

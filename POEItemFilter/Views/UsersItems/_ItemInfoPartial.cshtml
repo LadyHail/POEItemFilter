@@ -1,0 +1,186 @@
+﻿
+@{
+    var signsList = new SelectList(new[]
+    {
+        new {Id = "", Sign = ""},
+        new {Id = "1", Sign = "= (equal)"},
+        new {Id = "2", Sign = "> (greater than)"},
+        new {Id = "3", Sign = "< (less than)"},
+        new {Id = "4", Sign = ">= (greater or equal)"},
+        new {Id = "5", Sign = "<= (less or equal)"},
+    },
+    "Id", "Sign", "");
+
+    var itemRarity = new SelectList(new[]
+    {
+        new {Id = "", Name = "All"},
+        new {Id = "1", Name = "Normal"},
+        new {Id = "2", Name = "Magic"},
+        new {Id = "3", Name = "Rare"},
+        new {Id = "4", Name = "Unique"},
+    },
+    "Id", "Name", "");
+
+    var boolSelect = new SelectList(new[]
+    {
+        new {Id = "0", Name = "No (default)"},
+        new {Id = "1", Name = "Yes"},
+    },
+    "Id", "Name", 0);
+}
+
+<button id="lvlToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+    Level information
+    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+</button>
+<p />
+
+<div id="itemLvl" class="container body-content">
+    <p>
+        @Html.Label("Item level: ")
+        @Html.DropDownList("ItemLvlSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("ItemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+        @Html.Label("Select item level range: ")
+        @Html.DropDownList("ItemLvlRangeSelect1", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+        @Html.DropDownList("ItemLvlRangeSelect2", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Item drop level: ")
+        @Html.DropDownList("DropLevelSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("DropLevelSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Item quality: ")
+        @Html.DropDownList("ItemQualitySelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("ItemQualitySelect", new SelectList(Enumerable.Range(0, 21)), "All", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Item rarity: ")
+        @Html.DropDownList("ItemRaritySelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("ItemRaritySelect", itemRarity, new { @class = "my-btn" })
+    </p>
+</div>
+<hr />
+
+<button id="socketsToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+    Sockets information
+    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+</button>
+<p />
+<div id="sockets" class="container body-content">
+    <p>
+        @Html.Label("Number of sockets: ")
+        @Html.DropDownList("SocketsNumberSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("SocketsNumberSelect", new SelectList(Enumerable.Range(0, 7)), "All", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Number of linked sockets: ")
+        @Html.DropDownList("LinkedSocketsNumberSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("LinkedSocketsNumberSelect", new SelectList(Enumerable.Range(2, 5)), "All", new { @class = "my-btn" })
+    </p>
+
+    <p>
+        @Html.Label("Colours of linked sockets: ")
+        @Html.Label("Red: ")
+        @Html.DropDownList("RedSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+        @Html.Label("Green: ")
+        @Html.DropDownList("GreenSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+        @Html.Label("Blue: ")
+        @Html.DropDownList("BlueSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+        @Html.Label("White: ")
+        @Html.DropDownList("WhiteSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
+    </p>
+</div>
+<hr />
+
+<button id="sizeToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+    Dimension information
+    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+</button>
+<p />
+<div id="size" class="container body-content">
+    <p>
+        @Html.Label("Set height: ")
+        @Html.DropDownList("HeightSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("HeightSelect", new SelectList(Enumerable.Range(1, 4)), "All", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Set width: ")
+        @Html.DropDownList("WidthSelectSign", signsList, new { @class = "my-btn" })
+        @Html.DropDownList("WidthSelect", new SelectList(Enumerable.Range(1, 2)), "All", new { @class = "my-btn" })
+    </p>
+</div>
+<hr />
+
+<button id="otherToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+    Other information
+    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+</button>
+<p />
+<div id="other" class="container body-content">
+    <p>
+        @Html.Label("Identified?")
+        @Html.DropDownList("IdentifiedSelect", boolSelect, new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Corrupted?")
+        @Html.DropDownList("CorruptedSelect", boolSelect, new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Border color: ")
+        @Html.Label("Red: ")
+        @Html.DropDownList("BorderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Green: ")
+        @Html.DropDownList("BorderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Blue: ")
+        @Html.DropDownList("BorderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Border opacity: ")
+        @Html.DropDownList("BorderAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Text color: ")
+        @Html.Label("Red: ")
+        @Html.DropDownList("TextRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Green: ")
+        @Html.DropDownList("TextGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Blue: ")
+        @Html.DropDownList("TextBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Text opacity: ")
+        @Html.DropDownList("TextAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Background color: ")
+        @Html.Label("Red: ")
+        @Html.DropDownList("BackRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Green: ")
+        @Html.DropDownList("BackGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Blue: ")
+        @Html.DropDownList("BackBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        @Html.Label("Background opacity: ")
+        @Html.DropDownList("BackAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Font size: ")
+        @Html.DropDownList("FontSizeSelect", new SelectList(Enumerable.Range(18, 45)), "", new { @class = "my-btn" })
+    </p>
+    <p>
+        @Html.Label("Play Alert Sound: ")
+        @Html.DropDownList("PlayAlertSoundTypeSelect", new SelectList(Enumerable.Range(1, 26)), "", new { @class = "my-btn" })
+        @Html.DropDownList("PlayAlertSoundVolumeSelect", new SelectList(Enumerable.Range(0, 300)), "", new { @class = "my-btn" })
+    </p>
+</div>
+<hr />
+
+<div id="saveButton" style="float:right">
+    <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
+    <p />
+    <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg" name="Show">
+        <option value="0">Hide</option>
+        <option value="1" selected="selected">Show</option>
+    </select>
+    <p />
+    <button id="saveItem" type="submit" class="btn btn-default btn-success btn-lg" aria-label="Left Align" style="float:right">
+        Add item
+        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+    </button>
+</div>

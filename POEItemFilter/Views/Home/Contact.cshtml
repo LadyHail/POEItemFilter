@@ -1,17 +1,40 @@
-﻿@{
+﻿@model POEItemFilter.ViewModels.ContactViewModel
+
+@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<h2>Contact me</h2>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+<div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Contact", "Home"))
+        {
+            @Html.LabelFor(c => c.Name);
+            @Html.TextBoxFor(c => c.Name);
+
+            @Html.LabelFor(c => c.Email);
+            @Html.TextBoxFor(c => c.Email);
+
+            @Html.LabelFor(c => c.Subject);
+            @Html.TextBoxFor(c => c.Subject);
+
+            @Html.LabelFor(c => c.Message);
+            @Html.TextBoxFor(c => c.Message);
+
+            <button type="submit" class="btn btn-primary">Send</button>
+        }
+
+        <div>
+            <div>
+                @if (ViewBag.Message != null)
+                {
+                    <div>@ViewBag.Message</div>
+
+
+                    }
+            </div>
+        </div>
+    </div>
+
+</div>

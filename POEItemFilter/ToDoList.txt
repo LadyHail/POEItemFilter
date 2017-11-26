@@ -21,7 +21,7 @@
 
 [SOLVED] 11. Edycja Items.
 
-12. Search for filter.
+[SOLVED] 12. Search for filter.
 
 FRONT:
 [SOLVED] 4. Poprawić kod w View na C#.

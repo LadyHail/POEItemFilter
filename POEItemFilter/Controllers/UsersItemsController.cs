@@ -300,7 +300,7 @@ namespace POEItemFilter.Controllers
                 Items = items,
             };
 
-            return PartialView("Refresh", viewModel);
+            return PartialView("_RefreshPartial", viewModel);
         }
 
         public ActionResult DeleteItemSession(int id)

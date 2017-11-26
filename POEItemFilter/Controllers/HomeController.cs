@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using POEItemFilter.ViewModels;
 
 namespace POEItemFilter.Controllers
 {
@@ -15,15 +12,50 @@ namespace POEItemFilter.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
+        [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult Contact(ContactViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                //try
+                //{
+                //    MailMessage mailMessage = new MailMessage();
+                //    mailMessage.From = new MailAddress(viewModel.Email);
+                //    mailMessage.To.Add();
+                //    mailMessage.Subject = viewModel.Subject;
+                //    mailMessage.Body = viewModel.Message;
+
+                //    SmtpClient smtp = new SmtpClient();
+                //    smtp.Host = "smtp.gmail.com";
+                //    smtp.Port = 587;
+                //    smtp.Credentials = new System.Net.NetworkCredential
+                //        ();
+                //    smtp.EnableSsl = true;
+                //    smtp.Send(mailMessage);
+
+                //    ModelState.Clear();
+                //    ViewBag.Message = "Thank you for contacting us";
+                //}
+                //catch (Exception e)
+                //{
+                //    ModelState.Clear();
+                //    ViewBag.Message = $"Sorry we're facing problem here {e.Message}";
+                //}
+            }
+            return View();
+        }
+
+        public ActionResult HowTo()
+        {
             return View();
         }
     }
