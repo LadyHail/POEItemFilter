@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using POEItemFilter.Library;
 using POEItemFilter.Models;
 using POEItemFilter.Models.ItemsDB;
@@ -8,6 +9,7 @@ using POEItemFilter.ViewModels;
 
 namespace POEItemFilter.Controllers
 {
+    [Authorize]
     public class UsersItemsController : Controller
     {
         ApplicationDbContext _context;
@@ -32,6 +34,11 @@ namespace POEItemFilter.Controllers
         [HttpGet]
         public ActionResult NewItemDb(int id)
         {
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == id).UserId;
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
             ItemUser viewModel = new ItemUser()
             {
                 FilterId = id
@@ -195,23 +202,6 @@ namespace POEItemFilter.Controllers
                                 TypeId = b.TypeId
                             })
                             .ToList();
-
-                        // Alternative
-                        //items = (from a in firstFilter
-                        //         join b in secondFilter
-                        //         on a.Id
-                        //         equals b.Id
-                        //         select new ItemDB()
-                        //         {
-                        //             Attributes = b.Attributes,
-                        //             BaseType = b.BaseType,
-                        //             BaseTypeId = b.BaseTypeId,
-                        //             Id = b.Id,
-                        //             Level = b.Level,
-                        //             Name = b.Name,
-                        //             Type = b.Type,
-                        //             TypeId = b.TypeId
-                        //         }).ToList();
                     }
                     else
                     {
@@ -321,6 +311,11 @@ namespace POEItemFilter.Controllers
         {
             var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
             int filterId = itemInDb.FilterId;
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
             if (itemInDb != null)
             {
                 _context.UsersItems.Remove(itemInDb);
@@ -353,6 +348,12 @@ namespace POEItemFilter.Controllers
         {
             var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
             if (itemInDb == null)
+            {
+                return HttpNotFound();
+            }
+            var filter = _context.Filters.SingleOrDefault(i => i.Id == itemInDb.FilterId);
+            bool isAuthorized = User.Identity.GetUserId() == filter.UserId;
+            if (!isAuthorized)
             {
                 return HttpNotFound();
             }
@@ -395,6 +396,11 @@ namespace POEItemFilter.Controllers
         [HttpPost]
         public ActionResult AddItemDb(ItemUserViewModel model, int filterId)
         {
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("MyFilters", "UsersItems");
@@ -444,6 +450,12 @@ namespace POEItemFilter.Controllers
         [HttpPost]
         public ActionResult EditItemDb(ItemUserViewModel model, int filterId, int itemId)
         {
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
+
             ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
 
             if (!ModelState.IsValid)

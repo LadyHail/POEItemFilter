@@ -26,6 +26,7 @@ namespace POEItemFilter.Controllers
             _context.Dispose();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult MyFilters()
         {
@@ -34,6 +35,7 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult NewFilter()
         {
@@ -48,6 +50,7 @@ namespace POEItemFilter.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult AllFilters()
         {
@@ -55,10 +58,12 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
         {
             Models.Filters.Filter newFilter = new Models.Filters.Filter();
+            bool isAuthorized = User.Identity.GetUserId() == newFilter.UserId;
             if (id != "" && id != null)
             {
                 int filterId = int.Parse(id);
@@ -98,7 +103,7 @@ namespace POEItemFilter.Controllers
 
                 return Json(new { fileName = newFilter.Name }, JsonRequestBehavior.AllowGet);
             }
-            else if (filterName != null && id != "" && id != null)
+            else if (filterName != null && id != "" && id != null && isAuthorized)
             {
                 //Update filter model
                 newFilter.Name = filterName;
@@ -117,6 +122,7 @@ namespace POEItemFilter.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [DeleteFile]
         public FileResult Download(string file)
@@ -133,6 +139,7 @@ namespace POEItemFilter.Controllers
             return File(fullPath, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
 
+        [Authorize]
         [HttpGet]
         public JsonResult GenerateText(int id)
         {
@@ -149,6 +156,7 @@ namespace POEItemFilter.Controllers
             return Json(new { fileName = filterInDb.Name }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpPost]
         public void ClearSession(string fileName)
         {
@@ -159,6 +167,7 @@ namespace POEItemFilter.Controllers
             Session.Clear();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult EditFilter(int id)
         {
@@ -185,6 +194,7 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Details(int id)
         {
@@ -196,6 +206,7 @@ namespace POEItemFilter.Controllers
             return View(itemsInDb);
         }
 
+        [Authorize]
         public ActionResult DeleteFilter(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
@@ -204,10 +215,81 @@ namespace POEItemFilter.Controllers
                 return HttpNotFound();
             }
 
+            if (User.Identity.GetUserId() != filterInDb.UserId)
+            {
+                return HttpNotFound();
+            }
+
             _context.Filters.Remove(filterInDb);
             _context.SaveChanges();
 
             return null;
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangeSessionItemOrderUp(int id)
+        {
+            if (Session["ItemsList"] != null)
+            {
+                List<ItemUser> sessionItems = Session["ItemsList"] as List<ItemUser>;
+                if (sessionItems.Count < 1)
+                {
+                    return View("NewFilter");
+                }
+
+                if (id > 1)
+                {
+                    var selectedItem = sessionItems.SingleOrDefault(i => i.Id == id);
+                    int busyItemId = sessionItems.LastOrDefault(i => i.Id < id).Id;
+                    var busyItem = sessionItems.SingleOrDefault(i => i.Id == busyItemId);
+
+                    var selectedItemIndex = sessionItems.FindIndex(i => i.Id == id);
+                    var busyItemIndex = sessionItems.FindIndex(i => i.Id == busyItemId);
+
+                    busyItem.Id = selectedItem.Id;
+                    selectedItem.Id = busyItemId;
+
+                    sessionItems[busyItemIndex] = selectedItem;
+                    sessionItems[selectedItemIndex] = busyItem;
+                    Session["ItemsList"] = sessionItems;
+                }
+
+            }
+            return View("NewFilter");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangeSessionItemOrderDown(int id)
+        {
+            if (Session["ItemsList"] != null)
+            {
+                List<ItemUser> sessionItems = Session["ItemsList"] as List<ItemUser>;
+                if (sessionItems.Count < 1)
+                {
+                    return View("NewFilter");
+                }
+
+                if (id < sessionItems.Count)
+                {
+                    var selectedItem = sessionItems.SingleOrDefault(i => i.Id == id);
+                    int busyItemId = sessionItems.FirstOrDefault(i => i.Id > id).Id;
+                    var busyItem = sessionItems.SingleOrDefault(i => i.Id == busyItemId);
+
+                    var selectedItemIndex = sessionItems.FindIndex(i => i.Id == id);
+                    var busyItemIndex = sessionItems.FindIndex(i => i.Id == busyItemId);
+
+                    busyItem.Id = selectedItem.Id;
+                    selectedItem.Id = busyItemId;
+
+                    sessionItems[busyItemIndex] = selectedItem;
+                    sessionItems[selectedItemIndex] = busyItem;
+                    Session["ItemsList"] = sessionItems;
+                }
+
+            }
+            return View("NewFilter");
         }
     }
 }

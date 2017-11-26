@@ -50,6 +50,8 @@ Maybe it's used by specific class?</textarea>
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>
+                    <th></th>
+                    <th></th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -57,6 +59,8 @@ Maybe it's used by specific class?</textarea>
                 {
                     <tr>
                         <td>@item.ToString()</td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-up"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button></td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-down"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></td>
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
                     </tr>
@@ -75,6 +79,30 @@ Maybe it's used by specific class?</textarea>
             $(".btn").hide();
             $("#newFilter").hide().slideDown(500, function () {
                 $(".btn").fadeIn(1000);
+            });
+
+            //Change item order - move up.
+            $("#itemsListTable").on("click", ".js-id-up", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("ChangeSessionItemOrderUp", "Filters")" + "/" + button.attr("data-item-id"),
+                    method: "POST",
+                    success: function (data) {
+                        window.location.href = "/Filters/NewFilter";
+                    },
+                });
+            });
+
+            //Change item order - move down.
+            $("#itemsListTable").on("click", ".js-id-down", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("ChangeSessionItemOrderDown", "Filters")" + "/" + button.attr("data-item-id"),
+                    method: "POST",
+                    success: function (data) {
+                        window.location.href = "/Filters/NewFilter";
+                    },
+                });
             });
 
             //Edit item
@@ -146,7 +174,7 @@ Maybe it's used by specific class?</textarea>
                     alert("Invalid class!")
                 } else {
                     description.val() === description.prop("defaultValue") ? description.val("") : "";
-                    
+
                     var request = $.ajax({
                             type: "POST",
                             url: "@Url.Action("SaveFilter", "Filters")",

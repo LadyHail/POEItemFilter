@@ -16,7 +16,8 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Dedicated to class</th>
-                        <th>Edit Date</th>
+                        <th>Added by</th>
+                        <th>Last edit</th>
                         <th>Details</th>
                         <th>Download</th>
                     </tr>
@@ -28,6 +29,7 @@
                             <td>@item.Name</td>
                             <td>@item.Description</td>
                             <td>@item.Dedicated</td>
+                            <td>@item.User.UserName</td>
                             <td>@item.EditDate</td>
                             <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-details">Details</button></td>
                             <td><button data-item-id="@item.Id" class="btn btn-sm btn-success js-download">Download</button></td>
