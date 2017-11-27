@@ -407,6 +407,12 @@ namespace POEItemFilter.Controllers
             }
 
             ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+            int lastRowId = _context.Filters
+                .SelectMany(i => i.Items)
+                .Where(i => i.FilterId == filterId)
+                .Max(i => i.RowId);
+
+            item.RowId = lastRowId + 1;
 
             _context.UsersItems.Add(item);
             _context.SaveChanges();

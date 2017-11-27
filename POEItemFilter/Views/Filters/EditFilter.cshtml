@@ -51,6 +51,8 @@
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>
+                    <th></th>
+                    <th></th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -58,6 +60,8 @@
                 {
                     <tr>
                         <td>@item.ToString()</td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-up"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button></td>
+                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-down"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></td>
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
                         <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
                     </tr>
@@ -76,6 +80,30 @@
             $(".btn").hide();
             $("#newFilter").hide().slideDown(500, function () {
                 $(".btn").fadeIn(1000);
+            });
+
+            //Change item order - move up.
+            $("#itemsListTable").on("click", ".js-id-up", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("ChangeDbItemOrderUp", "Filters")" + "/" + button.attr("data-item-id"),
+                    method: "POST",
+                    success: function (data) {
+                        window.location.href = "/Filters/EditFilter/" + "@Model.Filter.Id";
+                    },
+                });
+            });
+
+            //Change item order - move down.
+            $("#itemsListTable").on("click", ".js-id-down", function () {
+                var button = $(this);
+                $.ajax({
+                    url: "@Url.Action("ChangeDbItemOrderDown", "Filters")" + "/" + button.attr("data-item-id"),
+                    method: "POST",
+                    success: function (data) {
+                        window.location.href = "/Filters/EditFilter/" + "@Model.Filter.Id";
+                    },
+                });
             });
 
             //Edit item
@@ -134,7 +162,9 @@
                 } else if ($("#itemsList").length === 0) {
                     alert("Can't create empty filter! Add items!")
                 } else if ($("#classes").val() < 0 && $("#classes").val() > 7) {
-                    alert("Invalid class!")
+                    alert("Invalid class")
+                } else if ("@Model.ItemsList.Count" === "0"){
+                    alert("Cannot save empty filter")
                 } else {
                     $.ajax({
                         type: "POST",

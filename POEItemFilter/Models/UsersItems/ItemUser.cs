@@ -8,6 +8,8 @@ namespace POEItemFilter.Models
     {
         public int Id { get; set; }
 
+        public int RowId { get; set; }
+
         public int FilterId { get; set; }
 
         public Filter Filter { get; set; }

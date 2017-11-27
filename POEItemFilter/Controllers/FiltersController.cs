@@ -62,12 +62,13 @@ namespace POEItemFilter.Controllers
         [HttpPost]
         public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
         {
+            bool isAuthorized = false;
             Models.Filters.Filter newFilter = new Models.Filters.Filter();
-            bool isAuthorized = User.Identity.GetUserId() == newFilter.UserId;
             if (id != "" && id != null)
             {
                 int filterId = int.Parse(id);
                 newFilter = _context.Filters.SingleOrDefault(f => f.Id == filterId);
+                isAuthorized = User.Identity.GetUserId() == newFilter.UserId;
             }
             if (filterName != null && (id == "" || id == null))
             {
@@ -147,7 +148,7 @@ namespace POEItemFilter.Controllers
             StreamWriter filterText = GenerateFilter.CreateTempFile(filterInDb.Name);
             filterText.WriteLine("#Description: " + filterInDb.Description);
 
-            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i);
+            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).OrderBy(i => i.RowId);
             List<ItemUser> itemsList = new List<ItemUser>();
             itemsList.AddRange(itemsInDb);
 
@@ -173,6 +174,7 @@ namespace POEItemFilter.Controllers
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
             var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();
+
             if (filterInDb == null)
             {
                 return HttpNotFound();
@@ -190,7 +192,7 @@ namespace POEItemFilter.Controllers
 
             var viewModel = new EditFilterViewModel();
             viewModel.Filter = filterInDb;
-            viewModel.ItemsList = itemsInDb;
+            viewModel.ItemsList = itemsInDb.OrderBy(i => i.RowId).ToList();
             return View(viewModel);
         }
 
@@ -198,7 +200,7 @@ namespace POEItemFilter.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();
+            var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).OrderBy(i => i.RowId).ToList();
             if (itemsInDb == null)
             {
                 return HttpNotFound();
@@ -238,7 +240,7 @@ namespace POEItemFilter.Controllers
                     return View("NewFilter");
                 }
 
-                if (id > 1)
+                if (sessionItems.Any(i => i.Id < id))
                 {
                     var selectedItem = sessionItems.SingleOrDefault(i => i.Id == id);
                     int busyItemId = sessionItems.LastOrDefault(i => i.Id < id).Id;
@@ -271,7 +273,7 @@ namespace POEItemFilter.Controllers
                     return View("NewFilter");
                 }
 
-                if (id < sessionItems.Count)
+                if (sessionItems.Any(i => i.Id > id))
                 {
                     var selectedItem = sessionItems.SingleOrDefault(i => i.Id == id);
                     int busyItemId = sessionItems.FirstOrDefault(i => i.Id > id).Id;
@@ -290,6 +292,96 @@ namespace POEItemFilter.Controllers
 
             }
             return View("NewFilter");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangeDbItemOrderUp(int id)
+        {
+            var selectedItem = _context.UsersItems.SingleOrDefault(i => i.Id == id);
+            var filter = _context.Filters.SingleOrDefault(i => i.Id == selectedItem.FilterId);
+            var itemsList = _context.UsersItems.Where(i => i.FilterId == filter.Id).OrderBy(i => i.RowId).ToList();
+            List<ItemUser> newList = new List<ItemUser>();
+
+            if (itemsList.Any(i => i.RowId < selectedItem.RowId))
+            {
+                var busyItem = itemsList.LastOrDefault(i => i.RowId < selectedItem.RowId);
+                int selectedItemIndex = itemsList.FindIndex(f => f.Id == selectedItem.Id);
+                int busyItemIndex = itemsList.FindIndex(f => f.Id == busyItem.Id);
+
+                for (int i = 0; i < itemsList.Count; i++)
+                {
+                    if (i == selectedItemIndex)
+                    {
+                        busyItem.RowId = selectedItemIndex;
+                        newList.Add(busyItem);
+                    }
+                    else if (i == busyItemIndex)
+                    {
+                        selectedItem.RowId = busyItemIndex;
+                        newList.Add(selectedItem);
+                    }
+                    else
+                    {
+                        itemsList[i].RowId = i;
+                        newList.Add(itemsList[i]);
+                    }
+                }
+                _context.SaveChanges();
+            }
+
+            var viewModel = new EditFilterViewModel()
+            {
+                Filter = filter,
+                ItemsList = newList.OrderBy(i => i.RowId).ToList()
+            };
+
+            return View("EditFilter", viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangeDbItemOrderDown(int id)
+        {
+            var selectedItem = _context.UsersItems.SingleOrDefault(i => i.Id == id);
+            var filter = _context.Filters.SingleOrDefault(i => i.Id == selectedItem.FilterId);
+            var itemsList = _context.UsersItems.Where(i => i.FilterId == filter.Id).OrderBy(i => i.RowId).ToList();
+            List<ItemUser> newList = new List<ItemUser>();
+
+            if (itemsList.Any(i => i.RowId > selectedItem.RowId))
+            {
+                var busyItem = itemsList.FirstOrDefault(i => i.RowId > selectedItem.RowId);
+                int selectedItemIndex = itemsList.FindIndex(f => f.Id == selectedItem.Id);
+                int busyItemIndex = itemsList.FindIndex(f => f.Id == busyItem.Id);
+
+                for (int i = 0; i < itemsList.Count; i++)
+                {
+                    if (i == selectedItemIndex)
+                    {
+                        busyItem.RowId = selectedItemIndex;
+                        newList.Add(busyItem);
+                    }
+                    else if (i == busyItemIndex)
+                    {
+                        selectedItem.RowId = busyItemIndex;
+                        newList.Add(selectedItem);
+                    }
+                    else
+                    {
+                        itemsList[i].RowId = i;
+                        newList.Add(itemsList[i]);
+                    }
+                }
+                _context.SaveChanges();
+            }
+
+            var viewModel = new EditFilterViewModel()
+            {
+                Filter = filter,
+                ItemsList = newList.OrderBy(i => i.RowId).ToList()
+            };
+
+            return View("EditFilter", viewModel);
         }
     }
 }

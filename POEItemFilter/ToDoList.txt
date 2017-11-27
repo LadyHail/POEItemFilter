@@ -31,3 +31,5 @@ FRONT:
 [SOLVED] 6. Zamiast przesyłania stringów przesyłać cały obiekt.
 
 [SOLVED] 7. EditFilter NewItem
+
+Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności
