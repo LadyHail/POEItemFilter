@@ -17,9 +17,16 @@
     }, "Id", "Name", 0);
 }
 
+<div class="body-content container table-bordered alert-info">
+    <ul class="list-unstyled">
+        <li class="text-justify"><span class="glyphicon glyphicon-info-sign btn-lg" aria-hidden="true"></span>You're reponsible on items order in your filter. The program do not set it up. It doesn't know which item should go first. You can change item order at any time.</li>
+        <li class="text-justify"><span class="glyphicon glyphicon-info-sign btn-lg" aria-hidden="true"></span>The program is saving each property of the item by given algorithm. After download make sure the filter is saved by the way as you wanted. At any time you can change the filter on your own.</li>
+    </ul>
+</div>
+
 <div id="row">
 
-    <div id="newFilter" style="float:left">
+    <div id="newFilter">
         <h2>Edit items filter</h2>
 
         <p>
@@ -41,13 +48,13 @@
         }
         <p>
             <a href="~/UsersItems/NewItemDb/@Model.Filter.Id" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-            <a href="#" id="saveFilter" class="btn btn-primary">Save filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            <a href="#" id="saveFilter" class="btn btn-primary btn-success">Save filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
         </p>
     </div>
 
     @if (Model != null)
     {
-        <div id="itemsList" style="float:left">
+        <div id="itemsList">
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>

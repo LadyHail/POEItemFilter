@@ -1,10 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Start";
 }
 
 @Html.Partial("_NavBar")
 
-<div class="jumbotron" id="startPage">
+<div class="jumbotron body-content container carousel">
     <h1>Welcome!</h1>
     <h3>Are you tired of bunch of items laying around?</h3>
     <h3>Your inventory gets full really fast?</h3>
@@ -18,7 +18,7 @@
     <script>
         $(document).ready(function () {
             $(".btn").hide();
-            $(".jumbotron").hide().slideDown(500, function () {
+            $(".jumbotron").hide().slideDown(700, function () {
                 $(".btn").fadeIn(1000);
             });
         });

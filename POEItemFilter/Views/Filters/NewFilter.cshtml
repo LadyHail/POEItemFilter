@@ -17,62 +17,68 @@
     }, "Id", "Name", 0);
 }
 
-<div id="row">
+<div class="body-content container table-bordered alert-info">
+    <ul class="list-unstyled">
+        <li class="text-justify"><span class="glyphicon glyphicon-info-sign btn-lg" aria-hidden="true"></span>You're reponsible on items order in your filter. The program do not set it up. It doesn't know which item should go first. You can change item order at any time.</li>
+        <li class="text-justify"><span class="glyphicon glyphicon-info-sign btn-lg" aria-hidden="true"></span>The program is saving each property of the item by given algorithm. After download make sure the filter is saved by the way as you wanted. At any time you can change the filter on your own.</li>
+    </ul>   
+</div>
+    <div id="divInline">
 
-    <div id="newFilter" style="float:left">
-        <h2>Create new item filter</h2>
+        <div id="newFilter">
+            <h2>Create new item filter</h2>
 
-        <p>
-            <textarea id="filterName" class="my-textarea">Enter filter name</textarea>
-        </p>
+            <p>
+                <textarea id="filterName" class="my-textarea">Enter filter name</textarea>
+            </p>
 
-        <p>
-            <textarea id="description" class="my-textarea">Let people know more about Your filter! 
+            <p>
+                <textarea id="description" class="my-textarea">Let people know more about Your filter! 
 What kind of items are You looking for? Currency? Unique? 
 Maybe it's used by specific class?</textarea>
-        </p>
-        <p id="dedicatedP">
-            @Html.Label("Is your filter dedicated to class?")
-            @Html.CheckBox("dedicatedCB", false)
-        </p>
-            <p id="classesDL">
-            @Html.DropDownList("classes", classes, new { @class = "my-btn" })
             </p>
-        <p>
-            <a href="~/UsersItems/NewItemSession" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-            <a href="#" id="createFilter" class="btn btn-success">Save & download filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-        </p>
+            <p id="dedicatedP">
+                @Html.Label("Is your filter dedicated to class?")
+                @Html.CheckBox("dedicatedCB", false, new { @class = "checkbox-inline" })
+            </p>
+            <p id="classesDL">
+                @Html.DropDownList("classes", classes, new { @class = "my-btn" })
+            </p>
+            <p>
+                <a href="~/UsersItems/NewItemSession" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+                <a href="#" id="createFilter" class="btn btn-success">Save & download filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            </p>
+        </div>
+
+        @if (Model != null)
+        {
+            <div id="itemsList" class="margin-top">
+                <table class="table" id="itemsListTable">
+                    <tr>
+                        <th>Items list</th>
+                        <th></th>
+                        <th></th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.ToString()</td>
+                            <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-up"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button></td>
+                            <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-down"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></td>
+                            <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
+                            <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
     </div>
 
-    @if (Model != null)
-    {
-        <div id="itemsList" style="float:left">
-            <table class="table" id="itemsListTable">
-                <tr>
-                    <th>Items list</th>
-                    <th></th>
-                    <th></th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.ToString()</td>
-                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-up"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button></td>
-                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-id-down"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></td>
-                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-edit">Edit</button></td>
-                        <td><button data-item-id="@item.Id" class="btn btn-sm btn-primary js-delete">Delete</button></td>
-                    </tr>
-                }
-            </table>
-        </div>
-    }
-</div>
-
-@section scripts
+    @section scripts
 {
-    <script>
+        <script>
         $(document).ready(function () {
             $("#filterName").css({ "height": 28 });
             $("#description").css({ "height": 112 });
@@ -207,5 +213,5 @@ Maybe it's used by specific class?</textarea>
                 });
             };
     });
-    </script>
+        </script>
     }

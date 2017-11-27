@@ -29,7 +29,7 @@
     "Id", "Name", 0);
 }
 
-<button id="lvlToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+<button id="lvlToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
     Level information
     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 </button>
@@ -40,7 +40,8 @@
         @Html.Label("Item level: ")
         @Html.DropDownList("ItemLvlSelectSign", signsList, new { @class = "my-btn" })
         @Html.DropDownList("ItemLvlSelect", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
-        @Html.Label("Select item level range: ")
+        <strong>OR</strong>
+        @Html.Label("select item level range: ")
         @Html.DropDownList("ItemLvlRangeSelect1", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
         @Html.DropDownList("ItemLvlRangeSelect2", new SelectList(Enumerable.Range(0, 101)), "All", new { @class = "my-btn" })
     </p>
@@ -62,7 +63,7 @@
 </div>
 <hr />
 
-<button id="socketsToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+<button id="socketsToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
     Sockets information
     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 </button>
@@ -81,19 +82,19 @@
 
     <p>
         @Html.Label("Colours of linked sockets: ")
-        @Html.Label("Red: ")
+        @Html.Label("Red: ", new { @class = "margin-left" })
         @Html.DropDownList("RedSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ")
+        @Html.Label("Green: ", new { @class = "margin-left" })
         @Html.DropDownList("GreenSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ")
+        @Html.Label("Blue: ", new { @class = "margin-left" })
         @Html.DropDownList("BlueSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
-        @Html.Label("White: ")
+        @Html.Label("White: ", new { @class = "margin-left" })
         @Html.DropDownList("WhiteSocketsSelect", new SelectList(Enumerable.Range(0, 7)), "", new { @class = "my-btn" })
     </p>
 </div>
 <hr />
 
-<button id="sizeToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+<button id="sizeToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
     Dimension information
     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 </button>
@@ -112,7 +113,7 @@
 </div>
 <hr />
 
-<button id="otherToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+<button id="otherToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
     Other information
     <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 </button>
@@ -128,35 +129,38 @@
     </p>
     <p>
         @Html.Label("Border color: ")
-        @Html.Label("Red: ")
+        <br />
+        @Html.Label("Red: ", new { @class = "margin-left" })
         @Html.DropDownList("BorderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ")
+        @Html.Label("Green: ", new { @class = "margin-left" })
         @Html.DropDownList("BorderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ")
+        @Html.Label("Blue: ", new { @class = "margin-left" })
         @Html.DropDownList("BorderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Border opacity: ")
+        @Html.Label("Border opacity: ", new { @class = "margin-left" })
         @Html.DropDownList("BorderAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
     </p>
     <p>
         @Html.Label("Text color: ")
-        @Html.Label("Red: ")
+        <br />
+        @Html.Label("Red: ", new { @class = "margin-left" })
         @Html.DropDownList("TextRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ")
+        @Html.Label("Green: ", new { @class = "margin-left" })
         @Html.DropDownList("TextGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ")
+        @Html.Label("Blue: ", new { @class = "margin-left" })
         @Html.DropDownList("TextBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Text opacity: ")
+        @Html.Label("Text opacity: ", new { @class = "margin-left" })
         @Html.DropDownList("TextAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
     </p>
     <p>
         @Html.Label("Background color: ")
-        @Html.Label("Red: ")
+        <br />
+        @Html.Label("Red: ", new { @class = "margin-left" })
         @Html.DropDownList("BackRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ")
+        @Html.Label("Green: ", new { @class = "margin-left" })
         @Html.DropDownList("BackGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ")
+        @Html.Label("Blue: ", new { @class = "margin-left" })
         @Html.DropDownList("BackBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Background opacity: ")
+        @Html.Label("Background opacity: ", new { @class = "margin-left" })
         @Html.DropDownList("BackAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
     </p>
     <p>
@@ -171,16 +175,19 @@
 </div>
 <hr />
 
-<div id="saveButton" style="float:right">
-    <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
-    <p />
-    <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg" name="Show">
-        <option value="0">Hide</option>
-        <option value="1" selected="selected">Show</option>
-    </select>
-    <p />
-    <button id="saveItem" type="submit" class="btn btn-default btn-success btn-lg" aria-label="Left Align" style="float:right">
-        Add item
-        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-    </button>
+<div id="saveButton" class="pull-right">
+    <p>
+        <span class="text-uppercase text-primary text-danger"><b>Show or hide item?</b></span>
+        <br />
+        <select id="showOrHideSelect" class="btn btn-default btn-danger btn-lg pull-right" name="Show">
+            <option value="0">Hide</option>
+            <option value="1" selected="selected">Show</option>
+        </select>
+    </p>
+    <p>
+        <button id="saveItem" type="submit" class="btn btn-default btn-success btn-lg pull-right margin-top" aria-label="Left Align">
+            Add item
+            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </button>
+    </p>
 </div>

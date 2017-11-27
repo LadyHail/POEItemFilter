@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - PoE Item Filter</title>
+    <title>@ViewBag.Title - PoE Item Filter Manager</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -15,9 +15,18 @@
     </div>
     <footer class="container body-content">
         <hr />
-        <p>&copy; @DateTime.Now.Year - Path of Exile Item Filter</p>
-        <p class="text-right"><a href="http://glyphicons.com/">
-            <img src="~/Content/img/glyphicons.png" class="img-small img-rounded"/> Glyphicons</a></p>
+        <div class="text-inline">
+            <span class="text-left">v.1.0</span>
+            <span class="text-right">
+                <a href="http://glyphicons.com/">
+                    <img src="~/Content/img/glyphicons.png" class="img-small img-rounded" /> 
+                    Glyphicons.com
+                </a>
+            </span>
+        </div>
+        <p class="text-right"><a href="https://www.toptal.com/designers/subtlepatterns/">
+            <img src="https://subtlepatterns.toptal.io/designers/subtlepatterns/wp-content/themes/tweaker7/images/logo_subtle.svg" class="img-small img-rounded" /> 
+            Subtle patterns</a></p>
     </footer>
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)

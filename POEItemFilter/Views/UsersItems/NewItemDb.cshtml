@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2><b>Add new item</b></h2>
+<h2>Add new item</h2>
 <hr />
 
 @using (Html.BeginForm("AddItemDb", "UsersItems", new { filterId = Model.FilterId }, FormMethod.Post))
 {
-    <button id="basicToggle" type="button" class="btn btn-primary btn-sm" aria-label="Left Align">
+    <button id="basicToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
         Basic information
         <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </button>
@@ -28,6 +28,7 @@
         <p id="userItemTB">
             @Html.Label("Item name: ")
             @Html.TextBox("UserItem", "", new { @class = "my-textarea" })
+            <span class="text-justify text-info"><span class="glyphicon glyphicon-info-sign btn-lg" aria-hidden="true"></span>Please make sure you're entering valid data.</span>
         </p>
     </div>
     <hr />

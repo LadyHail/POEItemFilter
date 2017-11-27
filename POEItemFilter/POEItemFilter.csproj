@@ -459,7 +459,6 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
-    <Content Include="Content\Q9WuFLC.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -652,6 +651,7 @@
     <Content Include="Views\Filters\AllFilters.cshtml" />
     <Content Include="Views\Home\HowTo.cshtml" />
     <Content Include="Views\UsersItems\_ItemInfoPartial.cshtml" />
+    <Content Include="Views\UsersItems\_GeneralInfoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -39,5 +39,3 @@ FRONT:
 8. Dodać walidację filtrów.
 
 Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności
-
-Bckground color: https://www.toptal.com/designers/subtlepatterns/

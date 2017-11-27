@@ -4,6 +4,49 @@
     /*background-color: #0d0d0d;*/
     background-image: url("img/noisy_net_@2X.png");
     color: #A9A9A9;
+
+}
+
+select {
+    margin-left: 3px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+label {
+    font-weight: 100;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+pre {
+    background-color: #1a1b18;
+    border: 1px dashed #383636;
+    color: #a38d6d;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.3em;
+    padding: 1em;
+    direction: ltr;
+    font-size: 0.875em;
+}
+
+.glyphicon-info-sign {
+    color: dodgerblue;
+    padding: 4px;
+}
+
+.margin-left {
+    margin-left: 15px;
+}
+
+.margin-top {
+    margin-top: 50px;
+}
+
+.text-inline {
+    display: flex;
+    justify-content: space-between;
 }
 
 .img-small {
@@ -37,7 +80,7 @@ textarea {
 
 .jumbotron {
     background-color: #333333;
-    text-align:start;
+    text-align: start;
 }
 
 .my-textarea {
@@ -46,6 +89,7 @@ textarea {
     width:300px;
     height:auto;
     resize:none;
+    border-radius: 4px;
 }
 
 .my-btn {
@@ -115,7 +159,6 @@ textarea {
 .my-btn {
     display: inline-block;
     padding: 6px 12px;
-    margin-bottom: 0;
     font-size: 14px;
     font-weight: normal;
     line-height: 1.42857143;

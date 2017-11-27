@@ -6,14 +6,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("Path of Exile Item Filter", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Start", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Create filter", "NewFilter", "Filters")</li>
                 <li>@Html.ActionLink("Search for filter", "AllFilters", "Filters")</li>
                 <li>@Html.ActionLink("My filters", "MyFilters", "Filters")</li>
-                <li>@Html.ActionLink("\"How To\"", "HowTo", "Home")</li>
+                <li>@Html.ActionLink("FAQ", "HowTo", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             </ul>
             @Html.Partial("_LoginPartial")
