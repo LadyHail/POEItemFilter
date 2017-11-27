@@ -1,8 +1,77 @@
 ﻿
 @{
-    ViewBag.Title = "HowTo";
+    ViewBag.Title = "How To";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>HowTo</h2>
+<h2>"How To"</h2>
 
+Source: https://pathofexile.gamepedia.com/Item_filter
+Step 1
+    Go to: %USERPROFILE%/Documents/My Games/Path of Exile/
+    For example:
+https://pathofexile.gamepedia.com/media/pathofexile.gamepedia.com/6/63/Browserlocation.jpg?version=58090ec0d6eeb4d3dfb42f61796e7e90
+
+Step 2
+    Locate an existing filter, i.e. from List of item filters or elsewhere.
+
+Step 2A - Copying file
+    If the item filter is supplied as downloadable file with the .filter extension, you can simply download it and save it in the folder.
+
+Step 2B - Copying Contents
+    Create a text file with the name you want your Filter to have. When you Save this file, be sure to select 'Save As' and set the file type to "All Files (*.*)". Copy the contents of the filter into the file.
+    Then save the file as: filtername.filter
+    It should look like this if done correctly
+
+    If you cannot see your file extension, Show/Hide File extensions in Windows: http://windows.microsoft.com/en-nz/windows/show-hide-file-name-extensions#show-hide-file-name-extensions=windows-7
+
+Step 3
+    Go to the in-game Options menu and click on the UI tab. You should see this new option, located at the very bottom of the list: 
+https://pathofexile.gamepedia.com/media/pathofexile.gamepedia.com/6/63/Highlight.jpg?version=63f140d975771040033d9d50cc009157
+
+    If your Filter is not a .filter file, or it is not located in the same folder as your production_Config.ini file, you won't see this option.
+
+Step 4
+    Clicking 'Reload' will display this message if the Filter is working correctly:
+https://pathofexile.gamepedia.com/media/pathofexile.gamepedia.com/0/09/Confirmation.png?version=dccf8c8a02b293c2fb058ca7649d43b9
+
+Known issues
+Item filters not found
+Solution A
+
+    Check that the filter has the correct ending (.filter )
+    Check whether the item filter is placed in the correct folder
+
+Solution B
+
+Currently (beta) item filters may not load for users who use a non-ASCII userpath. As a work around you can move your documents folder to a location which does not contain non-ASCII letters. To do so:
+
+ Go to your user folder (%USERPROFILE%) -> right click on My Documents -> properties -> path -> move... -> select a new location to move to -> apply
+
+
+
+Source: https://pathofexile.gamepedia.com/Item_filter_guide
+The most important thing to note is that blocks are read from top to bottom in the file by the client, The highest block takes priority, which means that you need to have the block that hides the scrolls, above before the line that shows the currency, because scrolls would also match the currency block.
+
+This is why flasks come first in this list, They can not be rare and their droplevel is below 70.
+
+An empty block matches all items, which means that the Hide at the end of the file effectively hides everything that wasn't specifically shown. 
+
+My filter is not working, what do I do?
+
+Make sure your filter file is located in the same folder as your production_Config.ini file. If it is, then you need to make sure you've actually created a 'filter' file, and not a 'text' file with '.filter' in the name. To check this, right-click the filter and click Properties, if the file type is 'text', you did not change the file extension correctly. If you can not see your file extension, Show/Hide File Extensions in Windows
+
+Do you have non-ASCII characters in your PC username? https://www.pathofexile.com/forum/view-thread/1250862/page/5#p10557794 
+
+If you were to specify the following block It would show anything with Sai in the Items basetype, Such as Sai, Saint's Hauberk, Saintly Chainmail and Mosaic Kite Shield
+
+Show
+    BaseType Sai
+
+You only wanted to see Sai so you need to narrow it down by adding a Class
+
+Show
+    Class Dagger
+    BaseType Sai
+
+This will now show Sai, but NOT Saint's Hauberk, Saintly Chainmail and Mosaic Kite Shield as it did before 

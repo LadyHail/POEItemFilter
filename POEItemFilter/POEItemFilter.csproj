@@ -230,7 +230,7 @@
     <Compile Include="Library\Enumerables\Rarity.cs" />
     <Compile Include="Library\GenerateFilter.cs" />
     <Compile Include="Library\GetItemsFromWeb.cs" />
-    <Compile Include="Library\InequalitySelector.cs" />
+    <Compile Include="Library\InequalitySign.cs" />
     <Compile Include="Library\ItemUserModelMap.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.cs" />
     <Compile Include="Migrations\201710091536569_InitialModelForItemDb.Designer.cs">
@@ -271,6 +271,10 @@
     <Compile Include="Migrations\201711262207308_AddRowIdPropToItemUserTable.cs" />
     <Compile Include="Migrations\201711262207308_AddRowIdPropToItemUserTable.Designer.cs">
       <DependentUpon>201711262207308_AddRowIdPropToItemUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711271557393_AddUserBaseTypeIntoItemUserTable.cs" />
+    <Compile Include="Migrations\201711271557393_AddUserBaseTypeIntoItemUserTable.Designer.cs">
+      <DependentUpon>201711271557393_AddUserBaseTypeIntoItemUserTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -685,6 +689,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711262207308_AddRowIdPropToItemUserTable.resx">
       <DependentUpon>201711262207308_AddRowIdPropToItemUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711271557393_AddUserBaseTypeIntoItemUserTable.resx">
+      <DependentUpon>201711271557393_AddUserBaseTypeIntoItemUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

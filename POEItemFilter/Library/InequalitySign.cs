@@ -1,6 +1,6 @@
 ﻿namespace POEItemFilter.Library
 {
-    public static class InequalitySelector
+    public static class InequalitySign
     {
         public static string Select(int number)
         {

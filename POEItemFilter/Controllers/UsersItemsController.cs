@@ -493,6 +493,7 @@ namespace POEItemFilter.Controllers
             itemInDb.Sockets = item.Sockets;
             itemInDb.SocketsGroup = item.SocketsGroup;
             itemInDb.Width = item.Width;
+            itemInDb.UserBaseType = item.UserBaseType;
 
             _context.SaveChanges();
 

@@ -32,8 +32,6 @@ namespace POEItemFilter.Library
             foreach (var item in itemsList)
             {
                 string visibility = item.Show == true ? "Show" : "Hide";
-                filterText.WriteLine(visibility);
-
                 string output = "";
 
                 output += item.Identified == true ? "    Identified True\n" : "";
@@ -48,6 +46,7 @@ namespace POEItemFilter.Library
 
                 output += item.Class != null ? "    Class " + SetProperty(item.Class) : "";
                 output += item.BaseType != null ? "    BaseType " + SetProperty(item.BaseType) : "";
+                output += item.UserBaseType != null && item.BaseType == null ? "    BaseType " + SetProperty(item.UserBaseType) : "";
 
                 output += item.Rarity != null ? "    Rarity " + item.Rarity + "\n" : "";
                 output += item.ItemLevel != null ? "    ItemLevel " + SetProperty(item.ItemLevel) : "";
@@ -56,9 +55,13 @@ namespace POEItemFilter.Library
                 output += item.SetTextColor != null ? "    SetTextColor " + SetProperty(item.SetTextColor) : "";
                 output += item.SetBackgroundColor != null ? "    SetBackgroundColor " + SetProperty(item.SetBackgroundColor) : "";
                 output += item.SetBorderColor != null ? "    SetBorderColor " + SetProperty(item.SetBorderColor) : "";
-                //output += item.PlayAlertSound != null ? "    PlayAlertSound " + SetProperty(item.PlayAlertSound) : "";
+                output += item.PlayAlertSound != null ? "    PlayAlertSound " + SetProperty(item.PlayAlertSound) : "";
 
-                filterText.WriteLine(output);
+                if (output != "")
+                {
+                    filterText.WriteLine(visibility);
+                    filterText.WriteLine(output);
+                }
             }
             filterText.Write("Hide");
             filterText.Close();
@@ -73,8 +76,9 @@ namespace POEItemFilter.Library
         {
             string output = "";
             int lastIndex = propertyValue.Length - 1;
-            bool isNumber = int.TryParse(propertyValue[lastIndex].ToString(), out int noNumber);
-            output = propertyValue.Contains(" ") && !isNumber ? "\"" + propertyValue + "\"" + "\n" : propertyValue + "\n";
+            bool isLastNumber = int.TryParse(propertyValue[lastIndex].ToString(), out int noNumber);
+            bool isFirstNumber = int.TryParse(propertyValue[0].ToString(), out noNumber);
+            output = propertyValue.Contains(" ") && (!isLastNumber && !isFirstNumber) ? "\"" + propertyValue + "\"" + "\n" : propertyValue + "\n";
             return output;
         }
 

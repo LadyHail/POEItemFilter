@@ -1,12 +1,14 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #0d0d0d;
-    /*background-image: url("Q9WuFLC.jpg");
-    background-size:cover;
-    background-repeat:no-repeat;
-    background-position:center;*/
+    /*background-color: #0d0d0d;*/
+    background-image: url("img/noisy_net_@2X.png");
     color: #A9A9A9;
+}
+
+.img-small {
+    width: 20px;
+    height: auto;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -35,6 +37,7 @@ textarea {
 
 .jumbotron {
     background-color: #333333;
+    text-align:start;
 }
 
 .my-textarea {

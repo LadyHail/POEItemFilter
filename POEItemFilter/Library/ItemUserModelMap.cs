@@ -28,9 +28,9 @@ namespace POEItemFilter.Library
                 _context.ItemsDB.SingleOrDefault(i => i.Id == viewModel.Items).Name :
                 null;
 
-            model.Class =
-                viewModel.Types != null ?
-                _context.Types.SingleOrDefault(i => i.Id == viewModel.Types).Name :
+            model.UserBaseType =
+                viewModel.UserItem != null && model.BaseType == null ?
+                viewModel.UserItem :
                 null;
 
             model.MainCategory =
@@ -38,17 +38,40 @@ namespace POEItemFilter.Library
                 _context.BaseTypes.SingleOrDefault(i => i.Id == viewModel.BaseTypes).Name :
                 null;
 
+            model.Class =
+                viewModel.Types != null ?
+                _context.Types.SingleOrDefault(i => i.Id == viewModel.Types).Name :
+                null;
+
+            if (model.MainCategory != null && model.Class == null)
+            {
+                var classesList = _context.Types.Where(i => i.BaseTypeId == viewModel.BaseTypes).Select(i => i.Name).ToList();
+                foreach (var className in classesList)
+                {
+                    if (className.Contains(" "))
+                    {
+                        model.Class += "\"item.Name\"";
+                    }
+                    else
+                    {
+                        model.Class += className;
+                    }
+                    model.Class += " ";
+                }
+                model.Class = model.Class.Trim();
+            }
+
             model.Corrupted =
                 Convert.ToBoolean(viewModel.CorruptedSelect);
 
             model.DropLevel =
                 viewModel.DropLevelSelectSign != null && viewModel.DropLevelSelect != null ?
-                InequalitySelector.Select(viewModel.DropLevelSelectSign.Value) + " " + viewModel.DropLevelSelect :
+                InequalitySign.Select(viewModel.DropLevelSelectSign.Value) + " " + viewModel.DropLevelSelect :
                 null;
 
             model.Height =
                 viewModel.HeightSelectSign != null && viewModel.HeightSelect != null ?
-                InequalitySelector.Select(viewModel.HeightSelectSign.Value) + " " + viewModel.HeightSelect :
+                InequalitySign.Select(viewModel.HeightSelectSign.Value) + " " + viewModel.HeightSelect :
                 null;
 
             model.Identified =
@@ -56,7 +79,7 @@ namespace POEItemFilter.Library
 
             model.ItemLevel =
                 viewModel.ItemLvlSelectSign != null && viewModel.ItemLvlSelect != null ?
-                InequalitySelector.Select(viewModel.ItemLvlSelectSign.Value) + " " + viewModel.ItemLvlSelect :
+                InequalitySign.Select(viewModel.ItemLvlSelectSign.Value) + " " + viewModel.ItemLvlSelect :
                 null;
 
             if (model.ItemLevel == null)
@@ -69,7 +92,7 @@ namespace POEItemFilter.Library
 
             model.LinkedSockets =
                 viewModel.LinkedSocketsNumberSelectSign != null && viewModel.LinkedSocketsNumberSelect != null ?
-                InequalitySelector.Select(viewModel.LinkedSocketsNumberSelectSign.Value) + " " + viewModel.LinkedSocketsNumberSelect :
+                InequalitySign.Select(viewModel.LinkedSocketsNumberSelectSign.Value) + " " + viewModel.LinkedSocketsNumberSelect :
                 null;
 
             model.PlayAlertSound =
@@ -79,12 +102,12 @@ namespace POEItemFilter.Library
 
             model.Quality =
                 viewModel.ItemQualitySelectSign != null && viewModel.ItemQualitySelect != null ?
-                InequalitySelector.Select(viewModel.ItemQualitySelectSign.Value) + " " + viewModel.ItemQualitySelect :
+                InequalitySign.Select(viewModel.ItemQualitySelectSign.Value) + " " + viewModel.ItemQualitySelect :
                 null;
 
             model.Rarity =
                 viewModel.ItemRaritySelectSign != null && viewModel.ItemRaritySelect != 300 ?
-                InequalitySelector.Select(viewModel.ItemRaritySelectSign.Value) + " " + (Rarity)viewModel.ItemRaritySelect :
+                InequalitySign.Select(viewModel.ItemRaritySelectSign.Value) + " " + (Rarity)viewModel.ItemRaritySelect :
                 null;
 
             model.SetBackgroundColor =
@@ -112,7 +135,7 @@ namespace POEItemFilter.Library
 
             model.Sockets =
                 viewModel.SocketsNumberSelectSign != null && viewModel.SocketsNumberSelect != null ?
-                InequalitySelector.Select(viewModel.SocketsNumberSelectSign.Value) + " " + viewModel.SocketsNumberSelect :
+                InequalitySign.Select(viewModel.SocketsNumberSelectSign.Value) + " " + viewModel.SocketsNumberSelect :
                 null;
 
             model.SocketsGroup =
@@ -137,7 +160,7 @@ namespace POEItemFilter.Library
 
             model.Width =
                 viewModel.WidthSelectSign != null && viewModel.WidthSelect != null ?
-                InequalitySelector.Select(viewModel.WidthSelectSign.Value) + " " + viewModel.WidthSelect :
+                InequalitySign.Select(viewModel.WidthSelectSign.Value) + " " + viewModel.WidthSelect :
                 null;
 
             return model;

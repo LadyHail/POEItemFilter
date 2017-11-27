@@ -17,11 +17,15 @@
 
 9. Dodać awatary
 
-10. Autoryzacja użytkowników.
+[SOLVED] 10. Autoryzacja użytkowników.
 
 [SOLVED] 11. Edycja Items.
 
 [SOLVED] 12. Search for filter.
+
+13. Po zresetowaniu DB sprawdzić czy prawidłowo zapisuje Class.
+
+14. Filtry tworzyć za pomocą C# Ext.Met., a nie AJAX.
 
 FRONT:
 [SOLVED] 4. Poprawić kod w View na C#.
@@ -32,4 +36,8 @@ FRONT:
 
 [SOLVED] 7. EditFilter NewItem
 
+8. Dodać walidację filtrów.
+
 Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności
+
+Bckground color: https://www.toptal.com/designers/subtlepatterns/

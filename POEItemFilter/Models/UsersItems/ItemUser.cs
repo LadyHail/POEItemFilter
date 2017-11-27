@@ -40,6 +40,11 @@ namespace POEItemFilter.Models
         public string BaseType { get; set; }
 
         /// <summary>
+        /// If item is not in database, user can type their own.
+        /// </summary>
+        public string UserBaseType { get; set; }
+
+        /// <summary>
         /// Minimum level item starts to drop.
         /// </summary>
         public string DropLevel { get; set; }
@@ -134,7 +139,7 @@ namespace POEItemFilter.Models
             {
                 if (property.GetValue(this, null) != null)
                 {
-                    if (property.Name != "Id" && property.Name != "FilterId" && property.Name != "Filter")
+                    if (property.Name != "Id" && property.Name != "FilterId" && property.Name != "Filter" && property.Name != "RowId")
                     {
                         output += (property.Name + ": " + property.GetValue(this, null).ToString()).TrimEnd() + " | ";
                     }

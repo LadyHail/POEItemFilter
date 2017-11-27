@@ -3,13 +3,14 @@
 }
 
 @Html.Partial("_NavBar")
-<div class="jumbotron" id="startPage" style="display:none">
-    <h1>Welcome!</h1>
 
-    <p class="lead">Are you tired of bunch of items laying around?</p>
-            <p class="lead">Your inventory gets full really fast?</p>
-            <p class="lead">It's place for you! Create your own item filter now!</p>
-    <p><a href="~/Filters/NewFilter" class="btn btn-primary btn-lg" id="createFilterButton">Create filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
+<div class="jumbotron" id="startPage">
+    <h1>Welcome!</h1>
+    <h3>Are you tired of bunch of items laying around?</h3>
+    <h3>Your inventory gets full really fast?</h3>
+    <h3>It's place for you! Create your own item filter now!</h3>
+    <hr />
+    <p class="text-center"><a href="~/Filters/NewFilter" class="btn btn-primary btn-lg" id="createFilterButton">Create filter <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
 </div>
 
 @section scripts
