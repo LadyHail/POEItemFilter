@@ -78,9 +78,9 @@
             $("#filtersListTable").on("click", ".js-edit", function () {
                 const button = $(this);
                 $.ajax({
-                    url: "@Url.Action("EditFilter", "Filters")" + "/" + button.attr("data-item-id"),
+                    url: "@Url.Action("Edit", "Filters")" + "/" + button.attr("data-item-id"),
                     success: function (data) {
-                        window.location.href = "/Filters/EditFilter/" + button.attr("data-item-id");
+                        window.location.href = "/Filters/Edit/" + button.attr("data-item-id");
                     },
                 });
             });

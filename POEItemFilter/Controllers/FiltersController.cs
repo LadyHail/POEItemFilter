@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using POEItemFilter.Library;
 using POEItemFilter.Library.CustomFilters;
-using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
 using POEItemFilter.ViewModels;
 
@@ -35,20 +34,20 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
-        [Authorize]
-        [HttpGet]
-        public ActionResult NewFilter()
-        {
-            if (Session["ItemsList"] != null)
-            {
-                List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-                if (viewModel.Count > 0)
-                {
-                    return View(viewModel);
-                }
-            }
-            return View();
-        }
+        //[Authorize]
+        //[HttpGet]
+        //public ActionResult NewFilter()
+        //{
+        //    if (Session["ItemsList"] != null)
+        //    {
+        //        List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+        //        if (viewModel.Count > 0)
+        //        {
+        //            return View(viewModel);
+        //        }
+        //    }
+        //    return View();
+        //}//---------------------------
 
         [AllowAnonymous]
         [HttpGet]
@@ -56,71 +55,6 @@ namespace POEItemFilter.Controllers
         {
             List<Models.Filters.Filter> viewModel = _context.Filters.ToList();
             return View(viewModel);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public JsonResult SaveFilter(string filterName, string description, string dedicated, string id)
-        {
-            bool isAuthorized = false;
-            Models.Filters.Filter newFilter = new Models.Filters.Filter();
-            if (id != "" && id != null)
-            {
-                int filterId = int.Parse(id);
-                newFilter = _context.Filters.SingleOrDefault(f => f.Id == filterId);
-                isAuthorized = User.Identity.GetUserId() == newFilter.UserId;
-            }
-            if (filterName != null && (id == "" || id == null))
-            {
-                //Create filter model
-                newFilter.Name = filterName;
-                newFilter.Description = description;
-                newFilter.CreateDate = DateTime.UtcNow;
-                newFilter.EditDate = newFilter.CreateDate;
-                if (dedicated != null)
-                {
-                    newFilter.Dedicated = (Classes)int.Parse(dedicated);
-                }
-                newFilter.UserId = User.Identity.GetUserId();
-
-                //Create file
-                StreamWriter filterText = GenerateFilter.CreateTempFile(newFilter.Name);
-                filterText.WriteLine("#Description: " + newFilter.Description);
-
-                //Add items to file
-                List<ItemUser> itemsList = Session["ItemsList"] as List<ItemUser>;
-                if (itemsList != null)
-                {
-                    foreach (var item in itemsList)
-                    {
-                        newFilter.Items.Add(item);
-                    }
-                    GenerateFilter.SaveItems(filterText, itemsList, newFilter);
-
-                    _context.Filters.Add(newFilter);
-                    _context.SaveChanges();
-                }
-                filterText.Close();
-
-                return Json(new { fileName = newFilter.Name }, JsonRequestBehavior.AllowGet);
-            }
-            else if (filterName != null && id != "" && id != null && isAuthorized)
-            {
-                //Update filter model
-                newFilter.Name = filterName;
-                newFilter.Description = description;
-                newFilter.EditDate = DateTime.Now;
-                if (dedicated != null)
-                {
-                    newFilter.Dedicated = (Classes)int.Parse(dedicated);
-                }
-                _context.SaveChanges();
-                return Json(new { success = true });
-            }
-            else
-            {
-                return Json(new { success = false });
-            }
         }
 
         [Authorize]
@@ -170,7 +104,7 @@ namespace POEItemFilter.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult EditFilter(int id)
+        public ActionResult Edit(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
             var itemsInDb = _context.UsersItems.Where(i => i.FilterId == id).Select(i => i).ToList();
@@ -190,10 +124,17 @@ namespace POEItemFilter.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = new EditFilterViewModel();
-            viewModel.Filter = filterInDb;
-            viewModel.ItemsList = itemsInDb.OrderBy(i => i.RowId).ToList();
-            return View(viewModel);
+            FilterViewModel viewModel = new FilterViewModel()
+            {
+                Dedicated = filterInDb.Dedicated,
+                Description = filterInDb.Description,
+                Id = filterInDb.Id,
+                Name = filterInDb.Name,
+                UserId = filterInDb.UserId,
+            };
+            viewModel.Items = itemsInDb.OrderBy(i => i.RowId).ToList();
+
+            return View("Filter", viewModel);
         }
 
         [AllowAnonymous]
@@ -237,7 +178,7 @@ namespace POEItemFilter.Controllers
                 List<ItemUser> sessionItems = Session["ItemsList"] as List<ItemUser>;
                 if (sessionItems.Count < 1)
                 {
-                    return View("NewFilter");
+                    return View("New");
                 }
 
                 if (sessionItems.Any(i => i.Id < id))
@@ -258,7 +199,7 @@ namespace POEItemFilter.Controllers
                 }
 
             }
-            return View("NewFilter");
+            return RedirectToAction("New", "Filters");
         }
 
         [Authorize]
@@ -270,7 +211,7 @@ namespace POEItemFilter.Controllers
                 List<ItemUser> sessionItems = Session["ItemsList"] as List<ItemUser>;
                 if (sessionItems.Count < 1)
                 {
-                    return View("NewFilter");
+                    return View("New");
                 }
 
                 if (sessionItems.Any(i => i.Id > id))
@@ -291,7 +232,7 @@ namespace POEItemFilter.Controllers
                 }
 
             }
-            return View("NewFilter");
+            return RedirectToAction("New", "Filters");
         }
 
         [Authorize]
@@ -330,13 +271,7 @@ namespace POEItemFilter.Controllers
                 _context.SaveChanges();
             }
 
-            var viewModel = new EditFilterViewModel()
-            {
-                Filter = filter,
-                ItemsList = newList.OrderBy(i => i.RowId).ToList()
-            };
-
-            return View("EditFilter", viewModel);
+            return RedirectToAction("Edit", "Filters", new { id = filter.Id });
         }
 
         [Authorize]
@@ -381,7 +316,65 @@ namespace POEItemFilter.Controllers
                 ItemsList = newList.OrderBy(i => i.RowId).ToList()
             };
 
-            return View("EditFilter", viewModel);
+            return RedirectToAction("Edit", "Filters", new { id = filter.Id });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult New()
+        {
+            var viewModel = new FilterViewModel();
+            if (Session["ItemsList"] != null)
+            {
+                List<ItemUser> items = Session["ItemsList"] as List<ItemUser>;
+                if (items.Count > 0)
+                {
+                    viewModel.Items.AddRange(items);
+                }
+            }
+
+            return View("Filter", viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Save(Models.Filters.Filter model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Filter", model);
+            }
+
+            if (model.UserId == null)
+            {
+                var newFilter = model;
+                int rowId = 0;
+                newFilter.CreateDate = DateTime.UtcNow;
+                newFilter.EditDate = DateTime.UtcNow;
+                newFilter.UserId = User.Identity.GetUserId();
+                foreach (var item in newFilter.Items)
+                {
+                    item.RowId = rowId;
+                    rowId++;
+                }
+                _context.Filters.Add(model);
+            }
+            else
+            {
+                bool isAuthorized = model.UserId == User.Identity.GetUserId();
+                if (!isAuthorized)
+                {
+                    return HttpNotFound();
+                }
+                var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == model.Id);
+                filterInDb.Dedicated = model.Dedicated;
+                filterInDb.Description = model.Description;
+                filterInDb.EditDate = DateTime.UtcNow;
+                filterInDb.Name = model.Name;
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("MyFilters", "Filters");
         }
     }
 }

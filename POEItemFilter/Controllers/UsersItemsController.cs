@@ -299,12 +299,12 @@ namespace POEItemFilter.Controllers
             var item = viewModel.SingleOrDefault(i => i.Id == id);
             if (item == null)
             {
-                return View("NewFilter", "Filters");
+                return View("New", "Filters");
             }
             viewModel.Remove(item);
             Session["ItemsList"] = viewModel;
 
-            return RedirectToAction("NewFilter", "Filters");
+            return RedirectToAction("New", "Filters");
         }
 
         public ActionResult DeleteItemDb(int id)
@@ -322,7 +322,7 @@ namespace POEItemFilter.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("EditFilter", "Filters", new { id = filterId });
+            return RedirectToAction("Edit", "Filters", new { id = filterId });
         }
 
         [HttpGet]
@@ -381,16 +381,17 @@ namespace POEItemFilter.Controllers
             else if (item.Id != 0)
             {
                 sessionModel[item.Id - 1] = item;
-                return View("NewFilter", "Filters", sessionModel);
+                return RedirectToAction("New", "Filters");
             }
             else
             {
-                item.Id = sessionModel.Count + 1;
+                item.Id = sessionModel.Max(i => i.Id) + 1;
             }
+
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
             viewModel.Add(item);
 
-            return RedirectToAction("NewFilter", "Filters");
+            return RedirectToAction("New", "Filters");
         }
 
         [HttpPost]
@@ -417,7 +418,7 @@ namespace POEItemFilter.Controllers
             _context.UsersItems.Add(item);
             _context.SaveChanges();
 
-            return RedirectToAction("EditFilter", "Filters", new { id = item.FilterId });
+            return RedirectToAction("Edit", "Filters", new { id = item.FilterId });
         }
 
         [HttpPost]
@@ -441,7 +442,7 @@ namespace POEItemFilter.Controllers
             {
                 int id = sessionModel.FindIndex(i => i.Id == item.Id);
                 sessionModel[id] = item;
-                return RedirectToAction("NewFilter", "Filters");
+                return RedirectToAction("New", "Filters");
             }
             else
             {
@@ -450,7 +451,7 @@ namespace POEItemFilter.Controllers
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
             viewModel.Add(item);
 
-            return RedirectToAction("NewFilter", "Filters");
+            return RedirectToAction("New", "Filters");
         }
 
         [HttpPost]
@@ -497,7 +498,7 @@ namespace POEItemFilter.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("EditFilter", "Filters", new { id = item.FilterId });
+            return RedirectToAction("Edit", "Filters", new { id = item.FilterId });
         }
     }
 }
