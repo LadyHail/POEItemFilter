@@ -25,7 +25,9 @@
 
 13. Po zresetowaniu DB sprawdzić czy prawidłowo zapisuje Class.
 
-14. Filtry tworzyć za pomocą C# Ext.Met., a nie AJAX.
+[SOLVED] 14. Filtry tworzyć za pomocą C# Ext.Met., a nie AJAX.
+
+15. Dodać quartz.
 
 FRONT:
 [SOLVED] 4. Poprawić kod w View na C#.
@@ -36,6 +38,6 @@ FRONT:
 
 [SOLVED] 7. EditFilter NewItem
 
-8. Dodać walidację filtrów.
+[SOLVED] 8. Dodać walidację filtrów.
 
 Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności

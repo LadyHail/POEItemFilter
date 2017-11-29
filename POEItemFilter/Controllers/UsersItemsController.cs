@@ -293,6 +293,7 @@ namespace POEItemFilter.Controllers
             return PartialView("_RefreshPartial", viewModel);
         }
 
+        [HttpPost]
         public ActionResult DeleteItemSession(int id)
         {
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
@@ -307,6 +308,7 @@ namespace POEItemFilter.Controllers
             return RedirectToAction("New", "Filters");
         }
 
+        [HttpPost]
         public ActionResult DeleteItemDb(int id)
         {
             var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
@@ -385,7 +387,7 @@ namespace POEItemFilter.Controllers
             }
             else
             {
-                item.Id = sessionModel.Max(i => i.Id) + 1;
+                item.Id = sessionModel.Count > 0 ? sessionModel.Max(i => i.Id) + 1 : 1;
             }
 
             List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;

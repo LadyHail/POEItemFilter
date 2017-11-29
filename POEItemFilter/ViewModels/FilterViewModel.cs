@@ -16,6 +16,7 @@ namespace POEItemFilter.ViewModels
         public string Name { get; set; }
 
         [Required]
+        [Range(1, 50, ErrorMessage = "Filter requires at least 1 item.")]
         public List<ItemUser> Items { get; set; }
 
         [StringLength(500)]

@@ -24,25 +24,27 @@
     </ul>
 </div>
 
-<div id="filterForm">
-    @if (Model.Name == null)
-    {
-        <h2>Create new item filter</h2>
-    }
-    else
-    {
-        <h2>Edit item filter</h2>
-    }
+@if (Model.Name == null)
+{
+    <h2>Create new item filter</h2>
+}
+else
+{
+    <h2>Edit item filter</h2>
+}
 
+<div id="filterForm" class="body-content container">
     @using (Html.BeginForm("Save", "Filters", FormMethod.Post))
     {
+        @Html.ValidationSummary()
         <p>
             @Html.LabelFor(f => f.Name)
+            <br />
             @Html.TextAreaFor(f => f.Name, new { @class = "my-textarea" })
-            @Html.ValidationMessageFor(f=>f.Name)
         </p>
         <p>
             @Html.LabelFor(f => f.Description)
+            <br />
             @Html.TextAreaFor(f => f.Description, new { @class = "my-textarea" })
         </p>
         <p>
@@ -51,7 +53,31 @@
             @Html.DropDownList("Dedicated", classes, new { @class = "my-btn" })
         </p>
 
+        <p>
+            @{if (Model.UserId == null)
+                {
+                    <button type="button" id="newItemSession" class="btn btn-primary" aria-label="Left Align">
+                        Add new item
+                        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                    </button>
+                }
+                else
+                {
+                    <button type="button" id="newItemDb" class="btn btn-primary" aria-label="Left Align">
+                        Add new item
+                        <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                    </button>
+                }
+            }
+            <button id="createFilter" type="submit" class="btn btn-success" aria-label="Left Align">
+                Save filter
+                <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </button>
+        </p>
+
         <div id="itemsList" class="margin-top">
+            @if (Model.Items.Count > 0)
+            {
             <table class="table" id="itemsListTable">
                 <tr>
                     <th>Items list</th>
@@ -71,6 +97,7 @@
                     </tr>
                 }
             </table>
+            }
         </div>
 
         for (int i = 0; i < Model.Items.Count; i++)
@@ -104,22 +131,6 @@
         }
             @Html.HiddenFor(f => f.Id)
             @Html.HiddenFor(f=>f.UserId)
-
-            <p>
-                @{if (Model.UserId == null)
-                    {
-                        <a href="~/UsersItems/NewItemSession" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-                    }
-                    else
-                    {
-                        <a href="~/UsersItems/NewItemDb/@Model.Id" id="newItem" class="btn btn-primary">New Item <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-                    }
-                }
-                <button id="createFilter" type="submit" class="btn btn-success" aria-label="Left Align">
-                    Save filter
-                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                </button>
-            </p>
     }
         </div>
 
@@ -134,6 +145,28 @@
             //    $(".btn").fadeIn(1000);
             //});
 
+            //Add new item session
+            $("#newItemSession").click(function () {
+                $.ajax({
+                    url: "@Url.Action("NewItemSession", "UsersItems")",
+                    method: "GET",
+                    success: function (data) {
+                        $("body").html(data);
+                    },
+                });
+            });
+
+            //Add new item db
+            $("#newItemDb").click(function () {
+                $.ajax({
+                    url: "@Url.Action("NewItemDb", "UsersItems")" + "/" + "@Model.Id",
+                    method: "GET",
+                    success: function (data) {
+                        $("body").html(data);
+                    },
+                });
+            });
+
             //Change item order - move up.
             $("#itemsListTable").on("click", ".js-id-up", function () {
                 var button = $(this);
@@ -142,7 +175,6 @@
                         url: "@Url.Action("ChangeSessionItemOrderUp", "Filters")" + "/" + button.attr("data-item-id"),
                         method: "POST",
                         success: function (data) {
-                            //window.location.href = "/Filters/New";
                             $("body").html(data);
                         },
                     });
@@ -151,7 +183,7 @@
                         url: "@Url.Action("ChangeDbItemOrderUp", "Filters")" + "/" + button.attr("data-item-id"),
                         method: "POST",
                         success: function (data) {
-                            window.location.href = "/Filters/Edit/" + "@Model.Id";
+                            $("body").html(data);
                         },
                     });
                 }
@@ -166,7 +198,7 @@
                         url: "@Url.Action("ChangeSessionItemOrderDown", "Filters")" + "/" + button.attr("data-item-id"),
                         method: "POST",
                         success: function (data) {
-                            window.location.href = "/Filters/New";
+                            $("body").html(data);
                         },
                     });
                 } else {
@@ -174,7 +206,7 @@
                         url: "@Url.Action("ChangeDbItemOrderDown", "Filters")" + "/" + button.attr("data-item-id"),
                         method: "POST",
                         success: function (data) {
-                            window.location.href = "/Filters/Edit/" + "@Model.Id";
+                            $("body").html(data);
                         },
                     });
                 }
@@ -186,17 +218,17 @@
                 if ("@Model.Id" === "0") {
                     $.ajax({
                         url: "@Url.Action("ItemSession", "UsersItems")" + "/" + button.attr("data-item-id"),
-                        //method: "POST",
+                        method: "GET",
                         success: function (data) {
-                            window.location.href = "/UsersItems/ItemSession/" + button.attr("data-item-id");
+                            $("body").html(data);
                         },
                     });
                 } else {
                     $.ajax({
                         url: "@Url.Action("ItemDb", "UsersItems")" + "/" + button.attr("data-item-id"),
-                        //method: "POST",
+                        method: "GET",
                         success: function (data) {
-                            window.location.href = "/UsersItems/ItemDb/" + button.attr("data-item-id");
+                            $("body").html(data);
                         },
                     });
                 }
@@ -210,7 +242,7 @@
                         if ("@Model.Id" === "0") {
                             $.ajax({
                                 url: "@Url.Action("DeleteItemSession", "UsersItems")" + "/" + button.attr("data-item-id"),
-                                //method: "DELETE",
+                                method: "POST",
                                 success: function () {
                                     button.parents("tr").remove();
                                 },
@@ -218,7 +250,7 @@
                         } else {
                             $.ajax({
                                 url: "@Url.Action("DeleteItemDb", "UsersItems")" + "/" + button.attr("data-item-id"),
-                                //method: "DELETE",
+                                method: "POST",
                                 success: function () {
                                     button.parents("tr").remove();
                                 },
@@ -236,24 +268,14 @@
             });
 
             //Set behaviour of checkbox.
-            var dedicated = $("#dedicatedCB");
-            var classes = $("#classesDL").detach();
-            $("#dedicatedCB").click(function () {
+            var dedicated = $("#filterForm").find("#dedicatedCB");
+            var classes = $("#filterForm").find("#Dedicated").detach();
+            dedicated.click(function () {
                 if (document.getElementById("dedicatedCB").checked) {
                     classes.insertAfter(dedicated);
                 } else {
                     classes.detach();
                 }
-            });
-
-            //Clear filterName after click if value is default.
-            $("#filterName").click(function () {
-                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
-            });
-
-            //Clear description after click if value is default.
-            $("#description").click(function () {
-                $(this).val() !== "" && $(this).val() !== $(this).prop("defaultValue") ? "" : $(this).val(null);
             });
     });
     </script>

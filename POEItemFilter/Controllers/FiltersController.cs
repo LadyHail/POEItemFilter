@@ -34,21 +34,6 @@ namespace POEItemFilter.Controllers
             return View(viewModel);
         }
 
-        //[Authorize]
-        //[HttpGet]
-        //public ActionResult NewFilter()
-        //{
-        //    if (Session["ItemsList"] != null)
-        //    {
-        //        List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-        //        if (viewModel.Count > 0)
-        //        {
-        //            return View(viewModel);
-        //        }
-        //    }
-        //    return View();
-        //}//---------------------------
-
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AllFilters()
@@ -89,17 +74,6 @@ namespace POEItemFilter.Controllers
             GenerateFilter.SaveItems(filterText, itemsList, filterInDb);
 
             return Json(new { fileName = filterInDb.Name }, JsonRequestBehavior.AllowGet);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public void ClearSession(string fileName)
-        {
-            if (fileName != "")
-            {
-                GenerateFilter.DeleteTempFile(fileName);
-            }
-            Session.Clear();
         }
 
         [Authorize]
@@ -150,6 +124,7 @@ namespace POEItemFilter.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult DeleteFilter(int id)
         {
             var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == id);
@@ -342,7 +317,13 @@ namespace POEItemFilter.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Filter", model);
+                return View("Filter", new FilterViewModel());
+            }
+
+            bool isAuthorized = model.UserId == User.Identity.GetUserId();
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
             }
 
             if (model.UserId == null)
@@ -361,11 +342,6 @@ namespace POEItemFilter.Controllers
             }
             else
             {
-                bool isAuthorized = model.UserId == User.Identity.GetUserId();
-                if (!isAuthorized)
-                {
-                    return HttpNotFound();
-                }
                 var filterInDb = _context.Filters.SingleOrDefault(f => f.Id == model.Id);
                 filterInDb.Dedicated = model.Dedicated;
                 filterInDb.Description = model.Description;
@@ -373,7 +349,16 @@ namespace POEItemFilter.Controllers
                 filterInDb.Name = model.Name;
             }
 
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+                Session.Clear();
+            }
+            catch (Exception)
+            {
+                return View("Filter", model);
+            }
+
             return RedirectToAction("MyFilters", "Filters");
         }
     }
