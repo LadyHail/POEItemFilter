@@ -40,12 +40,12 @@ else
         <p>
             @Html.LabelFor(f => f.Name)
             <br />
-            @Html.TextAreaFor(f => f.Name, new { @class = "my-textarea" })
+            @Html.TextAreaFor(f => f.Name, new { @class = "my-textarea height-name" })
         </p>
         <p>
             @Html.LabelFor(f => f.Description)
             <br />
-            @Html.TextAreaFor(f => f.Description, new { @class = "my-textarea" })
+            @Html.TextAreaFor(f => f.Description, new { @class = "my-textarea height-description" })
         </p>
         <p>
             @Html.Label("Is your filter dedicated to class?")
@@ -138,12 +138,6 @@ else
 {
     <script>
         $(document).ready(function () {
-            //$("#filterName").css({ "height": 28 });
-            //$("#description").css({ "height": 112 });
-            //$(".btn").hide();
-            //$("#newFilter").hide().slideDown(500, function () {
-            //    $(".btn").fadeIn(1000);
-            //});
 
             //Add new item session
             $("#newItemSession").click(function () {

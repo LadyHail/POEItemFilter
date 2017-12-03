@@ -30,6 +30,17 @@ pre {
     direction: ltr;
     font-size: 0.875em;
 }
+.validation-summary-errors {
+    color: red;
+}
+
+.height-name {
+    height: 28px !important;
+}
+
+.height-description {
+    height: 112px !important;
+}
 
 .glyphicon-info-sign {
     color: dodgerblue;

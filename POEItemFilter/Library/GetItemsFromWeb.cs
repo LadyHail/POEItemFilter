@@ -121,15 +121,18 @@ namespace POEItemFilter.Library
                 newItem.Level = byte.Parse(item.Groups["level"].Value);
             }
 
-            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType.BaseTypeToString());
+            string baseType = itemBaseType.BaseTypeToString();
+            newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == baseType);
 
-            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.TypeToString());
+            string type = itemType.TypeToString();
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == type);
 
             bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
 
             if (!isItemInDb)
             {
                 _context.ItemsDB.Add(newItem);
+                LogNewItem(newItem);
             }
         }
 
@@ -177,7 +180,8 @@ namespace POEItemFilter.Library
 
             newItem.BaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == BaseTypes.Armour.ToString());
 
-            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == itemType.TypeToString());
+            string type = itemType.TypeToString();
+            newItem.Type = _context.Types.SingleOrDefault(i => i.Name == type);
 
             var attribute1 = _context.Attributes.SingleOrDefault(i => i.Name == attribute1Value);
             newItem.Attributes.Add(attribute1);
@@ -192,6 +196,7 @@ namespace POEItemFilter.Library
             if (!isItemInDb)
             {
                 _context.ItemsDB.Add(newItem);
+                LogNewItem(newItem);
             }
         }
 
@@ -426,6 +431,22 @@ namespace POEItemFilter.Library
                     break;
             }
             return links;
+        }
+
+        private void LogNewItem(ItemDB newItem)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\NewItems.log";
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
+            StreamWriter logText = File.AppendText(path);
+            logText.WriteLine(
+                DateTime.UtcNow +
+                "   ##### Name: " + newItem.Name +
+                "   ##### Main category: " + newItem.BaseType.Name +
+                "   ##### Class: " + newItem.Type.Name);
+            logText.Close();
         }
     }
 }
