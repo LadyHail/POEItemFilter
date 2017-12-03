@@ -285,12 +285,6 @@ namespace POEItemFilter.Controllers
                 _context.SaveChanges();
             }
 
-            var viewModel = new EditFilterViewModel()
-            {
-                Filter = filter,
-                ItemsList = newList.OrderBy(i => i.RowId).ToList()
-            };
-
             return RedirectToAction("Edit", "Filters", new { id = filter.Id });
         }
 
@@ -315,13 +309,15 @@ namespace POEItemFilter.Controllers
         [HttpPost]
         public ActionResult Save(Models.Filters.Filter model)
         {
+            //TODO powinien zwrócić podany model
+
             if (!ModelState.IsValid)
             {
                 return View("Filter", new FilterViewModel());
             }
 
             bool isAuthorized = model.UserId == User.Identity.GetUserId();
-            if (!isAuthorized)
+            if (!isAuthorized && model.UserId != null)
             {
                 return HttpNotFound();
             }
@@ -356,7 +352,7 @@ namespace POEItemFilter.Controllers
             }
             catch (Exception)
             {
-                return View("Filter", model);
+                return View("Filter", new FilterViewModel());
             }
 
             return RedirectToAction("MyFilters", "Filters");

@@ -224,7 +224,7 @@ namespace POEItemFilter.Library
         {
             string rawWebData = "";
             string cacheFileName = ComputeHash(url);
-            string cachePath = @".\App_Data\Cache\" + cacheFileName + ".cache";
+            string cachePath = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\Cache\" + cacheFileName + ".cache";
             if (File.Exists(cachePath) && (DateTime.Now - File.GetLastWriteTime(cachePath)).TotalMinutes < 1440)
             {
                 rawWebData = File.ReadAllText(cachePath);

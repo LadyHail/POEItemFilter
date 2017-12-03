@@ -128,9 +128,11 @@ else
             @Html.HiddenFor(m => m.Items[i].SocketsGroup)
             @Html.HiddenFor(m => m.Items[i].UserBaseType)
             @Html.HiddenFor(m => m.Items[i].Width)
-        }
+            //@Html.HiddenFor(m=>m.Items[i]) //zwraca tylko 1 item jako null
+                }
             @Html.HiddenFor(f => f.Id)
             @Html.HiddenFor(f=>f.UserId)
+            //@Html.HiddenFor(f=>f.Items) // zwraca items jako null
     }
         </div>
 

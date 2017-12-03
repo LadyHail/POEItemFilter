@@ -38,10 +38,15 @@ namespace POEItemFilter.Library
                 _context.BaseTypes.SingleOrDefault(i => i.Id == viewModel.BaseTypes).Name :
                 null;
 
-            model.Class =
-                viewModel.Types != null ?
-                _context.Types.SingleOrDefault(i => i.Id == viewModel.Types).Name :
-                null;
+            if (viewModel.Types != null)
+            {
+                string type = _context.Types.SingleOrDefault(i => i.Id == viewModel.Types).Name;
+                model.Class = type.Contains(" ") ? "\"" + type + "\"" : type;
+            }
+            else
+            {
+                model.Class = null;
+            }
 
             if (model.MainCategory != null && model.Class == null)
             {
@@ -50,7 +55,7 @@ namespace POEItemFilter.Library
                 {
                     if (className.Contains(" "))
                     {
-                        model.Class += "\"item.Name\"";
+                        model.Class += "\"" + className + "\"";
                     }
                     else
                     {

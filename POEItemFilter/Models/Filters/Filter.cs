@@ -13,8 +13,8 @@ namespace POEItemFilter.Models.Filters
         [StringLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [Range(1, 50, ErrorMessage = "Filter requires at least 1 item.")]
+        //[Required]
+        //[Range(1, 50, ErrorMessage = "Filter requires at least 1 item.")]
         public ICollection<ItemUser> Items { get; set; }
 
         [StringLength(500)]

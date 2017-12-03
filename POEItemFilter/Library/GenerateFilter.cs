@@ -78,21 +78,9 @@ namespace POEItemFilter.Library
             int lastIndex = propertyValue.Length - 1;
             bool isLastNumber = int.TryParse(propertyValue[lastIndex].ToString(), out int noNumber);
             bool isFirstNumber = int.TryParse(propertyValue[0].ToString(), out noNumber);
-            output = propertyValue.Contains(" ") && (!isLastNumber && !isFirstNumber) ? "\"" + propertyValue + "\"" + "\n" : propertyValue + "\n";
+            bool oneSpaceOnly = propertyValue.IndexOf(" ") == propertyValue.LastIndexOf(" ");
+            output = propertyValue.Contains(" ") && oneSpaceOnly && (!isLastNumber && !isFirstNumber) ? "\"" + propertyValue + "\"" + "\n" : propertyValue + "\n";
             return output;
-        }
-
-        /// <summary>
-        /// Delete temporary filter file.
-        /// </summary>
-        /// <param name="fileName">Name of the filter.</param>
-        public static void DeleteTempFile(string fileName)
-        {
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\Filters\" + fileName + ".filter";
-            if (File.Exists(fullPath))
-            {
-                File.Delete(fullPath);
-            }
         }
     }
 }

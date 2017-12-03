@@ -54,6 +54,7 @@
                     if (result) {
                         $.ajax({
                             url: "@Url.Action("DeleteFilter", "Filters")" + "/" + button.attr("data-item-id"),
+                            method: "POST",
                             success: function (data) {
                                 window.location.href = "/Filters/MyFilters";
                             },
