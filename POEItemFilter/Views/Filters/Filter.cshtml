@@ -144,7 +144,7 @@ else
             //Add new item session
             $("#newItemSession").click(function () {
                 $.ajax({
-                    url: "@Url.Action("NewItemSession", "UsersItems")",
+                    url: "@Url.Action("ItemSession", "UsersItems")",
                     method: "GET",
                     success: function (data) {
                         $("body").html(data);
@@ -155,7 +155,7 @@ else
             //Add new item db
             $("#newItemDb").click(function () {
                 $.ajax({
-                    url: "@Url.Action("NewItemDb", "UsersItems")" + "/" + "@Model.Id",
+                    url: "@Url.Action("ItemDb", "UsersItems")" + "/?filterId=" + "@Model.Id",
                     method: "GET",
                     success: function (data) {
                         $("body").html(data);
@@ -221,7 +221,7 @@ else
                     });
                 } else {
                     $.ajax({
-                        url: "@Url.Action("ItemDb", "UsersItems")" + "/" + button.attr("data-item-id"),
+                        url: "@Url.Action("ItemDb", "UsersItems")" + "/?itemId=" + button.attr("data-item-id"),
                         method: "GET",
                         success: function (data) {
                             $("body").html(data);

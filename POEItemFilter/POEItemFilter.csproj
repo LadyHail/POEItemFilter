@@ -653,13 +653,11 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\UsersItems\NewItemSession.cshtml" />
+    <Content Include="Views\UsersItems\ItemSession.cshtml" />
     <Content Include="Views\UsersItems\_RefreshPartial.cshtml" />
     <Content Include="Views\Filters\MyFilters.cshtml" />
     <Content Include="Views\Filters\Details.cshtml" />
-    <Content Include="Views\UsersItems\NewItemDb.cshtml" />
-    <Content Include="Views\UsersItems\EditItemDb.cshtml" />
-    <Content Include="Views\UsersItems\EditItemSession.cshtml" />
+    <Content Include="Views\UsersItems\ItemDb.cshtml" />
     <Content Include="Views\Filters\AllFilters.cshtml" />
     <Content Include="Views\Home\HowTo.cshtml" />
     <Content Include="Views\UsersItems\_ItemInfoPartial.cshtml" />

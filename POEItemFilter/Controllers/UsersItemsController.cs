@@ -25,26 +25,186 @@ namespace POEItemFilter.Controllers
         }
 
         [HttpGet]
-        public ActionResult NewItemSession()
+        public ActionResult ItemSession(int? id)
         {
-            ItemUser viewModel = new ItemUser();
-            return View(viewModel);
+            if (id == null)
+            {
+                return View("ItemSession", new ItemUserViewModel());
+            }
+
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            if (viewModel == null)
+            {
+                return HttpNotFound();
+            }
+
+            var item = ItemUserModelMap.ItemUserToViewModel(viewModel.SingleOrDefault(i => i.Id == id));
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("ItemSession", item);
+        }
+
+        [HttpPost]
+        public ActionResult SaveItemSession(ItemUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("ItemSession", "UsersItems");
+            }
+
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+            List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
+            if (sessionModel == null)
+            {
+                item.Id = 1;
+                Session["ItemsList"] = new List<ItemUser>();
+                Session.Timeout = 30;
+            }
+            else if (item.Id != 0)
+            {
+                int index = sessionModel.FindIndex(i => i.Id == item.Id);
+                sessionModel[index] = item;
+                return RedirectToAction("New", "Filters");
+            }
+            else
+            {
+                item.Id = sessionModel.Count > 0 ? sessionModel.Max(i => i.Id) + 1 : 1;
+            }
+
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            viewModel.Add(item);
+
+            return RedirectToAction("New", "Filters");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteItemSession(int id)
+        {
+            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
+            var item = viewModel.SingleOrDefault(i => i.Id == id);
+            if (item == null)
+            {
+                return View("New", "Filters");
+            }
+            viewModel.Remove(item);
+            Session["ItemsList"] = viewModel;
+
+            return RedirectToAction("New", "Filters");
         }
 
         [HttpGet]
-        public ActionResult NewItemDb(int id)
+        public ActionResult ItemDb(int? filterId, int? itemId)
         {
-            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == id).UserId;
+            bool isAuthorized = false;
+
+            if (filterId != null)
+            {
+                isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
+                if (!isAuthorized)
+                {
+                    return HttpNotFound();
+                }
+                return View("ItemDb", new ItemUserViewModel() { FilterId = filterId });
+            }
+
+            if (itemId != null)
+            {
+                var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == itemId);
+                if (itemInDb == null)
+                {
+                    return HttpNotFound();
+                }
+                isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == itemInDb.FilterId).UserId;
+                if (!isAuthorized)
+                {
+                    return HttpNotFound();
+                }
+                ItemUserViewModel viewModel = ItemUserModelMap.ItemUserToViewModel(itemInDb);
+                return View("ItemDb", viewModel);
+            }
+
+            return View("MyFilters", "Filters");
+
+        }
+
+        [HttpPost]
+        public ActionResult SaveItemDb(ItemUserViewModel model)
+        {
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == model.FilterId).UserId;
             if (!isAuthorized)
             {
                 return HttpNotFound();
             }
-            ItemUser viewModel = new ItemUser()
+            if (!ModelState.IsValid)
             {
-                FilterId = id
-            };
+                return RedirectToAction("MyFilters", "UsersItems");
+            }
 
-            return View(viewModel);
+            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+
+            if (model.ItemId == null)
+            {
+                int lastRowId = _context.Filters
+                    .SelectMany(i => i.Items)
+                    .Where(i => i.FilterId == item.FilterId)
+                    .Max(i => i.RowId);
+
+                item.RowId = lastRowId + 1;
+                _context.UsersItems.Add(item);
+            }
+            else
+            {
+                ItemUser itemInDb = new ItemUser();
+                itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == item.Id);
+                itemInDb.BaseType = item.BaseType;
+                itemInDb.Attribute1 = item.Attribute1;
+                itemInDb.Attribute2 = item.Attribute2;
+                itemInDb.Class = item.Class;
+                itemInDb.Corrupted = item.Corrupted;
+                itemInDb.DropLevel = item.DropLevel;
+                itemInDb.Height = item.Height;
+                itemInDb.Identified = item.Identified;
+                itemInDb.ItemLevel = item.ItemLevel;
+                itemInDb.LinkedSockets = item.LinkedSockets;
+                itemInDb.MainCategory = item.MainCategory;
+                itemInDb.PlayAlertSound = item.PlayAlertSound;
+                itemInDb.Quality = item.Quality;
+                itemInDb.Rarity = item.Rarity;
+                itemInDb.SetBackgroundColor = item.SetBackgroundColor;
+                itemInDb.SetBorderColor = item.SetBorderColor;
+                itemInDb.SetFontSize = item.SetFontSize;
+                itemInDb.SetTextColor = item.SetTextColor;
+                itemInDb.Show = item.Show;
+                itemInDb.Sockets = item.Sockets;
+                itemInDb.SocketsGroup = item.SocketsGroup;
+                itemInDb.Width = item.Width;
+                itemInDb.UserBaseType = item.UserBaseType;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Edit", "Filters", new { id = item.FilterId });
+        }
+
+        [HttpPost]
+        public ActionResult DeleteItemDb(int id)
+        {
+            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
+            int filterId = itemInDb.FilterId;
+            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
+            if (!isAuthorized)
+            {
+                return HttpNotFound();
+            }
+            if (itemInDb != null)
+            {
+                _context.UsersItems.Remove(itemInDb);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Edit", "Filters", new { id = filterId });
         }
 
         /// <summary>
@@ -291,217 +451,6 @@ namespace POEItemFilter.Controllers
             };
 
             return PartialView("_RefreshPartial", viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult DeleteItemSession(int id)
-        {
-            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-            var item = viewModel.SingleOrDefault(i => i.Id == id);
-            if (item == null)
-            {
-                return View("New", "Filters");
-            }
-            viewModel.Remove(item);
-            Session["ItemsList"] = viewModel;
-
-            return RedirectToAction("New", "Filters");
-        }
-
-        [HttpPost]
-        public ActionResult DeleteItemDb(int id)
-        {
-            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
-            int filterId = itemInDb.FilterId;
-            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
-            if (!isAuthorized)
-            {
-                return HttpNotFound();
-            }
-            if (itemInDb != null)
-            {
-                _context.UsersItems.Remove(itemInDb);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("Edit", "Filters", new { id = filterId });
-        }
-
-        [HttpGet]
-        public ActionResult ItemSession(int id)
-        {
-            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-            if (viewModel == null)
-            {
-                return HttpNotFound();
-            }
-
-            var item = viewModel.SingleOrDefault(i => i.Id == id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View("EditItemSession", item);
-        }
-
-        [HttpGet]
-        public ActionResult ItemDb(int id)
-        {
-            var itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == id);
-            if (itemInDb == null)
-            {
-                return HttpNotFound();
-            }
-            var filter = _context.Filters.SingleOrDefault(i => i.Id == itemInDb.FilterId);
-            bool isAuthorized = User.Identity.GetUserId() == filter.UserId;
-            if (!isAuthorized)
-            {
-                return HttpNotFound();
-            }
-
-            return View("EditItemDb", itemInDb);
-        }
-
-        [HttpPost]
-        public ActionResult AddItemSession(ItemUserViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("NewItemSession", "UsersItems");
-            }
-
-            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
-            ItemUserModelMap.ItemUserToViewModel(item);
-
-            List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
-            if (sessionModel == null)
-            {
-                item.Id = 1;
-                Session["ItemsList"] = new List<ItemUser>();
-                Session.Timeout = 30;
-            }
-            else if (item.Id != 0)
-            {
-                sessionModel[item.Id - 1] = item;
-                return RedirectToAction("New", "Filters");
-            }
-            else
-            {
-                item.Id = sessionModel.Count > 0 ? sessionModel.Max(i => i.Id) + 1 : 1;
-            }
-
-            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-            viewModel.Add(item);
-
-            return RedirectToAction("New", "Filters");
-        }
-
-        [HttpPost]
-        public ActionResult AddItemDb(ItemUserViewModel model, int filterId)
-        {
-            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
-            if (!isAuthorized)
-            {
-                return HttpNotFound();
-            }
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("MyFilters", "UsersItems");
-            }
-
-            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
-            int lastRowId = _context.Filters
-                .SelectMany(i => i.Items)
-                .Where(i => i.FilterId == filterId)
-                .Max(i => i.RowId);
-
-            item.RowId = lastRowId + 1;
-
-            _context.UsersItems.Add(item);
-            _context.SaveChanges();
-
-            return RedirectToAction("Edit", "Filters", new { id = item.FilterId });
-        }
-
-        [HttpPost]
-        public ActionResult EditItemSession(ItemUserViewModel model, int itemId)
-        {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("NewItemSession", "UsersItems");
-            }
-
-            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
-
-            List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
-            if (sessionModel == null)
-            {
-                item.Id = 1;
-                Session["ItemsList"] = new List<ItemUser>();
-                Session.Timeout = 30;
-            }
-            else if (item.Id != 0)
-            {
-                int id = sessionModel.FindIndex(i => i.Id == item.Id);
-                sessionModel[id] = item;
-                return RedirectToAction("New", "Filters");
-            }
-            else
-            {
-                item.Id = sessionModel.Count + 1;
-            }
-            List<ItemUser> viewModel = Session["ItemsList"] as List<ItemUser>;
-            viewModel.Add(item);
-
-            return RedirectToAction("New", "Filters");
-        }
-
-        [HttpPost]
-        public ActionResult EditItemDb(ItemUserViewModel model, int filterId, int itemId)
-        {
-            bool isAuthorized = User.Identity.GetUserId() == _context.Filters.SingleOrDefault(i => i.Id == filterId).UserId;
-            if (!isAuthorized)
-            {
-                return HttpNotFound();
-            }
-
-            ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
-
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("MyFilters", "UsersItems");
-            }
-
-            ItemUser itemInDb = new ItemUser();
-            itemInDb = _context.UsersItems.SingleOrDefault(i => i.Id == item.Id);
-            itemInDb.BaseType = item.BaseType;
-            itemInDb.Attribute1 = item.Attribute1;
-            itemInDb.Attribute2 = item.Attribute2;
-            itemInDb.Class = item.Class;
-            itemInDb.Corrupted = item.Corrupted;
-            itemInDb.DropLevel = item.DropLevel;
-            itemInDb.Height = item.Height;
-            itemInDb.Identified = item.Identified;
-            itemInDb.ItemLevel = item.ItemLevel;
-            itemInDb.LinkedSockets = item.LinkedSockets;
-            itemInDb.MainCategory = item.MainCategory;
-            itemInDb.PlayAlertSound = item.PlayAlertSound;
-            itemInDb.Quality = item.Quality;
-            itemInDb.Rarity = item.Rarity;
-            itemInDb.SetBackgroundColor = item.SetBackgroundColor;
-            itemInDb.SetBorderColor = item.SetBorderColor;
-            itemInDb.SetFontSize = item.SetFontSize;
-            itemInDb.SetTextColor = item.SetTextColor;
-            itemInDb.Show = item.Show;
-            itemInDb.Sockets = item.Sockets;
-            itemInDb.SocketsGroup = item.SocketsGroup;
-            itemInDb.Width = item.Width;
-            itemInDb.UserBaseType = item.UserBaseType;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Edit", "Filters", new { id = item.FilterId });
         }
     }
 }

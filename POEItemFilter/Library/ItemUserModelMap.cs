@@ -189,8 +189,16 @@ namespace POEItemFilter.Library
             if (viewModel.BaseTypes != null)
             {
                 var typesInDb = _context.Types.Where(i => i.BaseTypeId == viewModel.BaseTypes).Select(i => i).ToList();
+                List<string> types = new List<string>();
+                if (model.Class.Contains("\""))
+                {
+                    types = model.Class.Split('\"').ToList();
+                }
+                else
+                {
+                    types = model.Class.Split(' ').ToList();
+                }
 
-                List<string> types = model.Class.Split('\"').ToList();
                 List<string> checkList = new List<string>();
                 types.RemoveAll(c => c == "" || c == " ");
 
@@ -233,11 +241,11 @@ namespace POEItemFilter.Library
             }
             else
             {
-                model.Class = model.Class.Replace("\"", "");
-                viewModel.Types =
-                    model.Class != null ?
-                    _context.Types.SingleOrDefault(i => i.Name == model.Class).Id :
-                    (int?)null;
+                if (model.Class != null)
+                {
+                    model.Class = model.Class.Replace("\"", "");
+                    viewModel.Types = _context.Types.SingleOrDefault(i => i.Name == model.Class).Id;
+                }
             }
 
             viewModel.Items =

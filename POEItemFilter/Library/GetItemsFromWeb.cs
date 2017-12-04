@@ -54,7 +54,7 @@ namespace POEItemFilter.Library
                     {
                         MatchCollection items = RegexRequest(queries[0], RawWebData);
 
-                        foreach (Match item in items)
+                        foreach (Match item in items)//System.Text.RegularExpressions.RegexMatchTimeoutException
                         {
                             SaveNewItem(item, itemType, itemBaseType);
                         }

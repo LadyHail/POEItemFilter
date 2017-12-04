@@ -1,14 +1,22 @@
-﻿@model POEItemFilter.Models.ItemUser
+﻿@model POEItemFilter.ViewModels.ItemUserViewModel
 
 @{
-    ViewBag.Title = "Add new item";
+    ViewBag.Title = "Item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add new item</h2>
+@{ if (Model.ItemId == null)
+    {
+        <h2>Add new item</h2>
+    }
+    else
+    {
+        <h2>Edit item</h2>
+    }}
+@Html.Partial("_GeneralInfoPartial")
 <hr />
 
-@using (Html.BeginForm("AddItemDb", "UsersItems", new { filterId = Model.FilterId }, FormMethod.Post))
+@using (Html.BeginForm("SaveItemDb", "UsersItems", FormMethod.Post))
 {
     <button id="basicToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
         Basic information
@@ -17,7 +25,7 @@
     <p id="basicBreak" />
 
     <div id="databaseItems" class="container body-content">
-        @{Html.RenderAction("Refresh", "UsersItems");}
+        @{Html.RenderAction("Refresh", "UsersItems", new { baseType = Model.BaseTypes, type = Model.Types });}
     </div>
 
     <div id="noDb">
@@ -38,7 +46,7 @@
     </div>
 
     @Html.Hidden("ItemId")
-    @Html.Hidden("FilterId", Model.FilterId)
+    @Html.Hidden("FilterId")
  }
 
 @section scripts
