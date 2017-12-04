@@ -372,6 +372,7 @@ namespace POEItemFilter.Controllers
             }
 
             ItemUser item = ItemUserModelMap.ViewModelToItemUser(model);
+            ItemUserModelMap.ItemUserToViewModel(item);
 
             List<ItemUser> sessionModel = Session["ItemsList"] as List<ItemUser>;
             if (sessionModel == null)

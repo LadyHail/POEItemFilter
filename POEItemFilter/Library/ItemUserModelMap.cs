@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using POEItemFilter.Library.Enumerables;
 using POEItemFilter.Models;
@@ -71,12 +72,12 @@ namespace POEItemFilter.Library
 
             model.DropLevel =
                 viewModel.DropLevelSelectSign != null && viewModel.DropLevelSelect != null ?
-                InequalitySign.Select(viewModel.DropLevelSelectSign.Value) + " " + viewModel.DropLevelSelect :
+                InequalitySign.SelectSign(viewModel.DropLevelSelectSign.Value) + " " + viewModel.DropLevelSelect :
                 null;
 
             model.Height =
                 viewModel.HeightSelectSign != null && viewModel.HeightSelect != null ?
-                InequalitySign.Select(viewModel.HeightSelectSign.Value) + " " + viewModel.HeightSelect :
+                InequalitySign.SelectSign(viewModel.HeightSelectSign.Value) + " " + viewModel.HeightSelect :
                 null;
 
             model.Identified =
@@ -84,7 +85,7 @@ namespace POEItemFilter.Library
 
             model.ItemLevel =
                 viewModel.ItemLvlSelectSign != null && viewModel.ItemLvlSelect != null ?
-                InequalitySign.Select(viewModel.ItemLvlSelectSign.Value) + " " + viewModel.ItemLvlSelect :
+                InequalitySign.SelectSign(viewModel.ItemLvlSelectSign.Value) + " " + viewModel.ItemLvlSelect :
                 null;
 
             if (model.ItemLevel == null)
@@ -97,7 +98,7 @@ namespace POEItemFilter.Library
 
             model.LinkedSockets =
                 viewModel.LinkedSocketsNumberSelectSign != null && viewModel.LinkedSocketsNumberSelect != null ?
-                InequalitySign.Select(viewModel.LinkedSocketsNumberSelectSign.Value) + " " + viewModel.LinkedSocketsNumberSelect :
+                InequalitySign.SelectSign(viewModel.LinkedSocketsNumberSelectSign.Value) + " " + viewModel.LinkedSocketsNumberSelect :
                 null;
 
             model.PlayAlertSound =
@@ -107,12 +108,12 @@ namespace POEItemFilter.Library
 
             model.Quality =
                 viewModel.ItemQualitySelectSign != null && viewModel.ItemQualitySelect != null ?
-                InequalitySign.Select(viewModel.ItemQualitySelectSign.Value) + " " + viewModel.ItemQualitySelect :
+                InequalitySign.SelectSign(viewModel.ItemQualitySelectSign.Value) + " " + viewModel.ItemQualitySelect :
                 null;
 
             model.Rarity =
                 viewModel.ItemRaritySelectSign != null && viewModel.ItemRaritySelect != 300 ?
-                InequalitySign.Select(viewModel.ItemRaritySelectSign.Value) + " " + (Rarity)viewModel.ItemRaritySelect :
+                InequalitySign.SelectSign(viewModel.ItemRaritySelectSign.Value) + " " + (Rarity)viewModel.ItemRaritySelect :
                 null;
 
             model.SetBackgroundColor =
@@ -140,7 +141,7 @@ namespace POEItemFilter.Library
 
             model.Sockets =
                 viewModel.SocketsNumberSelectSign != null && viewModel.SocketsNumberSelect != null ?
-                InequalitySign.Select(viewModel.SocketsNumberSelectSign.Value) + " " + viewModel.SocketsNumberSelect :
+                InequalitySign.SelectSign(viewModel.SocketsNumberSelectSign.Value) + " " + viewModel.SocketsNumberSelect :
                 null;
 
             model.SocketsGroup =
@@ -165,10 +166,205 @@ namespace POEItemFilter.Library
 
             model.Width =
                 viewModel.WidthSelectSign != null && viewModel.WidthSelect != null ?
-                InequalitySign.Select(viewModel.WidthSelectSign.Value) + " " + viewModel.WidthSelect :
+                InequalitySign.SelectSign(viewModel.WidthSelectSign.Value) + " " + viewModel.WidthSelect :
                 null;
 
             return model;
+        }
+
+        public static ItemUserViewModel ItemUserToViewModel(ItemUser model)
+        {
+            ApplicationDbContext _context = new ApplicationDbContext();
+            ItemUserViewModel viewModel = new ItemUserViewModel();
+
+            viewModel.FilterId = model.FilterId;
+
+            viewModel.ItemId = model.Id;
+
+            viewModel.BaseTypes =
+                model.MainCategory != null ?
+                _context.BaseTypes.SingleOrDefault(i => i.Name == model.MainCategory).Id :
+                (byte?)null;
+
+            if (viewModel.BaseTypes != null)
+            {
+                var typesInDb = _context.Types.Where(i => i.BaseTypeId == viewModel.BaseTypes).Select(i => i).ToList();
+
+                List<string> types = model.Class.Split('\"').ToList();
+                List<string> checkList = new List<string>();
+                types.RemoveAll(c => c == "" || c == " ");
+
+                foreach (var itemType in types)
+                {
+                    if (itemType.StartsWith(" ") || itemType.EndsWith(" "))
+                    {
+                        checkList.AddRange(itemType.Split(' '));
+                    }
+                    else
+                    {
+                        checkList.Add(itemType);
+                    }
+
+                }
+                checkList.RemoveAll(c => c == "" || c == " ");
+                int matchCount = 0;
+                foreach (var itemType in checkList)
+                {
+                    bool isMultipleClass = typesInDb.Any(i => i.Name == itemType);
+                    matchCount = isMultipleClass ? matchCount + 1 : matchCount;
+                }
+
+                if (matchCount == typesInDb.Count)
+                {
+                    viewModel.Types = null;
+                }
+                else if (matchCount < typesInDb.Count)
+                {
+                    model.Class = model.Class.Replace("\"", "");
+                    viewModel.Types =
+                        model.Class != null ?
+                        _context.Types.SingleOrDefault(i => i.Name == model.Class).Id :
+                        (int?)null;
+                }
+                else
+                {
+                    viewModel.Types = null;
+                }
+            }
+            else
+            {
+                model.Class = model.Class.Replace("\"", "");
+                viewModel.Types =
+                    model.Class != null ?
+                    _context.Types.SingleOrDefault(i => i.Name == model.Class).Id :
+                    (int?)null;
+            }
+
+            viewModel.Items =
+                model.BaseType != null ?
+                _context.ItemsDB.SingleOrDefault(i => i.Name == model.BaseType).Id :
+                (int?)null;
+
+            viewModel.UserItem =
+                model.UserBaseType != null && model.BaseType == null ?
+                model.UserBaseType :
+                null;
+
+            if (model.ItemLevel != null)
+            {
+                int indexOfSpace = model.ItemLevel.IndexOf(" ");
+                if (model.ItemLevel.Contains("\n"))
+                {
+                    int indexOfLastSpace = model.ItemLevel.LastIndexOf(" ");
+
+                    viewModel.ItemLvlRangeSelect1 = model.ItemLevel.Substring(indexOfSpace + 1, 2).Replace("\\", "");
+                    viewModel.ItemLvlRangeSelect2 = model.ItemLevel.Substring(indexOfLastSpace + 1);
+                }
+
+                viewModel.ItemLvlSelectSign = InequalitySign.SelectInt(model.ItemLevel.Substring(0, indexOfSpace));
+                viewModel.ItemLvlSelect = model.ItemLevel.Substring(indexOfSpace + 1);
+            }
+
+            if (model.DropLevel != null)
+            {
+                int indexOfSpace = model.DropLevel.IndexOf(" ");
+                viewModel.DropLevelSelectSign = InequalitySign.SelectInt(model.DropLevel.Substring(0, indexOfSpace));
+                viewModel.DropLevelSelect = model.DropLevel.Substring(indexOfSpace + 1);
+            }
+
+            if (model.Quality != null)
+            {
+                int indexOfSpace = model.Quality.IndexOf(" ");
+                viewModel.ItemQualitySelectSign = InequalitySign.SelectInt(model.Quality.Substring(0, indexOfSpace));
+                viewModel.ItemQualitySelect = model.Quality.Substring(indexOfSpace + 1);
+            }
+
+            if (model.Rarity != null)
+            {
+                int indexOfSpace = model.Rarity.IndexOf(" ");
+                viewModel.ItemRaritySelectSign = InequalitySign.SelectInt(model.Rarity.Substring(0, indexOfSpace));
+                viewModel.ItemRaritySelect = (int)Enum.Parse(typeof(Rarity), model.Rarity.Substring(indexOfSpace + 1));
+            }
+
+            if (model.Sockets != null)
+            {
+                int indexOfSpace = model.Sockets.IndexOf(" ");
+                viewModel.SocketsNumberSelectSign = InequalitySign.SelectInt(model.Sockets.Substring(0, indexOfSpace));
+                viewModel.SocketsNumberSelect = model.Sockets.Substring(indexOfSpace + 1);
+            }
+
+            if (model.LinkedSockets != null)
+            {
+                int indexOfSpace = model.LinkedSockets.IndexOf(" ");
+                viewModel.LinkedSocketsNumberSelectSign = InequalitySign.SelectInt(model.LinkedSockets.Substring(0, indexOfSpace));
+                viewModel.LinkedSocketsNumberSelect = model.LinkedSockets.Substring(indexOfSpace + 1);
+            }
+
+            if (model.SocketsGroup != null)
+            {
+                viewModel.RedSocketsSelect = model.SocketsGroup.Count(c => c == 'R');
+                viewModel.GreenSocketsSelect = model.SocketsGroup.Count(c => c == 'G');
+                viewModel.BlueSocketsSelect = model.SocketsGroup.Count(c => c == 'B');
+                viewModel.WhiteSocketsSelect = model.SocketsGroup.Count(c => c == 'W');
+            }
+
+            if (model.Height != null)
+            {
+                int indexOfSpace = model.Height.IndexOf(" ");
+                viewModel.HeightSelectSign = InequalitySign.SelectInt(model.Height.Substring(0, indexOfSpace));
+                viewModel.HeightSelect = model.Height.Substring(indexOfSpace + 1);
+            }
+
+            if (model.Width != null)
+            {
+                int indexOfSpace = model.Width.IndexOf(" ");
+                viewModel.WidthSelectSign = InequalitySign.SelectInt(model.Width.Substring(0, indexOfSpace));
+                viewModel.WidthSelect = model.Width.Substring(indexOfSpace + 1);
+            }
+
+            if (model.SetBorderColor != null)
+            {
+                string[] values = model.SetBorderColor.Split(' ');
+                viewModel.BorderRedSelect = values[0];
+                viewModel.BorderGreenSelect = values[1];
+                viewModel.BorderBlueSelect = values[2];
+                viewModel.BorderAlphaSelect = values[3];
+            }
+
+            if (model.SetTextColor != null)
+            {
+                string[] values = model.SetTextColor.Split(' ');
+                viewModel.TextRedSelect = values[0];
+                viewModel.TextGreenSelect = values[1];
+                viewModel.TextBlueSelect = values[2];
+                viewModel.TextAlphaSelect = values[3];
+            }
+
+            if (model.SetBackgroundColor != null)
+            {
+                string[] values = model.SetBackgroundColor.Split(' ');
+                viewModel.BackRedSelect = values[0];
+                viewModel.BackGreenSelect = values[1];
+                viewModel.BackBlueSelect = values[2];
+                viewModel.BackAlphaSelect = values[3];
+            }
+
+            if (model.PlayAlertSound != null)
+            {
+                int indexOfSpace = model.PlayAlertSound.IndexOf(" ");
+                viewModel.PlayAlertSoundTypeSelect = model.PlayAlertSound.Substring(0, indexOfSpace);
+                viewModel.PlayAlertSoundVolumeSelect = model.PlayAlertSound.Substring(indexOfSpace + 1);
+            }
+
+            viewModel.FontSizeSelect = model.SetFontSize;
+
+            viewModel.IdentifiedSelect = Convert.ToInt32(model.Identified);
+
+            viewModel.CorruptedSelect = Convert.ToInt32(model.Corrupted);
+
+            viewModel.Show = Convert.ToInt32(model.Show);
+
+            return viewModel;
         }
     }
 }

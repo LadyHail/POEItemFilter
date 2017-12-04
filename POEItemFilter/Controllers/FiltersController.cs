@@ -309,11 +309,18 @@ namespace POEItemFilter.Controllers
         [HttpPost]
         public ActionResult Save(Models.Filters.Filter model)
         {
-            //TODO powinien zwrócić podany model
-
+            //TODO pozwala na zapisanie pustej listy
             if (!ModelState.IsValid)
             {
-                return View("Filter", new FilterViewModel());
+                return View("Filter", new FilterViewModel()
+                {
+                    Dedicated = model.Dedicated,
+                    Description = model.Description,
+                    Id = model.Id,
+                    Items = model.Items.ToList(),
+                    Name = model.Name,
+                    UserId = model.UserId
+                });
             }
 
             bool isAuthorized = model.UserId == User.Identity.GetUserId();
@@ -352,7 +359,15 @@ namespace POEItemFilter.Controllers
             }
             catch (Exception)
             {
-                return View("Filter", new FilterViewModel());
+                return View("Filter", new FilterViewModel()
+                {
+                    Dedicated = model.Dedicated,
+                    Description = model.Description,
+                    Id = model.Id,
+                    Items = model.Items.ToList(),
+                    Name = model.Name,
+                    UserId = model.UserId
+                });
             }
 
             return RedirectToAction("MyFilters", "Filters");
