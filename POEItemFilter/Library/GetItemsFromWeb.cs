@@ -269,16 +269,16 @@ namespace POEItemFilter.Library
         {
             Match match = null;
             MatchCollection output = null;
-
+            //TODO log ex
             try
             {
                 match = regex.Match(rawWebData);
             }
-            catch (TimeoutException)
+            catch (TimeoutException e)
             {
                 return null;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }

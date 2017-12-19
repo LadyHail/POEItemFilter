@@ -605,6 +605,8 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\Views\ColorPickersBehaviour.js" />
+    <Content Include="Scripts\Views\HexRgbConverter.js" />
     <Content Include="Scripts\Views\ItemViewsBehaviour.js" />
     <Content Include="Scripts\Views\RefreshDbItems.js" />
     <Content Include="ToDoList.txt" />

@@ -42,4 +42,8 @@ FRONT:
 
 9. Zmienić formę wyświetlania details.
 
+10. DataTable zmienić CSS; usunąć sortowanie po details i dl.
+
+11. Zamiast rubryk RGB użyć colorPicker.
+
 [INFO] Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności

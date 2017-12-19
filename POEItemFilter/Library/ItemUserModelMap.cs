@@ -117,18 +117,18 @@ namespace POEItemFilter.Library
                 null;
 
             model.SetBackgroundColor =
-                viewModel.BackRedSelect != null && viewModel.BackGreenSelect != null && viewModel.BackBlueSelect != null ?
-                viewModel.BackRedSelect + " " + viewModel.BackGreenSelect + " " + viewModel.BackBlueSelect + " " + viewModel.BackAlphaSelect :
+                viewModel.BackgroundColor != null ?
+                viewModel.BackgroundColor + " " + viewModel.BackAlphaSelect :
                 null;
 
             model.SetBorderColor =
-                viewModel.BorderRedSelect != null && viewModel.BorderGreenSelect != null && viewModel.BorderBlueSelect != null ?
-                viewModel.BorderRedSelect + " " + viewModel.BorderGreenSelect + " " + viewModel.BorderBlueSelect + " " + viewModel.BorderAlphaSelect :
+                viewModel.BorderColor != null ?
+                viewModel.BorderColor + " " + viewModel.BorderAlphaSelect :
                 null;
 
             model.SetTextColor =
-                viewModel.TextRedSelect != null && viewModel.TextGreenSelect != null && viewModel.TextBlueSelect != null ?
-                viewModel.TextRedSelect + " " + viewModel.TextGreenSelect + " " + viewModel.TextBlueSelect + " " + viewModel.TextAlphaSelect :
+                viewModel.TextColor != null ?
+                viewModel.TextColor + " " + viewModel.TextAlphaSelect :
                 null;
 
             model.SetFontSize =
@@ -332,29 +332,20 @@ namespace POEItemFilter.Library
 
             if (model.SetBorderColor != null)
             {
-                string[] values = model.SetBorderColor.Split(' ');
-                viewModel.BorderRedSelect = values[0];
-                viewModel.BorderGreenSelect = values[1];
-                viewModel.BorderBlueSelect = values[2];
-                viewModel.BorderAlphaSelect = values[3];
+                viewModel.BorderColor = model.SetBorderColor.Substring(0, model.SetBorderColor.LastIndexOf(' '));
+                viewModel.BorderAlphaSelect = model.SetBorderColor.Substring(model.SetBorderColor.LastIndexOf(' ') + 1);
             }
 
             if (model.SetTextColor != null)
             {
-                string[] values = model.SetTextColor.Split(' ');
-                viewModel.TextRedSelect = values[0];
-                viewModel.TextGreenSelect = values[1];
-                viewModel.TextBlueSelect = values[2];
-                viewModel.TextAlphaSelect = values[3];
+                viewModel.TextColor = model.SetTextColor.Substring(0, model.SetTextColor.LastIndexOf(' '));
+                viewModel.TextAlphaSelect = model.SetTextColor.Substring(model.SetTextColor.LastIndexOf(' ') + 1);
             }
 
             if (model.SetBackgroundColor != null)
             {
-                string[] values = model.SetBackgroundColor.Split(' ');
-                viewModel.BackRedSelect = values[0];
-                viewModel.BackGreenSelect = values[1];
-                viewModel.BackBlueSelect = values[2];
-                viewModel.BackAlphaSelect = values[3];
+                viewModel.BackgroundColor = model.SetBackgroundColor.Substring(0, model.SetBackgroundColor.LastIndexOf(' '));
+                viewModel.BackAlphaSelect = model.SetBackgroundColor.Substring(model.SetBackgroundColor.LastIndexOf(' ') + 1);
             }
 
             if (model.PlayAlertSound != null)

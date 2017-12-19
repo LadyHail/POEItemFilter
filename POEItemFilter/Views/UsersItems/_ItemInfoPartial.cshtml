@@ -27,6 +27,66 @@
         new {Id = "1", Name = "Yes"},
     },
     "Id", "Name", 0);
+
+    var inGameColours = new SelectList(new[]
+    {
+        new {Value = "200,200,200", Note = "Normal item"},
+        new {Value = "136,136,255", Note = "Magic item"},
+        new {Value = "255,255,119", Note = "Rare item"},
+        new {Value = "175,96,37", Note = "Unique item"},
+        new {Value = "27,162,155", Note = "Skill gem"},
+        new {Value = "170,158,130", Note = "Currency"},
+        new {Value = "74,230,58", Note = "Quest item"},
+        new {Value = "14,186,255", Note = "Divination card"},
+        new {Value = "127,127,127", Note = "Default text"},
+        new {Value = "255,255,255", Note = "Value text"},
+        new {Value = "136,136,255", Note = "Augmented value text"},
+        new {Value = "150,0,0", Note = "Fire damage"},
+        new {Value = "54,100,146", Note = "Cold damage"},
+        new {Value = "255,215,0", Note = "Lightning damage"},
+        new {Value = "208,32,144", Note = "Chaos damage"},
+        new {Value = "184,218,242", Note = "Crafted mod"},
+        new {Value = "210,0,0", Note = "Corrupted"},
+        new {Value = "180,96,0", Note = "Supporter pack new item"},
+        new {Value = "163,141,109", Note = "Supporter pack item"},
+        new {Value = "255,200,0", Note = "Nemesis mod"},
+        new {Value = "255,40,0", Note = "Nemesis mod outline"},
+        new {Value = "210,0,220", Note = "Bloodline mod"},
+        new {Value = "74,0,160", Note = "Bloodline mod outline"},
+        new {Value = "50,230,100", Note = "Torment mod"},
+        new {Value = "0,100,150", Note = "Torment mod outline"},
+        new {Value = "231,180,120", Note = "Title"},
+        new {Value = "170,158,120", Note = "Favour"},
+        new {Value = "255,192,203", Note = "Unknown"},
+        new {Value = "30,144,255", Note = "Unknown"},
+        new {Value = "124,81,50", Note = "Premium stash tab"},
+        new {Value = "191,91,0", Note = "Premium stash tab"},
+        new {Value = "254,191,128", Note = "Premium stash tab"},
+        new {Value = "38,0,86", Note = "Premium stash tab"},
+        new {Value = "88,0,179", Note = "Premium stash tab"},
+        new {Value = "192,128,254", Note = "Premium stash tab"},
+        new {Value = "98,128,0", Note = "Premium stash tab"},
+        new {Value = "191,244,0", Note = "Premium stash tab"},
+        new {Value = "239,254,128", Note = "Premium stash tab"},
+        new {Value = "86,0,0", Note = "Premium stash tab"},
+        new {Value = "191,0,0", Note = "Premium stash tab"},
+        new {Value = "254,128,128", Note = "Premium stash tab"},
+        new {Value = "0,0,128", Note = "Premium stash tab"},
+        new {Value = "0,0,254", Note = "Premium stash tab"},
+        new {Value = "128,179,254", Note = "Premium stash tab"},
+        new {Value = "254,170,0", Note = "Premium stash tab"},
+        new {Value = "254,213,0", Note = "Premium stash tab"},
+        new {Value = "254,254,153", Note = "Premium stash tab"},
+        new {Value = "114,0,83", Note = "Premium stash tab"},
+        new {Value = "204,0,154", Note = "Premium stash tab"},
+        new {Value = "254,128,222", Note = "Premium stash tab"},
+        new {Value = "0,73,0", Note = "Premium stash tab"},
+        new {Value = "0,191,0", Note = "Premium stash tab"},
+        new {Value = "128,254,128", Note = "Premium stash tab"},
+        new {Value = "42,42,42", Note = "Premium stash tab"},
+        new {Value = "135,135,135", Note = "Premium stash tab"},
+        new {Value = "221,221,221", Note = "Premium stash tab"},
+    },"Value", "Note");
 }
 
 <button id="lvlToggle" type="button" class="btn btn-primary btn-sm container" aria-label="Left Align">
@@ -128,40 +188,85 @@
         @Html.DropDownList("CorruptedSelect", boolSelect, new { @class = "my-btn" })
     </p>
     <p>
-        @Html.Label("Border color: ")
+        <span>
+            @Html.Label("Border color: ")
+            Set default?
+            <select class="my-btn is-default-color">
+                <option value="false">No</option>
+                <option value="true" selected="selected">Yes</option>
+            </select>
+        </span>
         <br />
-        @Html.Label("Red: ", new { @class = "margin-left" })
-        @Html.DropDownList("BorderRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ", new { @class = "margin-left" })
-        @Html.DropDownList("BorderGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ", new { @class = "margin-left" })
-        @Html.DropDownList("BorderBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Border opacity: ", new { @class = "margin-left" })
-        @Html.DropDownList("BorderAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        <span class="color-selector">
+            Select manually: 
+            <input type="color" class="manual-color-picker" />
+            <strong>OR</strong>
+            <select id="dropdownColorPicker" class="my-btn dropdown-color-picker">
+                <option value="">select in-game color</option>
+                @{ foreach (var item in inGameColours)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+@Html.Label("Select opacity: ", new { @class = "margin-left" })
+@Html.DropDownList("BorderAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </span>
+        @Html.Hidden("BorderColor")
     </p>
     <p>
-        @Html.Label("Text color: ")
+        <span>
+            @Html.Label("Text color: ")
+            Set default?
+            <select class="my-btn is-default-color">
+                <option value="false">No</option>
+                <option value="true" selected="selected">Yes</option>
+            </select>
+        </span>
         <br />
-        @Html.Label("Red: ", new { @class = "margin-left" })
-        @Html.DropDownList("TextRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ", new { @class = "margin-left" })
-        @Html.DropDownList("TextGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ", new { @class = "margin-left" })
-        @Html.DropDownList("TextBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Text opacity: ", new { @class = "margin-left" })
-        @Html.DropDownList("TextAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        <span class="color-selector">
+            Select manually:
+            <input type="color" class="manual-color-picker" />
+            <strong>OR</strong>
+            <select id="dropdownColorPicker" class="my-btn dropdown-color-picker">
+                <option value="">select in-game color</option>
+                @{ foreach (var item in inGameColours)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+            @Html.Label("Select opacity: ", new { @class = "margin-left" })
+            @Html.DropDownList("TextAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </span>
+        @Html.Hidden("TextColor")
     </p>
     <p>
-        @Html.Label("Background color: ")
+        <span>
+            @Html.Label("Background color: ")
+            Set default?
+            <select class="my-btn is-default-color">
+                <option value="false">No</option>
+                <option value="true" selected="selected">Yes</option>
+            </select>
+        </span>
         <br />
-        @Html.Label("Red: ", new { @class = "margin-left" })
-        @Html.DropDownList("BackRedSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Green: ", new { @class = "margin-left" })
-        @Html.DropDownList("BackGreenSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Blue: ", new { @class = "margin-left" })
-        @Html.DropDownList("BackBlueSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
-        @Html.Label("Background opacity: ", new { @class = "margin-left" })
-        @Html.DropDownList("BackAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        <span class="color-selector">
+            Select manually:
+            <input type="color" class="manual-color-picker" />
+            <strong>OR</strong>
+            <select id="dropdownColorPicker" class="my-btn dropdown-color-picker">
+                <option value="">select in-game color</option>
+                @{ foreach (var item in inGameColours)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+            @Html.Label("Select opacity: ", new { @class = "margin-left" })
+            @Html.DropDownList("BackAlphaSelect", new SelectList(Enumerable.Range(0, 256)), "", new { @class = "my-btn" })
+        </span>
+        @Html.Hidden("BackgroundColor")
     </p>
     <p>
         @Html.Label("Font size: ")

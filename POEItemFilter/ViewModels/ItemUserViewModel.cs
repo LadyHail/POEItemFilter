@@ -62,27 +62,15 @@
 
         public int CorruptedSelect { get; set; }
 
-        public string BorderRedSelect { get; set; }
-
-        public string BorderGreenSelect { get; set; }
-
-        public string BorderBlueSelect { get; set; }
+        public string BorderColor { get; set; }
 
         public string BorderAlphaSelect { get; set; }
 
-        public string TextRedSelect { get; set; }
-
-        public string TextGreenSelect { get; set; }
-
-        public string TextBlueSelect { get; set; }
+        public string TextColor { get; set; }
 
         public string TextAlphaSelect { get; set; }
 
-        public string BackRedSelect { get; set; }
-
-        public string BackGreenSelect { get; set; }
-
-        public string BackBlueSelect { get; set; }
+        public string BackgroundColor { get; set; }
 
         public string BackAlphaSelect { get; set; }
 

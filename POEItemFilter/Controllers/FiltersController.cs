@@ -120,7 +120,7 @@ namespace POEItemFilter.Controllers
             {
                 return HttpNotFound();
             }
-            return View(itemsInDb);
+            return PartialView(itemsInDb);
         }
 
         [Authorize]
