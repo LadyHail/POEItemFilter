@@ -306,6 +306,7 @@ namespace POEItemFilter.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Save(Models.Filters.Filter model)
         {

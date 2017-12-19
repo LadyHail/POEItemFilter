@@ -79,7 +79,7 @@ namespace POEItemFilter.Library
             bool isLastNumber = int.TryParse(propertyValue[lastIndex].ToString(), out int noNumber);
             bool isFirstNumber = int.TryParse(propertyValue[0].ToString(), out noNumber);
             bool oneSpaceOnly = propertyValue.IndexOf(" ") == propertyValue.LastIndexOf(" ");
-            output = propertyValue.Contains(" ") && oneSpaceOnly && (!isLastNumber && !isFirstNumber) ? "\"" + propertyValue + "\"" + "\n" : propertyValue + "\n";
+            output = propertyValue.Contains(" ") && oneSpaceOnly && (!isLastNumber && !isFirstNumber) ? propertyValue + "\n" : propertyValue + "\n";
             return output;
         }
     }

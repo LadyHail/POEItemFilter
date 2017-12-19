@@ -47,7 +47,19 @@
         $(document).ready(function () {
 
             // DataTable setup
-            var table = $("#filtersListTable").DataTable();
+            var table = $("#filtersListTable").DataTable({
+                scrollY: "100%",
+                scrollX: "100%",
+                scrollCollapse: true,
+                paging: false,
+                autoWidth: false,
+                columnDefs: [
+                    { searchable: false, targets: [5, 6] },
+                    { orderable: false, targets: [5, 6] }
+                ]
+            });
+
+            $("#filtersListTable_filter input").addClass("my-btn");
 
             //Details
             $("#filtersListTable").on("click", ".js-details", function () {

@@ -24,13 +24,20 @@ namespace POEItemFilter.Library
                 viewModel.FilterId.Value :
                 0;
 
-            model.BaseType =
-                viewModel.Items != null ?
-                _context.ItemsDB.SingleOrDefault(i => i.Id == viewModel.Items).Name :
-                null;
+            if (viewModel.Items != null)
+            {
+                string baseType = _context.ItemsDB.SingleOrDefault(i => i.Id == viewModel.Items).Name;
+                model.BaseType = baseType.Contains(" ") ? "\"" + baseType + "\"" : baseType;
+            }
+            else
+            {
+                model.BaseType = null;
+            }
 
             model.UserBaseType =
                 viewModel.UserItem != null && model.BaseType == null ?
+                viewModel.UserItem.Contains(" ") ?
+                "\"" + viewModel.UserItem + "\"" :
                 viewModel.UserItem :
                 null;
 
@@ -248,10 +255,11 @@ namespace POEItemFilter.Library
                 }
             }
 
-            viewModel.Items =
-                model.BaseType != null ?
-                _context.ItemsDB.SingleOrDefault(i => i.Name == model.BaseType).Id :
-                (int?)null;
+            if (model.BaseType != null)
+            {
+                model.BaseType = model.BaseType.Replace("\"", "");
+                viewModel.Items = _context.ItemsDB.SingleOrDefault(i => i.Name == model.BaseType).Id;
+            }
 
             viewModel.UserItem =
                 model.UserBaseType != null && model.BaseType == null ?

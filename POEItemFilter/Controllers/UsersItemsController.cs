@@ -47,6 +47,7 @@ namespace POEItemFilter.Controllers
             return View("ItemSession", item);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult SaveItemSession(ItemUserViewModel model)
         {
@@ -131,6 +132,7 @@ namespace POEItemFilter.Controllers
 
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult SaveItemDb(ItemUserViewModel model)
         {

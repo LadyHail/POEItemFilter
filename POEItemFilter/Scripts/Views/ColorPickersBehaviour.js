@@ -3,7 +3,7 @@ $(document).ready(function () {
     defaultSet();
 
     $(".dropdown-color-picker option").each(function () {
-        if ($(this).val() != '') {
+        if ($(this).val() !== '') {
             $(this).css('background-color', 'rgb(' + $(this).val() + ')');
         }
     });

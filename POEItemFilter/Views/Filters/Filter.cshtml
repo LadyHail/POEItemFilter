@@ -37,6 +37,7 @@ else
     @using (Html.BeginForm("Save", "Filters", FormMethod.Post))
     {
         @Html.ValidationSummary()
+        @Html.AntiForgeryToken()
         <p>
             @Html.LabelFor(f => f.Name)
             <br />

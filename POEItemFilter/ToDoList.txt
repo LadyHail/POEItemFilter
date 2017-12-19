@@ -3,7 +3,7 @@
 
 [SOLVED] 2. Dodać walidację wprowadzanych danych.
 
-3. Dodać obsługę błędów.
+[SOLVED] 3. Dodać obsługę błędów.
 
 [SOLVED] 4. Połączyć filtry z DB.
 
@@ -14,8 +14,6 @@
 7. Weryfikacja email.
 
 8. Możliwość edycji username i email.
-
-9. Dodać awatary
 
 [SOLVED] 10. Autoryzacja użytkowników.
 
@@ -42,8 +40,8 @@ FRONT:
 
 9. Zmienić formę wyświetlania details.
 
-10. DataTable zmienić CSS; usunąć sortowanie po details i dl.
+[SOLVED] 10. DataTable zmienić CSS; usunąć sortowanie po details i dl.
 
-11. Zamiast rubryk RGB użyć colorPicker.
+[SOLVED] 11. Zamiast rubryk RGB użyć colorPicker.
 
 [INFO] Sesja korzysta ze swoich Id, Db - RowId -> chodzi o zmianę kolejności

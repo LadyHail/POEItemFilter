@@ -4,37 +4,12 @@
     ViewBag.Title = "Contact";
 }
 
-<h2>Contact me</h2>
+<h1>Contact me</h1>
 
 <div>
     <div class="col-md-6">
-        @using (Html.BeginForm("Contact", "Home"))
-        {
-            @Html.LabelFor(c => c.Name);
-            @Html.TextBoxFor(c => c.Name);
-
-            @Html.LabelFor(c => c.Email);
-            @Html.TextBoxFor(c => c.Email);
-
-            @Html.LabelFor(c => c.Subject);
-            @Html.TextBoxFor(c => c.Subject);
-
-            @Html.LabelFor(c => c.Message);
-            @Html.TextBoxFor(c => c.Message);
-
-            <button type="submit" class="btn btn-primary">Send</button>
-        }
-
-        <div>
-            <div>
-                @if (ViewBag.Message != null)
-                {
-                    <div>@ViewBag.Message</div>
-
-
-                    }
-            </div>
-        </div>
+        <h3>Something doesn't work?</h3>
+        <h3><a href="mailto:ladyhail@outlook.com">Send me message</a></h3>
     </div>
 
 </div>
