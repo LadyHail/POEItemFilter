@@ -54,12 +54,19 @@ namespace POEItemFilter.Library
                     {
                         MatchCollection items = RegexRequest(queries[0], RawWebData);
 
-                        foreach (Match item in items)//System.Text.RegularExpressions.RegexMatchTimeoutException
+                        foreach (Match item in items) //System.Text.RegularExpressions.RegexMatchTimeoutException
                         {
                             SaveNewItem(item, itemType, itemBaseType);
                         }
                     }
-                    _context.SaveChanges();
+                    try
+                    {
+                        _context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        LogError(e);
+                    }
                 }
             }
         }
@@ -77,11 +84,11 @@ namespace POEItemFilter.Library
                     break;
 
                 case BaseTypes.LabyrinthItem:
-                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>", Options, new TimeSpan(0, 0, 1));
+                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>", Options, new TimeSpan(0, 0, 5));
                     break;
 
                 case BaseTypes.Piece:
-                    itemsQuery = new Regex("/><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>", Options, new TimeSpan(0, 0, 1));
+                    itemsQuery = new Regex("/><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>", Options, new TimeSpan(0, 0, 5));
                     break;
 
                 case BaseTypes.DivinationCard:
@@ -91,18 +98,18 @@ namespace POEItemFilter.Library
                 case BaseTypes.Armour:
                     if (itemType == Types.BodyArmour.ToString())
                     {
-                        attributesQuery = new Regex($"Body Armours \\(<a href=\".+?\" title=\"(?<attribute1>.+?)\">.+? title=\"(?<attribute2>.+?)\".+?</table>", Options, new TimeSpan(0, 0, 1));
+                        attributesQuery = new Regex($"Body Armours \\(<a href=\".+?\" title=\"(?<attribute1>.+?)\">.+? title=\"(?<attribute2>.+?)\".+?</table>", Options, new TimeSpan(0, 0, 5));
                     }
                     else
                     {
-                        attributesQuery = new Regex($"{itemType}s \\(<a href=\".+?\" title=\"(?<attribute1>.+?)\">.+? title=\"(?<attribute2>.+?)\".+?</table>", Options, new TimeSpan(0, 0, 1));
+                        attributesQuery = new Regex($"{itemType}s \\(<a href=\".+?\" title=\"(?<attribute1>.+?)\">.+? title=\"(?<attribute2>.+?)\".+?</table>", Options, new TimeSpan(0, 0, 5));
                     }
 
-                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>Requires Level.+?value\">(?<level>[0-9]+)", Options, new TimeSpan(0, 0, 1));
+                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>Requires Level.+?value\">(?<level>[0-9]+)", Options, new TimeSpan(0, 0, 5));
                     break;
 
                 default:
-                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>.+?<td data-sort-value=\"(?<level>[0-9]+)\"", Options, new TimeSpan(0, 0, 1));
+                    itemsQuery = new Regex("_activator\"><a href=\"/.+?\" title=\"(?<name>.+?)\".+?>.+?<td data-sort-value=\"(?<level>[0-9]+)\"", Options, new TimeSpan(0, 0, 5));
                     break;
             }
             output[0] = itemsQuery;
@@ -131,8 +138,15 @@ namespace POEItemFilter.Library
 
             if (!isItemInDb)
             {
-                _context.ItemsDB.Add(newItem);
-                LogNewItem(newItem);
+                try
+                {
+                    _context.ItemsDB.Add(newItem);
+                    LogNewItem(newItem);
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -156,7 +170,14 @@ namespace POEItemFilter.Library
 
                     SaveArmourItem(item, itemType, attribute1Value, attribute2Value);
                 }
-                _context.SaveChanges();
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -195,8 +216,15 @@ namespace POEItemFilter.Library
             bool isItemInDb = _context.ItemsDB.Select(i => i.Name).Contains(newItem.Name);
             if (!isItemInDb)
             {
-                _context.ItemsDB.Add(newItem);
-                LogNewItem(newItem);
+                try
+                {
+                    _context.ItemsDB.Add(newItem);
+                    LogNewItem(newItem);
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -214,8 +242,9 @@ namespace POEItemFilter.Library
                     return true;
                 }
             }
-            catch
+            catch (Exception e)
             {
+                LogError(e);
                 return false;
             }
         }
@@ -269,17 +298,18 @@ namespace POEItemFilter.Library
         {
             Match match = null;
             MatchCollection output = null;
-            //TODO log ex
             try
             {
                 match = regex.Match(rawWebData);
             }
             catch (TimeoutException e)
             {
+                LogError(e);
                 return null;
             }
             catch (Exception e)
             {
+                LogError(e);
                 return null;
             }
 
@@ -294,8 +324,15 @@ namespace POEItemFilter.Library
             {
                 ItemBaseType newBaseType = new ItemBaseType();
                 newBaseType.Name = itemBaseType.ToString();
-                _context.BaseTypes.Add(newBaseType);
-                _context.SaveChanges();
+                try
+                {
+                    _context.BaseTypes.Add(newBaseType);
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -308,8 +345,15 @@ namespace POEItemFilter.Library
                 newType.Name = itemType;
                 var existingBaseType = _context.BaseTypes.SingleOrDefault(i => i.Name == itemBaseType);
                 newType.BaseTypeId = existingBaseType.Id;
-                _context.Types.Add(newType);
-                _context.SaveChanges();
+                try
+                {
+                    _context.Types.Add(newType);
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -322,8 +366,15 @@ namespace POEItemFilter.Library
                 {
                     ItemAttribute newAttribute = new ItemAttribute();
                     newAttribute.Name = attribute;
-                    _context.Attributes.Add(newAttribute);
-                    _context.SaveChanges();
+                    try
+                    {
+                        _context.Attributes.Add(newAttribute);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        LogError(e);
+                    }
                 }
             }
         }
@@ -334,9 +385,15 @@ namespace POEItemFilter.Library
             {
                 var attributeInDb = _context.Attributes.SingleOrDefault(a => a.Name == attribute);
                 var typeInDb = _context.Types.SingleOrDefault(t => t.Name == itemType);
-
-                typeInDb.Attributes.Add(attributeInDb);
-                _context.SaveChanges();
+                try
+                {
+                    typeInDb.Attributes.Add(attributeInDb);
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -346,9 +403,15 @@ namespace POEItemFilter.Library
             {
                 var attributeInDb = _context.Attributes.SingleOrDefault(a => a.Name == attribute);
                 var baseTypeInDb = _context.BaseTypes.SingleOrDefault(b => b.Name == BaseTypes.Armour.ToString());
-
-                attributeInDb.BaseTypeId = baseTypeInDb.Id;
-                _context.SaveChanges();
+                try
+                {
+                    attributeInDb.BaseTypeId = baseTypeInDb.Id;
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    LogError(e);
+                }
             }
         }
 
@@ -446,6 +509,19 @@ namespace POEItemFilter.Library
                 "   ##### Name: " + newItem.Name +
                 "   ##### Main category: " + newItem.BaseType.Name +
                 "   ##### Class: " + newItem.Type.Name);
+            logText.Close();
+        }
+
+        private void LogError(Exception e)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\Errors.log";
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
+            StreamWriter logText = File.AppendText(path);
+            logText.WriteLine(
+                DateTime.UtcNow + " Source: " + e.Source + " Msg: " + e.Message + " InnerException: " + e.InnerException + " Type: " + e.GetType());
             logText.Close();
         }
     }
